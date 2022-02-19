@@ -11,9 +11,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btn_click_me = findViewById(R.id.button2) as Button
+        val confirmButton = findViewById(R.id.button2) as Button
         // set on-click listener
-        btn_click_me.setOnClickListener {
+        confirmButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
