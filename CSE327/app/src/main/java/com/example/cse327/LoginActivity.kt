@@ -26,8 +26,8 @@ class LoginActivity : AppCompatActivity() {
 
         val signUpButton = findViewById<TextView>(R.id.textView4);
         val imageButton2 = findViewById<ImageButton>(R.id.imageButton2);
-        val emailField = findViewById<EditText>(R.id.editTextTextEmailAddress)
-        val passField = findViewById<EditText>(R.id.editTextTextPassword)
+        val emailField = findViewById<EditText>(R.id.emailField)
+        val passField = findViewById<EditText>(R.id.passField)
         val errorUser = findViewById<TextView>(R.id.errorEmail)
         val errorPass = findViewById<TextView>(R.id.errorPass)
         val backButton = findViewById<ImageButton>(R.id.imageButton)

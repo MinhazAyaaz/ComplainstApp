@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             onItemClickListener = this@MainActivity
         }
 
-        val confirmButton = findViewById(R.id.button2) as Button
+        val confirmButton = findViewById(R.id.elevatedButton) as Button
         // set on-click listener
         confirmButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
