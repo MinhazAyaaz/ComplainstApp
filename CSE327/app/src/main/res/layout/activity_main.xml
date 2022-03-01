@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -17,14 +18,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3">
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:placeholderTextColor="#3A3A3A">
 
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Role"
-            android:inputType="none" />
+            android:inputType="none"
+            android:textColorHighlight="#232323"
+            android:textColorHint="#3A3A3A"
+            android:textColorLink="#232323" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
