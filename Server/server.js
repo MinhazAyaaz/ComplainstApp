@@ -1,6 +1,18 @@
 const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt')
+const mysql = require('mysql')
+
+//Database connection credentials
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'nsucomplaints'
+})
+db.connect()
+
+app.use(express.json());
 
 app.get("/api", (req,res)=>{
   res.json({"users": ["userOne", "userTwo", "userThree"]})
@@ -14,11 +26,23 @@ app.get('/users', (req, res) => {
   res.json(users)
 })
 
-app.post('/users', async (req, res) => {
+app.post('/signup', async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const user = { name: req.body.name, password: hashedPassword }
+    const user = { 
+      name: req.body.name,
+      nsuid: req.body.nsuid,
+      email: req.body.email,
+      password: hashedPassword,
+     }
     users.push(user)
+    let name= req.body.name
+    let nsuid= req.body.nsuid
+    let email= req.body.email
+    let password= hashedPassword
+    let sql = 'INSERT INTO user(nsuid, name, email, password) VALUES ('
+    sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +');'
+    db.query(sql)
     res.status(201).send()
   } catch {
     res.status(500).send()

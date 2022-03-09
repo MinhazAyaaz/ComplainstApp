@@ -20,7 +20,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { Input } from '@mui/material';
 import GoogleLoginComponent from '../components/GoogleLoginComponent';
 
-import axios from 'axios';
+
 
 function Copyright(props) {
   return (
@@ -40,7 +40,7 @@ const theme = createTheme();
 
 
 
-export default function SignUp() {
+export default function SignIn() {
   
   const [role, setRole] = React.useState('');
 
@@ -53,39 +53,12 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log({
-      name: data.get('name'),
       nsuid: data.get('nsuid'),
-      email: data.get('email'),
       password: data.get('password'),
     });
-    
-    axios.post('/signup', {
-      name: data.get('name'),
-      nsuid: data.get('nsuid'),
-      email: data.get('email'),
-      password: data.get('password'),
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    if(data.get('email')=="emon331@gmail.com" && data.get('password')=="12345678"){
 
-    // axios({
-    //   method: 'post',
-    //   url: '/signup',
-    //   data: {
-    //     name: data.get('name'),
-    //     password: data.get('password'),
-    //   }
-    // })
-    // .then(function (response) {
-    //   console.log(response);
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
+    }
 
   };
 

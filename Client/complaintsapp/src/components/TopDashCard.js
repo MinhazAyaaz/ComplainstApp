@@ -14,6 +14,17 @@ import LockIcon from '@mui/icons-material/Lock';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { MenuItem } from '@mui/material';
+import { Dialog } from '@mui/material';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import { FormControl } from '@mui/material';
+import { InputLabel } from '@mui/material';
+import { Select } from '@mui/material';
+import { Input } from '@mui/material';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 import PrimarySearchAppBar from '../components/navbar';
 import NavBar from '../components/complaintEditor'
@@ -27,6 +38,8 @@ import { Badge } from '@mui/material';
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
+import axios from 'axios';
+
 const Img = styled('img')({
   margin: 'auto',
   display: 'block',
@@ -36,46 +49,179 @@ const Img = styled('img')({
 
 export default function TopDashCard() {
 
+  const [open, setOpen] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
+  const [age, setAge] = React.useState('');
+
+  
 
   const createcomplaint = () => {
 
   };
 
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+  const expandForm = () =>{
+    setExpanded(true);
+  };
+  const unExpandForm = () =>{
+    setExpanded(false);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    // eslint-disable-next-line no-console
+
+    console.log({
+      name: data.get('title'),
+      against: data.get('against'),
+      category: age,
+      body: data.get('body'),
+      reviewer: data.get('reviewer'),
+    });
+    
+    // axios.post('/signup', {
+    //   name: data.get('name'),
+    //   nsuid: data.get('nsuid'),
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // })
+    // .then(function (response) {
+    //   console.log(response);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
+
+  };
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <Paper
-    sx={{
-      p: 3,
+    <Card sx={{ maxWidth: 900,  p: 3,
       margin: 'auto',
       marginTop: 5,
       maxWidth: 1000,
-      maxHeight: 800,
       flexGrow: 1,
       backgroundColor: (theme) =>
-        theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    }}
-  >
-    <Grid container spacing={2}>
+        theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
+    
 
-      <Grid item xs={12} sm container>
-        <Grid item xs container direction="column" spacing={1}>
-          <Grid item xs>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        
+        <TextField
+          multiline={true}
+          margin="normal"
+          required
+          fullWidth
+          id="title"
+          label="Write a complaint"
+          name="title"
+          autoComplete="title"
+          autoFocus
+          variant="standard"
+          size="medium"
+          onClick={expandForm}
+        />
 
-            <Typography variant="subtitle1"  textAlign={'left'}>
-              Create a new complaint....
-            </Typography>
+        {expanded ? 
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="against"
+          label="Who is it against?"
+          type="string"
+          id="against"
+          autoComplete="against"
+        />
+        :null}
 
-          </Grid>
+        {expanded ? 
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Category*</InputLabel>
+            <Select
+              labelId="category"
+              id="category"
+              value={age}
+              label="category"
+              onChange={handleChange}
+            >
+              <MenuItem value={"bullying"}>Bullying</MenuItem>
+              <MenuItem value={"sanitation"}>Sanitation</MenuItem>
+              
+            </Select>
+        </FormControl>
+        :null}
+          
+        {expanded ?
+        <TextField
+          multiline={true}
+          margin="normal"
+          required
+          fullWidth
+          name="body"
+          label="body"
+          type="body"
+          id="body"
+          autoComplete="Body"
+          rows={5}
+        />
+        :null}
 
-        </Grid>
-        <Grid item>
-        <AddBoxIcon onClick={createcomplaint} sx={{ color: '#1976d2',  width: 35, height: 35}} />
+        {expanded ?
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="reviewer"
+          label="Who will review it?"
+          type="reviewer"
+          id="reviewer"
+          autoComplete="reviewer"
+        />
+        :null}
 
-        </Grid>
+        {expanded ?
+        <div>
+        <Input accept="image/*" label="Evidence" id="icon-button-file" type="file"/>
+        <AttachFileIcon/>
+        </div>
+        :null}
+        
+        {expanded ?
+      <Box sx={{display: "flex",
+      justifyContent: "flex-end",
+                alignItems: "flex-end"}}
+                >
+    <Button  variant="filled" onClick={unExpandForm} >
+        Cancel
+      </Button>
+      <Button  variant="outlined" type="submit" >
+        Submit
+      </Button>
+      </Box>
+      :null}
+        
+      </Box>
+      
+      
+    
+  </Card>
 
-      </Grid>
-    </Grid>
-  </Paper>
-
+    
 
 
 
