@@ -43,12 +43,32 @@ const ExpandMore = styled((props) => {
 }));
 
 
-export default function CreateComplaintCard() {
+export default function CreateComplaintCard( fetchedData ) {
 
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
   const [age, setAge] = React.useState('');
+  const [backendData, setBackEndData] = React.useState([]);
 
+
+  React.useEffect(()=>{
+
+     setBackEndData({
+
+       complaintid: fetchedData.fetchedData.complaintid,
+       creationdate: fetchedData.fetchedData.creationdate,
+       status: fetchedData.fetchedData.status,
+       title: fetchedData.fetchedData.title,
+       against: fetchedData.fetchedData.against,
+       category: fetchedData.fetchedData.category,
+       body: fetchedData.fetchedData.body,
+       reviewer: fetchedData.fetchedData.reviewer,
+
+     })
+    
+  }, [])
+
+  
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -75,7 +95,7 @@ export default function CreateComplaintCard() {
   const handleClose = () => {
     setOpen(false);
   };
-
+  console.log(fetchedData)
   return (
     <Card sx={{ maxWidth: 900,  p: 3,
       margin: 'auto',
@@ -97,19 +117,17 @@ export default function CreateComplaintCard() {
         title={
 
           <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          {backendData.title}
         </Typography>
         }
 
 
-        subheader="September 14, 2016"
+        subheader={fetchedData.fetchedData.creationdate}
 
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
+        {backendData.body}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

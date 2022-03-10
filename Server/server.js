@@ -34,12 +34,12 @@ app.post('/signup', async (req, res) => {
       nsuid: req.body.nsuid,
       email: req.body.email,
       password: hashedPassword,
-     }
-    users.push(user)
-    let name= req.body.name
-    let nsuid= req.body.nsuid
-    let email= req.body.email
-    let password= hashedPassword
+     };
+    users.push(user);
+    let name= req.body.name;
+    let nsuid= req.body.nsuid;
+    let email= req.body.email;
+    let password= hashedPassword;
     let sql = 'INSERT INTO user(nsuid, name, email, password) VALUES ('
     sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +');'
     db.query(sql)
@@ -60,6 +60,40 @@ app.post('/users/login', async (req, res) => {
     } else {
       res.send('Not Allowed')
     }
+  } catch {
+    res.status(500).send()
+  }
+})
+
+
+app.get('/getcomplaint', async (req, res) => {
+  try {
+    let id     = req.body.id
+
+    let sql = 'SELECT * FROM complaint ORDER BY complaintid DESC'
+
+    db.query(sql, function (err, results, fields){
+      console.log(results);
+      res.json(results).status(201)
+    })
+    
+  } catch {
+    res.status(500).send()
+  }
+})
+
+app.post('/createcomplaint', async (req, res) => {
+  try {
+    let title     = req.body.title
+    let against   = req.body.against
+    let category  = req.body.category
+    let body      = req.body.body
+    let reviewer  = req.body.reviewer
+
+    let sql = 'INSERT INTO complaint(title, against, category, body, reviewer) VALUES ('
+    sql = sql + mysql.escape(title) +', '+ mysql.escape(against) +', '+ mysql.escape(category) +', '+ mysql.escape(body) +', '+ mysql.escape(reviewer) +');'
+    db.query(sql)
+    res.status(201).send()
   } catch {
     res.status(500).send()
   }

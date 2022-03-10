@@ -75,25 +75,26 @@ export default function TopDashCard() {
     // eslint-disable-next-line no-console
 
     console.log({
-      name: data.get('title'),
+      title: data.get('title'),
       against: data.get('against'),
       category: age,
       body: data.get('body'),
       reviewer: data.get('reviewer'),
     });
     
-    // axios.post('/signup', {
-    //   name: data.get('name'),
-    //   nsuid: data.get('nsuid'),
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // })
-    // .then(function (response) {
-    //   console.log(response);
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
+    axios.post('/createcomplaint', {
+      title: data.get('title'),
+      against: data.get('against'),
+      category: age,
+      body: data.get('body'),
+      reviewer: data.get('reviewer'),
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   };
 
