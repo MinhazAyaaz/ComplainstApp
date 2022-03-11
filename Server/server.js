@@ -20,11 +20,7 @@ app.get("/api", (req,res)=>{
 
 app.listen(5000, ()=>{console.log("Server started on port 5000")})
 
-const users = []
 
-app.get('/users', (req, res) => {
-  res.json(users)
-})
 
 app.post('/signup', async (req, res) => {
   try {
@@ -69,7 +65,7 @@ app.post('/users/login', async (req, res) => {
 app.get('/getcomplaint', async (req, res) => {
   try {
     let id     = req.body.id
-
+    
     let sql = 'SELECT * FROM complaint ORDER BY complaintid DESC'
 
     db.query(sql, function (err, results, fields){

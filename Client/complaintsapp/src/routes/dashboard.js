@@ -95,7 +95,8 @@ export default function Dashboard() {
       console.log(error);
       alert(error);
     });
-    fetchComplaint();
+    
+    setTimeout(fetchComplaint(), 5000);
   };
 
   const handleChange = (event) => {
