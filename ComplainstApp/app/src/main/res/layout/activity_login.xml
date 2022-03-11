@@ -32,23 +32,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.994">
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/outlinedPassField"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="303dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:hint="Password"
             android:translationY="-180dp"
             app:boxStrokeColor="#2196F3"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
+            app:errorEnabled="true"
             app:hintTextColor="#2196F3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/outlinedTextField">
+            app:layout_constraintTop_toBottomOf="@+id/outlinedTextField"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passField"
+                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
@@ -60,10 +64,13 @@
             android:id="@+id/outlinedTextField"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="303dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:hint="Username"
             android:translationY="-120dp"
             app:boxStrokeColor="#2196F3"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
+            app:errorEnabled="true"
             app:hintTextColor="#2196F3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +146,7 @@
             app:layout_constraintVertical_bias="0.7" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/signInButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
