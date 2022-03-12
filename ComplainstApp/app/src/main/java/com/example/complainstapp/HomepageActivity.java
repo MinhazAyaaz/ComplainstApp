@@ -13,6 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.complainstapp.databinding.ActivityMainBinding;
 
@@ -26,7 +27,7 @@ public class HomepageActivity extends AppCompatActivity {
 
     private Button createButton;
     private RadioGroup filterGroup;
-
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +36,19 @@ public class HomepageActivity extends AppCompatActivity {
 
         createButton = findViewById(R.id.createButton5);
         filterGroup = findViewById(R.id.filterGrouping);
-
+        recyclerView = findViewById(R.id.dataView);
         int selectedId = filterGroup.getCheckedRadioButtonId();
+
+        Complaint[] complaints = {
+                new Complaint("Harassment1","FirstName1 LastName1","Description1"),
+                new Complaint("Harassment2","FirstName2 LastName2","Description2"),
+                new Complaint("Harassment3","FirstName3 LastName3","Description3"),
+                new Complaint("Harassment4","FirstName4 LastName4","Description4"),
+                new Complaint("Harassment5","FirstName5 LastName5","Description5"),
+        };
+
+        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(complaints);
+        recyclerView.setAdapter(recyclerAdapter);
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override

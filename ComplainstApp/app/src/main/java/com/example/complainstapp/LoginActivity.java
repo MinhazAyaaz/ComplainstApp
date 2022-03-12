@@ -125,7 +125,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
+            if (acct != null) {
+                String personName = acct.getDisplayName();
+                String personGivenName = acct.getGivenName();
+                String personFamilyName = acct.getFamilyName();
+                String personEmail = acct.getEmail();
+                String personId = acct.getId();
+                Uri personPhoto = acct.getPhotoUrl();
+            }
 
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -139,6 +148,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if(emailInput.isEmpty()){
             usernameLayout.setError("Field can't be empty!");
+            return false;
+        }
+        else if(!emailInput.contains("@northsouth.edu")){
+            usernameLayout.setError("Please use a valid NSU email!");
             return false;
         }
         else{

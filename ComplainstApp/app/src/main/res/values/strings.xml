@@ -5,4 +5,5 @@
         <item>Helper Staff</item>
         <item>Admin</item>
     </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
