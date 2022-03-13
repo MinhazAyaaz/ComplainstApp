@@ -18,13 +18,14 @@ import { TextField } from '@mui/material';
 import { FormControl } from '@mui/material';
 import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
+import MenuList from '@mui/material/MenuList';
 import { MenuItem } from '@mui/material';
 import { Dialog } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
-
+import ListItemText from '@mui/material/ListItemText';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
@@ -162,71 +163,28 @@ export default function CreateComplaintCard( fetchedData ) {
           <DialogContentText>
            The Complaint details are as follows:
           </DialogContentText>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="against"
-              label="Who is it against?"
-              type="string"
-              id="against"
-              autoComplete="against"
-            />
-            <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Category*</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={age}
-                label="Age"
-                onChange={handleChange}
-              >
-                <MenuItem value={10}>Bullying</MenuItem>
-                <MenuItem value={20}>xyz</MenuItem>
-                <MenuItem value={30}>xyz</MenuItem>
-                <MenuItem value={40}>xyz</MenuItem>
-                <MenuItem value={50}>xyz</MenuItem>
-              </Select>
-          </FormControl>
-          <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="title"
-                label="title"
-                name="email"
-                autoComplete="title"
-                autoFocus
-              />
-          <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="Body"
-                label="Body"
-                type="Body"
-                id="Body"
-                autoComplete="Body"
-              />
-               <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="against"
-              label="Who will review it?"
-              type="review"
-              id="review"
-              autoComplete="review"
-            />
-            <Input accept="image/*" label="Evidence" id="icon-button-file" type="file"
-            />
-            <AttachFileIcon/>
+          <MenuList dense>
+                <MenuItem>
+                <ListItemText >
+          Title: Parinda Rahman</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText >Category: 1931804042</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText >Description: xyz@gmail.com</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText >Date of Creation: 1931804042</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText >Reviewer: xyz@gmail.com</ListItemText>
+                </MenuItem>
+            
+                
+            </MenuList>
+        
 
-
-
-
-          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
