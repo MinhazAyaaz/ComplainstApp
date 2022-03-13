@@ -20,7 +20,10 @@ app.get("/api", (req,res)=>{
 
 app.listen(5000, ()=>{console.log("Server started on port 5000")})
 
+//Use this for every endpoint to validate api calls
+function checkAuthority(){
 
+}
 
 app.post('/signup', async (req, res) => {
   try {
@@ -31,7 +34,7 @@ app.post('/signup', async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
      };
-    users.push(user);
+    users.push(user); //just for testing
     let name= req.body.name;
     let nsuid= req.body.nsuid;
     let email= req.body.email;
@@ -90,6 +93,43 @@ app.post('/createcomplaint', async (req, res) => {
     sql = sql + mysql.escape(title) +', '+ mysql.escape(against) +', '+ mysql.escape(category) +', '+ mysql.escape(body) +', '+ mysql.escape(reviewer) +');'
     db.query(sql)
     res.status(201).send()
+  } catch {
+    res.status(500).send()
+  }
+})
+
+// Added on 12/03/2022
+//Comment out if it doesn't work
+
+app.delete('/deletecomplaint', async (req, res) => {
+  try {
+    let id     = req.body.id
+    
+    let sql = 'DELETE * FROM complaint WHERE'
+    sql = sql + mysql.escape(id)
+
+    db.query(sql, function (err, results, fields){
+      console.log(results);
+      res.status(201).send("Deleted successfully")
+    })
+    
+  } catch {
+    res.status(500).send()
+  }
+})
+
+app.put('/updatecomplaint', async (req, res) => {
+  try {
+    let id     = req.body.id
+    
+    // let sql = 'UPDATE * FROM complaint WHERE'
+    // sql = sql + mysql.escape(id)
+
+    db.query(sql, function (err, results, fields){
+      console.log(results);
+      res.status(201).send("Deleted successfully")
+    })
+    
   } catch {
     res.status(500).send()
   }
