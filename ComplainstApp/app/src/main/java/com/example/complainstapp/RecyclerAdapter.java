@@ -25,9 +25,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapter.complaintViewHolder holder, int position) {
-
-        holder.bind(complaints[position]);
+    public void onBindViewHolder(@NonNull RecyclerAdapter.complaintViewHolder viewHolder, int position) {
+        viewHolder.bind(complaints[position]);
 
     }
 
