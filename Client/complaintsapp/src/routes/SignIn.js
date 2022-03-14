@@ -20,7 +20,8 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { Input } from '@mui/material';
 import GoogleLoginComponent from '../components/GoogleLoginComponent';
 
-
+import axios from 'axios';
+ 
 
 function Copyright(props) {
   return (
@@ -56,9 +57,33 @@ export default function SignIn() {
       nsuid: data.get('nsuid'),
       password: data.get('password'),
     });
-    if(data.get('email')=="emon331@gmail.com" && data.get('password')=="12345678"){
+    
+    axios.post('/login', {
+      nsuid: data.get('nsuid'),
+      password: data.get('password'),
+    })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
-    }
+    // axios.post('/login', {
+    //   params: {
+    //     nsuid: data.get('nsuid'),
+    //     password: data.get('password'),
+    //   }
+    // })
+    // .then(function (response) {
+    //   console.log(response.data);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // })
+    // .then(function () {
+    //   // always executed
+    // });
 
   };
 
@@ -82,37 +107,13 @@ export default function SignIn() {
           </Avatar>
 
           <Typography component="h1" variant="h5">
-            Sign Up
+            Log In
           </Typography>
 
-          <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Role*</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={role}
-                label="role"
-                onChange={handleChange}
-              >
-                <MenuItem value={'student'}>Student</MenuItem>
-                <MenuItem value={'faculty'}>Faculty</MenuItem>
-                <MenuItem value={'adminEmployee'}>Admin Employee</MenuItem>
-                <MenuItem value={'staff'}>Helping Staff</MenuItem>
-                <MenuItem value={'admin'}>System Admin</MenuItem>
-              </Select>
-          </FormControl>
+          
 
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="name"
-              label="Name"
-              name="name"
-              autoComplete="name"
-              autoFocus
-            />
+            
             <TextField
               margin="normal"
               required
@@ -125,16 +126,6 @@ export default function SignIn() {
               inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             />
 
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="email"
-              label="Email Address"
-              type="email"
-              id="email"
-              autoComplete="email"
-            />
              <TextField
                 margin="normal"
                 required
@@ -149,19 +140,7 @@ export default function SignIn() {
             />
 
 
-            <label htmlFor="icon-button-file">
-            <InputLabel id="demo-simple-select-label">Scan of NSU ID</InputLabel>
-
-            <Input accept="image/*"  id="icon-button-file" type="file"
-            />
-            <AttachFileIcon/>
-
-
-            </label>
-
-
-
-
+        
 
             <GoogleLoginComponent />
             <Button
@@ -170,7 +149,7 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Continue
+              Log In 
             </Button>
 
             <Grid container>
