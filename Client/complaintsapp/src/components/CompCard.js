@@ -28,6 +28,7 @@ import DialogActions from '@mui/material/DialogActions';
 import ListItemText from '@mui/material/ListItemText';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import Dialog1 from './Dialog1';
 
 import { Alert } from '@mui/material';
 
@@ -50,6 +51,8 @@ export default function CreateComplaintCard( fetchedData ) {
   const [expanded, setExpanded] = React.useState(false);
   const [age, setAge] = React.useState('');
   const [backendData, setBackEndData] = React.useState([]);
+  const [openDlg1Dialog, setDialog1Open] = React.useState(false);
+
 
 
   React.useEffect(()=>{
@@ -75,27 +78,10 @@ export default function CreateComplaintCard( fetchedData ) {
     setExpanded(!expanded);
   };
 
-  const edit = () => {
-    
-  };
+ 
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-
-  };
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+ 
+ 
   console.log(fetchedData)
   return (
     <Card sx={{ maxWidth: 900,  p: 3,
@@ -154,45 +140,21 @@ export default function CreateComplaintCard( fetchedData ) {
           aria-expanded={expanded}
           aria-label="show more"
         >
-           <Button  variant="outlined" onClick={handleClickOpen}>
+      
+        </ExpandMore>
+        <div>
+        <Dialog1 open={openDlg1Dialog} close={() => setDialog1Open(false)} />
+      </div>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => {
+          setDialog1Open(true);
+        }}
+      >
         Show More
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Complaint Details</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-           The Complaint details are as follows:
-          </DialogContentText>
-          <MenuList dense>
-                <MenuItem>
-                <ListItemText >
-          Title: Parinda Rahman</ListItemText>
-                </MenuItem>
-                <MenuItem>
-                <ListItemText >Category: 1931804042</ListItemText>
-                </MenuItem>
-                <MenuItem>
-                <ListItemText >Description: xyz@gmail.com</ListItemText>
-                </MenuItem>
-                <MenuItem>
-                <ListItemText >Date of Creation: 1931804042</ListItemText>
-                </MenuItem>
-                <MenuItem>
-                <ListItemText >Reviewer: xyz@gmail.com</ListItemText>
-                </MenuItem>
-            
-                
-            </MenuList>
-        
 
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-          <Button onClick={edit}>Edit Complaint</Button>
-        </DialogActions>
-      </Dialog>
-
-        </ExpandMore>
 
 
            </CardActions>
@@ -200,3 +162,4 @@ export default function CreateComplaintCard( fetchedData ) {
     </Card>
   );
 }
+
