@@ -18,15 +18,17 @@ import { TextField } from '@mui/material';
 import { FormControl } from '@mui/material';
 import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
+import MenuList from '@mui/material/MenuList';
 import { MenuItem } from '@mui/material';
 import { Dialog } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
-
+import ListItemText from '@mui/material/ListItemText';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import Dialog1 from './Dialog1';
 
 import { Alert } from '@mui/material';
 
@@ -49,6 +51,8 @@ export default function CreateComplaintCard( fetchedData ) {
   const [expanded, setExpanded] = React.useState(false);
   const [age, setAge] = React.useState('');
   const [backendData, setBackEndData] = React.useState([]);
+  const [openDlg1Dialog, setDialog1Open] = React.useState(false);
+
 
 
   React.useEffect(()=>{
@@ -74,27 +78,10 @@ export default function CreateComplaintCard( fetchedData ) {
     setExpanded(!expanded);
   };
 
-  const edit = () => {
-    
-  };
+ 
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-
-  };
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+ 
+ 
   console.log(fetchedData)
   return (
     <Card sx={{ maxWidth: 900,  p: 3,
@@ -153,88 +140,21 @@ export default function CreateComplaintCard( fetchedData ) {
           aria-expanded={expanded}
           aria-label="show more"
         >
-           <Button  variant="outlined" onClick={handleClickOpen}>
+      
+        </ExpandMore>
+        <div>
+        <Dialog1 open={openDlg1Dialog} close={() => setDialog1Open(false)} />
+      </div>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => {
+          setDialog1Open(true);
+        }}
+      >
         Show More
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Complaint Details</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-           The Complaint details are as follows:
-          </DialogContentText>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="against"
-              label="Who is it against?"
-              type="string"
-              id="against"
-              autoComplete="against"
-            />
-            <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Category*</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={age}
-                label="Age"
-                onChange={handleChange}
-              >
-                <MenuItem value={10}>Bullying</MenuItem>
-                <MenuItem value={20}>xyz</MenuItem>
-                <MenuItem value={30}>xyz</MenuItem>
-                <MenuItem value={40}>xyz</MenuItem>
-                <MenuItem value={50}>xyz</MenuItem>
-              </Select>
-          </FormControl>
-          <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="title"
-                label="title"
-                name="email"
-                autoComplete="title"
-                autoFocus
-              />
-          <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="Body"
-                label="Body"
-                type="Body"
-                id="Body"
-                autoComplete="Body"
-              />
-               <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="against"
-              label="Who will review it?"
-              type="review"
-              id="review"
-              autoComplete="review"
-            />
-            <Input accept="image/*" label="Evidence" id="icon-button-file" type="file"
-            />
-            <AttachFileIcon/>
 
-
-
-
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-          <Button onClick={edit}>Edit Complaint</Button>
-        </DialogActions>
-      </Dialog>
-
-        </ExpandMore>
 
 
            </CardActions>
@@ -242,3 +162,4 @@ export default function CreateComplaintCard( fetchedData ) {
     </Card>
   );
 }
+
