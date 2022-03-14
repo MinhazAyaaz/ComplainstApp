@@ -5,6 +5,7 @@ public class Complaint {
     String title;
     String against;
     String description;
+    String status;
 
     public Complaint(String title, String against, String description) {
         this.title = title;
