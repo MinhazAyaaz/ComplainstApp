@@ -154,12 +154,7 @@ export default function EditForm() {
       justifyContent: "flex-end",
                 alignItems: "flex-end"}}
                 >
-    <Button  variant="filled" >
-        Cancel
-      </Button>
-      <Button  variant="outlined" type="submit" >
-        Submit
-      </Button>
+   
       </Box>
             
       </Box>
