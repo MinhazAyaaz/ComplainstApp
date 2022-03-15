@@ -58,15 +58,32 @@ app.post('/login', async (req, res) => {
   try{
     
     let id  = await req.body.nsuid
+    let password = await req.body.password
+    var fetchedData = null
 
     // let sql = 'SELECT * FROM user WHERE nsuid=\'54321\';'
     let sql = 'SELECT * FROM user WHERE nsuid=\'' + id + '\';'
     db.query(sql, async function (err, results, fields){
       console.log(results);
-      res.json(results[0]).status(201)
+      fetchedData = results[0];
+      // res.json(fetchedData).status(201)
+
+      try {
+        if(await bcrypt.compare(password, fetchedData.password)) {
+          res.send('Success')
+        } else {
+          res.send('Failed')
+        }
+      } catch {
+        res.status(502).send()
+      }
+
     })
+    
+    
+    
   }catch {
-    res.status(500).send()
+    res.status(501).send()
   }
   
   // if (user == null) {
