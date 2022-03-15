@@ -11,7 +11,8 @@ import {
 } from "react-router-dom";
 
 import App from './App';
-import SignUp from './routes/signup';
+import SignUp from './routes/SignUp';
+import SignIn from './routes/SignIn';
 import Profile from './routes/profile';
 import EditPage from './routes/EditPage';
 import Dashboard from './routes/dashboard';
@@ -23,6 +24,7 @@ ReactDOM.render(
     <Routes>
       <Route path="/" element={<App />}/>
       <Route path="signup" element={<SignUp />}/>
+      <Route path="signin" element={<SignIn />}/>
       <Route path="dashboard" element={<Dashboard />}/>
       <Route path="profile" element={<Profile />}/>
       <Route path="createcomplaint" element={<CreateComplaint />}/>

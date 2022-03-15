@@ -20,10 +20,10 @@ app.get("/api", (req,res)=>{
 
 app.listen(5000, ()=>{console.log("Server started on port 5000")})
 
-//Use this for every endpoint to validate api calls
-function checkAuthority(){
+// //Use this for every endpoint to validate api calls
+// function checkAuthority(){
 
-}
+// }
 
 app.post('/signup', async (req, res) => {
   try {
@@ -34,13 +34,17 @@ app.post('/signup', async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
      };
-    users.push(user); //just for testing
+    
+    
     let name= req.body.name;
     let nsuid= req.body.nsuid;
     let email= req.body.email;
     let password= hashedPassword;
-    let sql = 'INSERT INTO user(nsuid, name, email, password) VALUES ('
-    sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +');'
+    let idscan = "n/a"
+    let photo = "n/a"
+    let status = "n/a"
+    let sql = 'INSERT INTO user(nsuid, name, email, password, idscan, photo, status) VALUES ('
+    sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +');'
     db.query(sql)
     res.status(201).send()
   } catch {
@@ -48,20 +52,35 @@ app.post('/signup', async (req, res) => {
   }
 })
 
-app.post('/users/login', async (req, res) => {
-  const user = users.find(user => user.name === req.body.name)
-  if (user == null) {
-    return res.status(400).send('Cannot find user')
-  }
-  try {
-    if(await bcrypt.compare(req.body.password, user.password)) {
-      res.send('Success')
-    } else {
-      res.send('Not Allowed')
-    }
-  } catch {
+app.post('/login', async (req, res) => {
+
+  
+  try{
+    
+    let id  = await req.body.nsuid
+
+    // let sql = 'SELECT * FROM user WHERE nsuid=\'54321\';'
+    let sql = 'SELECT * FROM user WHERE nsuid=\'' + id + '\';'
+    db.query(sql, async function (err, results, fields){
+      console.log(results);
+      res.json(results[0]).status(201)
+    })
+  }catch {
     res.status(500).send()
   }
+  
+  // if (user == null) {
+  //   return res.status(400).send('Cannot find user')
+  // }
+  // try {
+  //   if(await bcrypt.compare(req.body.password, user.password)) {
+  //     res.send('Success')
+  //   } else {
+  //     res.send('Not Allowed')
+  //   }
+  // } catch {
+  //   res.status(500).send()
+  // }
 })
 
 
@@ -88,6 +107,7 @@ app.post('/createcomplaint', async (req, res) => {
     let category  = req.body.category
     let body      = req.body.body
     let reviewer  = req.body.reviewer
+    
 
     let sql = 'INSERT INTO complaint(title, against, category, body, reviewer) VALUES ('
     sql = sql + mysql.escape(title) +', '+ mysql.escape(against) +', '+ mysql.escape(category) +', '+ mysql.escape(body) +', '+ mysql.escape(reviewer) +');'
@@ -101,36 +121,36 @@ app.post('/createcomplaint', async (req, res) => {
 // Added on 12/03/2022
 //Comment out if it doesn't work
 
-app.delete('/deletecomplaint', async (req, res) => {
-  try {
-    let id     = req.body.id
+// app.delete('/deletecomplaint', async (req, res) => {
+//   try {
+//     let id     = req.body.id
     
-    let sql = 'DELETE * FROM complaint WHERE'
-    sql = sql + mysql.escape(id)
+//     let sql = 'DELETE * FROM complaint WHERE'
+//     sql = sql + mysql.escape(id)
 
-    db.query(sql, function (err, results, fields){
-      console.log(results);
-      res.status(201).send("Deleted successfully")
-    })
+//     db.query(sql, function (err, results, fields){
+//       console.log(results);
+//       res.status(201).send("Deleted successfully")
+//     })
     
-  } catch {
-    res.status(500).send()
-  }
-})
+//   } catch {
+//     res.status(500).send()
+//   }
+// })
 
-app.put('/updatecomplaint', async (req, res) => {
-  try {
-    let id     = req.body.id
+// app.put('/updatecomplaint', async (req, res) => {
+//   try {
+//     let id     = req.body.id
     
-    // let sql = 'UPDATE * FROM complaint WHERE'
-    // sql = sql + mysql.escape(id)
+//     // let sql = 'UPDATE * FROM complaint WHERE'
+//     // sql = sql + mysql.escape(id)
 
-    db.query(sql, function (err, results, fields){
-      console.log(results);
-      res.status(201).send("Deleted successfully")
-    })
+//     db.query(sql, function (err, results, fields){
+//       console.log(results);
+//       res.status(201).send("Deleted successfully")
+//     })
     
-  } catch {
-    res.status(500).send()
-  }
-})
+//   } catch {
+//     res.status(500).send()
+//   }
+// })
