@@ -2,15 +2,46 @@ package com.example.complainstapp;
 
 public class Complaint {
 
+    String id;
+    String date;
+    String status;
     String title;
     String against;
     String description;
-    String status;
+    String reviewer;
 
-    public Complaint(String title, String against, String description) {
+    public Complaint(String id, String date, String status, String title, String against, String description, String reviewer) {
+        this.id = id;
+        this.date = date;
+        this.status = status;
         this.title = title;
         this.against = against;
         this.description = description;
+        this.reviewer = reviewer;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getTitle() {
@@ -35,5 +66,13 @@ public class Complaint {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(String reviewer) {
+        this.reviewer = reviewer;
     }
 }

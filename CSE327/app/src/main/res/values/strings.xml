@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">CSE327</string>
-    <string-array name="roles">
-        <item>Student</item>
-        <item>Helper Staff</item>
-        <item>Admin</item>
-    </string-array>
-</resources>

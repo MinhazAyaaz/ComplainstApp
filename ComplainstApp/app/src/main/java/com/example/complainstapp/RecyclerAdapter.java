@@ -1,4 +1,5 @@
 package com.example.complainstapp;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,11 +8,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.complaintViewHolder> {
 
-    private Complaint[] complaints;
+    private ArrayList<Complaint> complaints;
 
-    public RecyclerAdapter(Complaint[] complaints) {
+    public RecyclerAdapter(ArrayList<Complaint> complaints) {
         this.complaints = complaints;
     }
 
@@ -26,13 +30,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.complaintViewHolder viewHolder, int position) {
-        viewHolder.bind(complaints[position]);
+        viewHolder.bind(complaints.get(position));
 
     }
 
     @Override
     public int getItemCount() {
-        return complaints.length;
+        return complaints.size();
     }
 
     public class complaintViewHolder extends RecyclerView.ViewHolder{
