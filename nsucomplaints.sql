@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2022 at 12:48 PM
+-- Generation Time: Mar 15, 2022 at 06:29 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -121,7 +121,14 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`nsuid`, `name`, `email`, `idscan`, `photo`, `password`, `status`) VALUES
 (1931461642, 'emon', 'emon331@gmail.com', '', '', '$2b$10$Bl3/Qbhw58E1QJQ7tEw.veni5bvfD/mjXlpb2YyiUEdZ/E3JrYdTW', ''),
 (12345678, 'Parinda Rahman', 'pari@gmail.com', '', '', '$2b$10$AVk0quzFagzQACzJ4gKf5uUIAWEpGBclL1gY/HwZJXhYKB1W1MjF2', ''),
-(12345678, 'Parinda Rahman', 'pari@gmail.com', '', '', '$2b$10$vGDLwbvg.c5B7Zbvzj5yxeddQ75L3uqTioojCHmytFU8T8zNJswG.', '');
+(12345678, 'Parinda Rahman', 'pari@gmail.com', '', '', '$2b$10$vGDLwbvg.c5B7Zbvzj5yxeddQ75L3uqTioojCHmytFU8T8zNJswG.', ''),
+(65478, 'Labib Rahman', 'labaid@gmail.com', '', '', '$2b$10$CHx.Yvtc3dZ5WcBQLvjYtOO6FGrMEnXHEHVGa3b4Rnk7yuwvtx19u', ''),
+(65478, 'Labib Rahman', 'labaid@gmail.com', '', '', '$2b$10$hIBW9Q6QyFYAUNQwXWBdaeOwOuLQ/2JIvQFS3Hrhx3t.cQSfT460y', ''),
+(65478, 'Labib Rahman 2', 'labaid@gmail.com', '', '', '$2b$10$9MyKuztr6POq7CzrwD/LxuJfGqxoZUg5b1./wBYAuOp1Fi76IglR6', ''),
+(65478, 'Labib Rahman 2', 'labaid@gmail.com', '', '', '$2b$10$BYPfZJsaiWkBqUGyHviGVOCHSIoBd8X3k1A06ObVLwqt3FpsN4stS', ''),
+(65478, 'Labib Rahman 2', 'labaid@gmail.com', '', '', '$2b$10$auNPs6Oy17aJRHPGBWftpONU0XnvayakEzv7ZTd/YtSFSwAJxNjUi', ''),
+(65478, 'Labib Rahman 2', 'labaid@gmail.com', 'n/a', 'n/a', '$2b$10$iZlBjxJ0dqsqnI9BxnWD.OW05D6snOB90pXoQ.yZf3QZ6Y1v9uMJK', 'n/a'),
+(54321, 'test', 'united123@gmail.com', 'n/a', 'n/a', '$2b$10$pzNl4j9o.wNCovO4Jh9B7eR6byTvDaP8iOsW4wWl3s3ejDDf1/wMi', 'n/a');
 
 --
 -- Indexes for dumped tables
