@@ -28,7 +28,8 @@ import DialogActions from '@mui/material/DialogActions';
 import ListItemText from '@mui/material/ListItemText';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import Dialog1 from './Dialog1';
+
+import Dialogs from './Dialogs';
 
 import { Alert } from '@mui/material';
 
@@ -142,18 +143,7 @@ export default function CreateComplaintCard( fetchedData ) {
         >
       
         </ExpandMore>
-        <div>
-        <Dialog1 open={openDlg1Dialog} close={() => setDialog1Open(false)} />
-      </div>
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={() => {
-          setDialog1Open(true);
-        }}
-      >
-        Show More
-      </Button>
+        <Dialogs/>
 
 
 
