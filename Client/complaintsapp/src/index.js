@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 
 import App from './App';
-import SignUp from './routes/SignUp';
+import SignUp from './routes/signup';
 import SignIn from './routes/SignIn';
 import Profile from './routes/profile';
 import EditPage from './routes/EditPage';

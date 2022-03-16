@@ -25,6 +25,8 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import { validator } from "./Validator";
+import useForm from "./useForm";
 
 import PrimarySearchAppBar from '../components/navbar';
 import NavBar from '../components/complaintEditor'
@@ -52,12 +54,26 @@ export default function TopDashCard() {
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
   const [age, setAge] = React.useState('');
-
+ 
   
-
-  const createcomplaint = () => {
-
+  const initState = {
+    email: "",
+    password: ""
   };
+
+  const submit = () => {
+    console.log(" Submited");
+  };
+
+  const { handleChange, handleBlur,state, errors } = useForm({
+    initState,
+    callback: submit,
+    validator
+  });
+
+  let isValidForm =
+    Object.values(errors).filter((error) => typeof error !== "undefined")
+      .length === 0;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -73,6 +89,7 @@ export default function TopDashCard() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
+    
 
     console.log({
       title: data.get('title'),
@@ -98,8 +115,9 @@ export default function TopDashCard() {
 
   };
 
-  const handleChange = (event) => {
+  const handleChange1 = (event) => {
     setAge(event.target.value);
+   
   };
 
   const handleClickOpen = () => {
@@ -130,8 +148,7 @@ export default function TopDashCard() {
           id="title"
           label="Write a complaint"
           name="title"
-          autoComplete="title"
-          autoFocus
+          autoComplete="off"
           variant="standard"
           size="medium"
           onClick={expandForm}
@@ -147,6 +164,12 @@ export default function TopDashCard() {
           type="string"
           id="against"
           autoComplete="against"
+
+          defaultValue={state.email}
+          onChange={handleChange}
+          error={errors.email ? true : false}
+          helperText={errors.email}
+          onBlur={handleBlur}
         />
         :null}
 
@@ -158,7 +181,7 @@ export default function TopDashCard() {
               id="category"
               value={age}
               label="category"
-              onChange={handleChange}
+              onChange={handleChange1}
             >
               <MenuItem value={"bullying"}>Bullying</MenuItem>
               <MenuItem value={"sanitation"}>Sanitation</MenuItem>
@@ -192,6 +215,11 @@ export default function TopDashCard() {
           type="reviewer"
           id="reviewer"
           autoComplete="reviewer"
+          defaultValue={state.email}
+          onChange={handleChange}
+          error={errors.email ? true : false}
+          helperText={errors.email}
+          onBlur={handleBlur}
         />
         :null}
 
