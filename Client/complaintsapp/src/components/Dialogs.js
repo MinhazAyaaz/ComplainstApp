@@ -16,8 +16,28 @@ import DialogContentText from '@mui/material/DialogContentText';
 import ListItemText from '@mui/material/ListItemText';
 import EditForm from "./EditForm";
 
-export default function Dialogs() {
+export default function Dialogs( fetchedData ) {
+  
   const [open, setOpen] = useState();
+  const [backendData, setBackEndData] = React.useState([]);
+
+  React.useEffect(()=>{
+    console.log(fetchedData)
+    
+    setBackEndData({
+
+      complaintid: fetchedData.data.complaintid,
+      creationdate: fetchedData.data.creationdate,
+      status: fetchedData.data.status,
+      title: fetchedData.data.title,
+      against: fetchedData.data.against,
+      category: fetchedData.data.category,
+      body: fetchedData.data.body,
+      reviewer: fetchedData.data.reviewer,
+
+    })
+   
+ }, [])
 
   return (
     <>
@@ -35,22 +55,22 @@ export default function Dialogs() {
           <MenuList dense>
                 <MenuItem>
                 <ListItemText >
-          Title: Parinda Rahman</ListItemText>
+          Title: {backendData.title}</ListItemText>
                 </MenuItem>
                 <MenuItem>
-                <ListItemText >Category: 1931804042</ListItemText>
+                <ListItemText >Category: {backendData.category}</ListItemText>
                 </MenuItem>
                 <MenuItem>
-                <ListItemText >Description: xyz@gmail.com</ListItemText>
+                <ListItemText >Description: {backendData.body}</ListItemText>
                 </MenuItem>
                 <MenuItem>
-                <ListItemText >Date of Creation: 1931804042</ListItemText>
+                <ListItemText >Date of Creation: {backendData.creationdate}</ListItemText>
                 </MenuItem>
                 <MenuItem>
-                <ListItemText >Against: Emon</ListItemText>
+                <ListItemText >Against: {backendData.against}</ListItemText>
                 </MenuItem>
                 <MenuItem>
-                <ListItemText >Reviewer: xyz@gmail.com</ListItemText>
+                <ListItemText >Reviewer: {backendData.reviewer}</ListItemText>
                 </MenuItem>
            
                
@@ -73,7 +93,7 @@ export default function Dialogs() {
         
         <DialogContent>
         <Typography  variant="body1">Edit Previous Complaint</Typography>
-          <EditForm/>
+          <EditForm data={backendData}/>
         </DialogContent>
         <DialogActions>
         <Button  variant="outlined" type="submit" >

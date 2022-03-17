@@ -70,6 +70,7 @@ export default function CreateComplaintCard( fetchedData ) {
        reviewer: fetchedData.fetchedData.reviewer,
 
      })
+     
     
   }, [])
 
@@ -79,11 +80,7 @@ export default function CreateComplaintCard( fetchedData ) {
     setExpanded(!expanded);
   };
 
- 
 
- 
- 
-  console.log(fetchedData)
   return (
     <Card sx={{ maxWidth: 900,  p: 3,
       margin: 'auto',
@@ -143,7 +140,7 @@ export default function CreateComplaintCard( fetchedData ) {
         >
       
         </ExpandMore>
-        <Dialogs/>
+        <Dialogs data={backendData} />
 
 
 

@@ -103,8 +103,8 @@ export default function Dashboard() {
     setFormdata(event.target.value);
   };
 
-  function fetchComplaint (){
-    axios.get('/getcomplaint', {
+  async function fetchComplaint (){
+    await axios.get('/getcomplaint', {
       params: {
         ID: 12345
       }

@@ -41,12 +41,29 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-export default function EditForm() {
+export default function EditForm( fetchedData ) {
 
  
   const [formdata, setFormdata] = React.useState('');
 
+  const [backendData, setBackEndData] = React.useState([]);
 
+  React.useEffect(()=>{
+    console.log(fetchedData)
+    setBackEndData({
+
+      complaintid: fetchedData.data.complaintid,
+      creationdate: fetchedData.data.creationdate,
+      status: fetchedData.data.status,
+      title: fetchedData.data.title,
+      against: fetchedData.data.against,
+      category: fetchedData.data.category,
+      body: fetchedData.data.body,
+      reviewer: fetchedData.data.reviewer,
+
+    })
+   
+ }, [])
 
 
  
@@ -82,7 +99,7 @@ export default function EditForm() {
           autoFocus
           variant="standard"
           size="medium"
-        
+          defaultValue={backendData.title}
         />
 
         
@@ -95,6 +112,7 @@ export default function EditForm() {
           type="string"
           id="against"
           autoComplete="against"
+          defaultValue={backendData.against}
         />
       
 
