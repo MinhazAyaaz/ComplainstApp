@@ -71,6 +71,7 @@ app.post('/login', async (req, res) => {
       try {
         if(await bcrypt.compare(password, fetchedData.password)) {
           res.send('Success')
+          
         } else {
           res.send('Failed')
         }
@@ -138,36 +139,78 @@ app.post('/createcomplaint', async (req, res) => {
 // Added on 12/03/2022
 //Comment out if it doesn't work
 
-// app.delete('/deletecomplaint', async (req, res) => {
-//   try {
-//     let id     = req.body.id
+app.delete('/deletecomplaint', async (req, res) => {
+  try {
+    let id     = req.body.id
     
-//     let sql = 'DELETE * FROM complaint WHERE'
-//     sql = sql + mysql.escape(id)
+    let sql = 'DELETE * FROM complaint WHERE'
+    sql = sql + mysql.escape(id)
 
-//     db.query(sql, function (err, results, fields){
-//       console.log(results);
-//       res.status(201).send("Deleted successfully")
-//     })
+    db.query(sql, function (err, results, fields){
+      console.log(results);
+      res.status(201).send("Deleted successfully")
+    })
     
-//   } catch {
-//     res.status(500).send()
-//   }
-// })
+  } catch {
+    res.status(500).send()
+  }
+})
 
-// app.put('/updatecomplaint', async (req, res) => {
-//   try {
-//     let id     = req.body.id
+app.put('/updatecomplaint', async (req, res) => {
+  try {
+    let id     = req.body.id
     
-//     // let sql = 'UPDATE * FROM complaint WHERE'
-//     // sql = sql + mysql.escape(id)
+    // let sql = 'UPDATE * FROM complaint WHERE'
+    // sql = sql + mysql.escape(id)
 
-//     db.query(sql, function (err, results, fields){
-//       console.log(results);
-//       res.status(201).send("Deleted successfully")
-//     })
+    db.query(sql, function (err, results, fields){
+      console.log(results);
+      res.status(201).send("Deleted successfully")
+    })
     
-//   } catch {
-//     res.status(500).send()
-//   }
-// })
+  } catch {
+    res.status(500).send()
+  }
+})
+
+//JWT test code
+
+app.post('/token', (req, res) => {
+  const refreshToken = req.body.token
+  if (refreshToken == null) return res.sendStatus(401)
+  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403)
+    const accessToken = generateAccessToken({ name: user.name })
+    res.json({ accessToken: accessToken })
+  })
+})
+
+function generateAccessToken(user) {
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+}
+
+app.post('/testlogin', (req, res) => {
+  // Authenticate User
+
+  const username = req.body.username
+  const user = { name: username }
+
+  const accessToken = generateAccessToken(user)
+  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+  refreshTokens.push(refreshToken)
+  res.json({ accessToken: accessToken, refreshToken: refreshToken })
+})
+
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  if (token == null) return res.sendStatus(401)
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    console.log(err)
+    if (err) return res.sendStatus(403)
+    req.user = user
+    next()
+  })
+}
