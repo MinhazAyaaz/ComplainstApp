@@ -171,7 +171,7 @@ export default function SignUp() {
                 id="outlined-password-input"
                 label="Password"
                 type="password"
-               
+           
                 name="password"
             />
 

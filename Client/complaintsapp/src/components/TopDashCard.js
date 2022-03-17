@@ -25,8 +25,7 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import { validator } from "./Validator";
-import useForm from "./useForm";
+
 
 import PrimarySearchAppBar from '../components/navbar';
 import NavBar from '../components/complaintEditor'
@@ -56,24 +55,15 @@ export default function TopDashCard() {
   const [age, setAge] = React.useState('');
  
   
-  const initState = {
-    email: "",
-    password: ""
-  };
+
 
   const submit = () => {
     console.log(" Submited");
   };
 
-  const { handleChange, handleBlur,state, errors } = useForm({
-    initState,
-    callback: submit,
-    validator
-  });
+ 
 
-  let isValidForm =
-    Object.values(errors).filter((error) => typeof error !== "undefined")
-      .length === 0;
+
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -165,11 +155,6 @@ export default function TopDashCard() {
           id="against"
           autoComplete="against"
 
-          defaultValue={state.email}
-          onChange={handleChange}
-          error={errors.email ? true : false}
-          helperText={errors.email}
-          onBlur={handleBlur}
         />
         :null}
 
@@ -214,12 +199,7 @@ export default function TopDashCard() {
           label="Who will review it?"
           type="reviewer"
           id="reviewer"
-          autoComplete="reviewer"
-          defaultValue={state.email}
-          onChange={handleChange}
-          error={errors.email ? true : false}
-          helperText={errors.email}
-          onBlur={handleBlur}
+       
         />
         :null}
 
