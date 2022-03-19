@@ -62,6 +62,8 @@ export default function EditForm( fetchedData ) {
       reviewer: fetchedData.data.reviewer,
 
     })
+
+    setFormdata(fetchedData.data.category)
    
  }, [])
 
@@ -102,14 +104,14 @@ export default function EditForm( fetchedData ) {
           defaultValue={backendData.title}
         />
 
-        
         <TextField
+          multiline={true}
           margin="normal"
           required
           fullWidth
-          name="against"
+          name="agaisnt"
           label="Who is it against?"
-          type="string"
+          type="against"
           id="against"
           autoComplete="against"
           defaultValue={backendData.against}
@@ -125,6 +127,7 @@ export default function EditForm( fetchedData ) {
               value={formdata}
               label="category"
               onChange={handleChange}
+              defaultValue={formdata}
             >
               <MenuItem value={"bullying"}>Bullying</MenuItem>
               <MenuItem value={"sanitation"}>Sanitation</MenuItem>
@@ -145,11 +148,11 @@ export default function EditForm( fetchedData ) {
           id="body"
           autoComplete="Body"
           rows={5}
+          defaultValue={backendData.body}
         />
   
-
- 
         <TextField
+          multiline={true}
           margin="normal"
           required
           fullWidth
@@ -158,6 +161,7 @@ export default function EditForm( fetchedData ) {
           type="reviewer"
           id="reviewer"
           autoComplete="reviewer"
+          defaultValue={backendData.reviewer}
         />
     
 

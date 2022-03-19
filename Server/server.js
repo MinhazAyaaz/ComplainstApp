@@ -1,7 +1,10 @@
+require('dotenv').config()
+const jwt = require('jsonwebtoken')
 const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt')
 const mysql = require('mysql')
+
 
 //Database connection credentials
 const db = mysql.createConnection({
@@ -26,6 +29,13 @@ app.listen(5000, ()=>{console.log("Server started on port 5000")})
 // }
 
 app.post('/signup', async (req, res) => {
+
+  if(req.body.role == '') res.sendStatus(410)
+  if(req.body.name == '') res.sendStatus(411)
+  if(req.body.nsuid == '') res.sendStatus(412)
+  if(req.body.email == '') res.sendStatus(413)
+  if(req.body.password == '') res.sendStatus(414)
+  
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     const user = { 
@@ -70,13 +80,18 @@ app.post('/login', async (req, res) => {
 
       try {
         if(await bcrypt.compare(password, fetchedData.password)) {
-          res.send('Success')
           
+          const accessToken = await jwt.sign({user: id}, process.env.ACCESS_TOKEN_SECRET)
+          // console.log(accessToken)
+          const at = {accessToken: accessToken}
+          res.json(at.accessToken)
+
+          // res.json(accessToken)
         } else {
           res.send('Failed')
         }
       } catch {
-        res.status(502).send()
+        res.status(502)
       }
 
     })
@@ -87,22 +102,21 @@ app.post('/login', async (req, res) => {
     res.status(501).send()
   }
   
-  // if (user == null) {
-  //   return res.status(400).send('Cannot find user')
-  // }
-  // try {
-  //   if(await bcrypt.compare(req.body.password, user.password)) {
-  //     res.send('Success')
-  //   } else {
-  //     res.send('Not Allowed')
-  //   }
-  // } catch {
-  //   res.status(500).send()
-  // }
 })
 
+function authenticateToken(req, res, next){
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  if(token == null) return res.sendStatus(401)
 
-app.get('/getcomplaint', async (req, res) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user)=>{
+    if(err) return res.sendStatus(403)
+    req.user = user
+    next()
+  })
+}
+
+app.get('/getcomplaint', authenticateToken, async (req, res) => {
   try {
     let id     = req.body.id
     
@@ -175,42 +189,42 @@ app.put('/updatecomplaint', async (req, res) => {
 
 //JWT test code
 
-app.post('/token', (req, res) => {
-  const refreshToken = req.body.token
-  if (refreshToken == null) return res.sendStatus(401)
-  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403)
-    const accessToken = generateAccessToken({ name: user.name })
-    res.json({ accessToken: accessToken })
-  })
-})
+// app.post('/token', (req, res) => {
+//   const refreshToken = req.body.token
+//   if (refreshToken == null) return res.sendStatus(401)
+//   if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
+//   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+//     if (err) return res.sendStatus(403)
+//     const accessToken = generateAccessToken({ name: user.name })
+//     res.json({ accessToken: accessToken })
+//   })
+// })
 
-function generateAccessToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
-}
+// function generateAccessToken(user) {
+//   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+// }
 
-app.post('/testlogin', (req, res) => {
-  // Authenticate User
+// app.post('/testlogin', (req, res) => {
+//   // Authenticate User
 
-  const username = req.body.username
-  const user = { name: username }
+//   const username = req.body.username
+//   const user = { name: username }
 
-  const accessToken = generateAccessToken(user)
-  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
-  refreshTokens.push(refreshToken)
-  res.json({ accessToken: accessToken, refreshToken: refreshToken })
-})
+//   const accessToken = generateAccessToken(user)
+//   const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+//   refreshTokens.push(refreshToken)
+//   res.json({ accessToken: accessToken, refreshToken: refreshToken })
+// })
 
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-  if (token == null) return res.sendStatus(401)
+// function authenticateToken(req, res, next) {
+//   const authHeader = req.headers['authorization']
+//   const token = authHeader && authHeader.split(' ')[1]
+//   if (token == null) return res.sendStatus(401)
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    console.log(err)
-    if (err) return res.sendStatus(403)
-    req.user = user
-    next()
-  })
-}
+//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+//     console.log(err)
+//     if (err) return res.sendStatus(403)
+//     req.user = user
+//     next()
+//   })
+// }

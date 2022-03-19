@@ -64,10 +64,14 @@ export default function SignIn() {
       password: data.get('password'),
     })
     .then(function (response) {
-      console.log(response.data);
+      console.log(response);
+      sessionStorage.setItem("jwtkey", response.data)
+      console.log(sessionStorage.getItem("jwtkey"))
+
     })
     .catch(function (error) {
       console.log(error);
+      
     });
 
     // axios.post('/login', {

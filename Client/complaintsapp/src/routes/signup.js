@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -43,6 +44,11 @@ const theme = createTheme();
 export default function SignUp() {
   
   const [role, setRole] = React.useState('');
+  const [roleError, setRoleError] = React.useState(false);
+  const [nameError, setNameError] = React.useState(false);
+  const [nsuidError, setNsuidError] = React.useState(false);
+  const [emailError, setEmailError] = React.useState(false);
+  const [passwordError, SetPasswordError] = React.useState(false);
 
   const handleChange = (event) => {
     setRole(event.target.value);
@@ -53,6 +59,7 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log({
+      role: role,
       name: data.get('name'),
       nsuid: data.get('nsuid'),
       email: data.get('email'),
@@ -60,6 +67,7 @@ export default function SignUp() {
     });
     
     axios.post('/signup', {
+      role: role,
       name: data.get('name'),
       nsuid: data.get('nsuid'),
       email: data.get('email'),
@@ -67,9 +75,16 @@ export default function SignUp() {
     })
     .then(function (response) {
       console.log(response);
+      setRoleError(false)
     })
     .catch(function (error) {
-      console.log(error);
+      console.log(error.response.status);
+      let errorCode = error.response.status;
+
+      if(errorCode = 410)
+        setRoleError(true)
+      else
+        setRoleError(false)
     });
 
     // axios({
@@ -112,9 +127,11 @@ export default function SignUp() {
             Sign Up
           </Typography>
 
-          <FormControl fullWidth>
+          <FormControl fullWidth error={roleError}>
           <InputLabel id="demo-simple-select-label">Role*</InputLabel>
               <Select
+                error={roleError}
+                helperText="shit"
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={role}
@@ -127,10 +144,15 @@ export default function SignUp() {
                 <MenuItem value={'staff'}>Helping Staff</MenuItem>
                 <MenuItem value={'admin'}>System Admin</MenuItem>
               </Select>
+              
+                {(roleError ? (<FormHelperText>Please select your role.</FormHelperText>):(null))}
+              
           </FormControl>
 
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
+              error={true}
+              helperText=""
               margin="normal"
               required
               fullWidth
@@ -203,7 +225,7 @@ export default function SignUp() {
             <Grid container>
 
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link href="/signin" variant="body2">
                   {"Have an account? Sign In"}
                 </Link>
               </Grid>

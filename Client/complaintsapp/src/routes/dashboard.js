@@ -45,6 +45,7 @@ const Img = styled('img')({
 export default function Dashboard() {
 
   const [backendData, setBackEndData] = useState([])
+  const [empty, dempty] = useState([])
   const [expanded, setExpanded] = React.useState(false);
   const [formdata, setFormdata] = React.useState('');
 
@@ -52,8 +53,29 @@ export default function Dashboard() {
   useEffect(()=>{
 
       fetchComplaint();
-    
+      
   }, [])
+
+  async function fetchComplaint (){
+    await axios.get('/getcomplaint', {
+      headers: {
+        authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setBackEndData(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
 
   const expandForm = () =>{
     setExpanded(true);
@@ -95,31 +117,16 @@ export default function Dashboard() {
       console.log(error);
       alert(error);
     });
-    
-    setTimeout(fetchComplaint(), 5000);
+    document.getElementById("myForm").reset();
+    setBackEndData(empty)
+    fetchComplaint();
   };
 
   const handleChange = (event) => {
     setFormdata(event.target.value);
   };
 
-  async function fetchComplaint (){
-    await axios.get('/getcomplaint', {
-      params: {
-        ID: 12345
-      }
-    })
-    .then(function (response) {
-      console.log(response.data);
-      setBackEndData(response.data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
-    .then(function () {
-      // always executed
-    });
-  }
+  
   return (
     <>
       <PrimarySearchAppBar />
@@ -134,7 +141,7 @@ export default function Dashboard() {
         theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
     
 
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+      <Box id="myForm" component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
         
         <TextField
           multiline={true}

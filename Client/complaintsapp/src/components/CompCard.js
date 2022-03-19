@@ -95,7 +95,7 @@ export default function CreateComplaintCard( fetchedData ) {
         avatar={
 
           <Avatar sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
-            R
+            X
           </Avatar>
         }
 
@@ -140,7 +140,14 @@ export default function CreateComplaintCard( fetchedData ) {
         >
       
         </ExpandMore>
-        <Dialogs data={backendData} />
+
+        {( backendData.length === 0) ? (
+        <p> Wait </p>
+      ) : (
+          <Dialogs data={backendData} />
+      )}
+
+        
 
 
 

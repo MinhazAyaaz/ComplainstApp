@@ -93,7 +93,13 @@ export default function Dialogs( fetchedData ) {
         
         <DialogContent>
         <Typography  variant="body1">Edit Previous Complaint</Typography>
-          <EditForm data={backendData}/>
+          
+          {( backendData.length === 0) ? (
+            <p> Wait </p>
+          ) : (
+            <EditForm data={backendData}/>
+          )}
+          
         </DialogContent>
         <DialogActions>
         <Button  variant="outlined" type="submit" >
