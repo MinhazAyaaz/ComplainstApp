@@ -48,7 +48,9 @@ export default function SignUp() {
   const [nameError, setNameError] = React.useState(false);
   const [nsuidError, setNsuidError] = React.useState(false);
   const [emailError, setEmailError] = React.useState(false);
-  const [passwordError, SetPasswordError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
+  const [incompleteError, setIncompleteError] = React.useState(false);
+  const [nsuidErrorMessage, setNsuidErrorMessage] = React.useState("");
 
   const handleChange = (event) => {
     setRole(event.target.value);
@@ -75,16 +77,59 @@ export default function SignUp() {
     })
     .then(function (response) {
       console.log(response);
-      setRoleError(false)
+      setRoleError(false);
+      setPasswordError(false);
+      setEmailError(false);
+      setNsuidError(false);
+      setNameError(false);
+      setIncompleteError(false)
+
     })
     .catch(function (error) {
       console.log(error.response.status);
+      console.log(error.response.data);
       let errorCode = error.response.status;
 
-      if(errorCode = 410)
+      //Manages state of error messages
+      //For each 
+      if(errorCode == 410)
         setRoleError(true)
       else
         setRoleError(false)
+      
+      if(errorCode == 411)
+        setNameError(true)
+      else
+        setNameError(false)
+      
+      if(errorCode == 412)
+        setNsuidError(true)
+      else
+        setNsuidError(false)
+      
+      if(errorCode == 413)
+        setEmailError(true)
+      else
+        setEmailError(false)
+      
+      if(errorCode == 414)
+        setPasswordError(true)
+      else
+        setPasswordError(false)
+      
+      if(errorCode == 601) {
+        setNsuidError(true)
+        setNsuidErrorMessage(error.response.data)
+      }
+      else
+        setNsuidError(false)
+
+      if(errorCode > 400 && errorCode < 500)
+        setIncompleteError(true)
+      else
+        setIncompleteError(false)
+      
+        
     });
 
     // axios({
@@ -119,14 +164,14 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, backgroundColor: '#1976d2' }}>
-            <LockIcon />
+          <Avatar sx={{ m: 3, backgroundColor: '#1976d2' }}>
+            <LockIcon /> 
           </Avatar>
 
           <Typography component="h1" variant="h5">
-            Sign Up
+            NSU COMPLAINTS // SIGN UP 
           </Typography>
-
+          <br/>
           <FormControl fullWidth error={roleError}>
           <InputLabel id="demo-simple-select-label">Role*</InputLabel>
               <Select
@@ -145,14 +190,13 @@ export default function SignUp() {
                 <MenuItem value={'admin'}>System Admin</MenuItem>
               </Select>
               
-                {(roleError ? (<FormHelperText>Please select your role.</FormHelperText>):(null))}
+                
               
           </FormControl>
 
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
-              error={true}
-              helperText=""
+              error={nameError}
               margin="normal"
               required
               fullWidth
@@ -163,6 +207,8 @@ export default function SignUp() {
               autoFocus
             />
             <TextField
+              error={nsuidError}
+              helperText={nsuidErrorMessage}
               margin="normal"
               required
               fullWidth
@@ -175,6 +221,7 @@ export default function SignUp() {
             />
 
             <TextField
+              error={emailError}
               margin="normal"
               required
               fullWidth
@@ -185,6 +232,7 @@ export default function SignUp() {
               autoComplete="email"
             />
              <TextField
+                error={passwordError}
                 margin="normal"
                 required
                 fullWidth
@@ -196,7 +244,6 @@ export default function SignUp() {
            
                 name="password"
             />
-
 
             <label htmlFor="icon-button-file">
             <InputLabel id="demo-simple-select-label">Scan of NSU ID</InputLabel>
@@ -213,11 +260,13 @@ export default function SignUp() {
 
 
             <GoogleLoginComponent />
+            {(incompleteError ? (<Typography align="center" color="red"><br/>Required fields cannot be empty.</Typography>):(null))}
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, }}
             >
               Continue
             </Button>

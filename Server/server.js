@@ -24,17 +24,16 @@ app.get("/api", (req,res)=>{
 app.listen(5000, ()=>{console.log("Server started on port 5000")})
 
 // //Use this for every endpoint to validate api calls
-// function checkAuthority(){
-
-// }
 
 app.post('/signup', async (req, res) => {
 
   if(req.body.role == '') res.sendStatus(410)
   if(req.body.name == '') res.sendStatus(411)
   if(req.body.nsuid == '') res.sendStatus(412)
+  if(isNaN(req.body.nsuid)) res.status(601).send("Illegal ID wee woo")
   if(req.body.email == '') res.sendStatus(413)
   if(req.body.password == '') res.sendStatus(414)
+  
   
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)

@@ -91,25 +91,19 @@ export default function CreateComplaintCard( fetchedData ) {
         theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
 
       <CardHeader
-
         avatar={
-
           <Avatar sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
             X
           </Avatar>
         }
-
         title={
-
           <Typography gutterBottom variant="h5" component="div">
           {backendData.title}
         </Typography>
         }
-
-
         subheader={fetchedData.fetchedData.creationdate}
-
       />
+      
       <CardContent>
         <Typography variant="body2" color="text.secondary">
         {backendData.body}
