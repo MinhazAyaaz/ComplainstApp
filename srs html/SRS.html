@@ -1,63 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>CSE327 SRS</title>
-    <link type="text/css" rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <div class="sidenav">
-      <h2 style="color: white; font-size: larger;">Table of Content</h2>
-      <a href="#" class="a2">1. Introduction</a>
-      <a href="#" class="a1">1.1 Purpose</a>
-      <a href="#" class="a1">1.2 Document Conventions</a>
-      <a href="#" class="a1">1.3 Intended Audience and Reading Suggestions</a>
-      <a href="#" class="a1">1.4 Product Scope</a>
-      <a href="#" class="a1">1.5 References</a>
-      <a href="#" class="a2">2. Overall Description</a>
-      <a href="#" class="a1">2.1 Product Perspective</a>
-      <a href="#" class="a1">2.2 Product Functions</a>
-      <a href="#" class="a1">2.3 User Classes and Characteristics</a>
-      <a href="#" class="a1">2.4 Operating Environment</a>
-      <a href="#" class="a1">2.5 Design and Implementation Constraints</a>
-      <a href="#" class="a1">2.6 User Documentation</a>
-      <a href="#" class="a1">2.7 Assumptions and Dependencies</a>
-      <a href="#" class="a2">3. External Interface Requirements</a>
-      <a href="#" class="a1">3.1 User Interfaces</a>
-      <a href="#" class="a1">3.2 Hardware Interfaces</a>
-      <a href="#" class="a1">3.3 Software Interfaces</a>
-      <a href="#" class="a1">3.4 Communications Interfaces</a>
-      <a href="#" class="a2">4. System Features</a>
-      <a href="#" class="a1">4.1 System Feature 1</a>
-      <a href="#" class="a1">4.1.1 Description and Priority</a>
-      <a href="#" class="a1">4.1.2 Stimulus/Response Sequences</a>
-      <a href="#" class="a1">4.1.3 Functional Requirements</a>
-      <a href="#" class="a1">4.2 System Feature 2</a>
-      <a href="#" class="a2">5. Other Nonfunctional Requirements</a>
-      <a href="#" class="a1">5.1 Performance Requirements</a>
-      <a href="#" class="a1">5.2 Safety Requirements</a>
-      <a href="#" class="a1">5.3 Security Requirements</a>
-      <a href="#" class="a1">5.4 Software Quality Attributes</a>
-      <a href="#" class="a1">5.5 Business Rules</a>
-    </div>
-    <div class="main">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CSE327 SRS</title>
+  <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="sidenav" id="noprint">
+    <h2 style="color: white; font-size: larger;">Table of Content</h2>
+    <a href="#introduction" class="a2">1. Introduction</a>
+    <a href="#purpose" class="a1">1.1 Purpose</a>
+    <a href="#" class="a1">1.2 Document Conventions</a>
+    <a href="#" class="a1">1.3 Intended Audience and Reading Suggestions</a>
+    <a href="#" class="a1">1.4 Product Scope</a>
+    <a href="#" class="a1">1.5 References</a>
+    <a href="#" class="a2">2. Overall Description</a>
+    <a href="#" class="a1">2.1 Product Perspective</a>
+    <a href="#" class="a1">2.2 Product Functions</a>
+    <a href="#" class="a1">2.3 User Classes and Characteristics</a>
+    <a href="#" class="a1">2.4 Operating Environment</a>
+    <a href="#" class="a1">2.5 Design and Implementation Constraints</a>
+    <a href="#" class="a1">2.6 User Documentation</a>
+    <a href="#" class="a1">2.7 Assumptions and Dependencies</a>
+    <a href="#" class="a2">3. External Interface Requirements</a>
+    <a href="#" class="a1">3.1 User Interfaces</a>
+    <a href="#" class="a1">3.2 Hardware Interfaces</a>
+    <a href="#" class="a1">3.3 Software Interfaces</a>
+    <a href="#" class="a1">3.4 Communications Interfaces</a>
+    <a href="#" class="a2">4. System Features</a>
+    <a href="#" class="a1">4.1 System Feature 1</a>
+    <a href="#" class="a1">4.1.1 Description and Priority</a>
+    <a href="#" class="a1">4.1.2 Stimulus/Response Sequences</a>
+    <a href="#" class="a1">4.1.3 Functional Requirements</a>
+    <a href="#" class="a1">4.2 System Feature 2</a>
+    <a href="#" class="a2">5. Other Nonfunctional Requirements</a>
+    <a href="#" class="a1">5.1 Performance Requirements</a>
+    <a href="#" class="a1">5.2 Safety Requirements</a>
+    <a href="#" class="a1">5.3 Security Requirements</a>
+    <a href="#" class="a1">5.4 Software Quality Attributes</a>
+    <a href="#" class="a1">5.5 Business Rules</a>
+  </div>
+  <div class="main">
     <h1>Software Requirements</h1>
     <h1>Specification</h1>
     <h2>for</h2>
     <h1>CSE327.1.4</h1>
     <h3>Version 1.0 approved
-    </br></br>Prepared by:</br>
-    <ul>
-      <li>Emon Sarker</li>
-      <li>Labib Rahman</li>
-      <li>Parinda Rahman</li>
-      <li>Minhazul Abedin Ayaaz</li>
-    </ul>
-    </br>14/02/2022
-      </h3>
-    </div>
-      <hr class="rounded">
-  </body>
+      </br></br>Prepared by:</br>
+      <ul>
+        <li>Emon Sarker</li>
+        <li>Labib Rahman</li>
+        <li>Parinda Rahman</li>
+        <li>Minhazul Abedin Ayaaz</li>
+      </ul>
+      </br>14/02/2022
+    </h3>
+  </div>
+  </div>
+  <div class="main" style="font-size: large;">
+    <h3 id="introduction">1. Introduction</h3>
+    <p>The product whose software requirements are specified in the document is a Complaint Lodging system
+      for North South University. This is the first release of the software.
+      This SRS covers the entire product requirements. However, there might be revisions to this SRS once a
+      deeper understanding of the problem is achieved. </p>
+    <h3 id="purpose">1.1 Purpose</h3>
+    <p>The product whose software requirements are specified in the document is a Complaint Lodging system for North
+      South University.
+      This is the first release of the software. This SRS covers the entire product requirements. However, there might
+      be revisions to this
+      SRS once a deeper understanding of the problem is achieved.</p>
+    <h3>1.2 Document Conventions</h3>
+    <p>The standard convention that will be followed when writing this SRS is that standard Arial font will be used when
+      writing this.
+      Text that is in italics will be used to indicate special information. The words in bold will either be heading for
+      various segments
+      of this document or keywords that will be explained. Every requirement statement will have its own priority that
+      will be stated. All
+      titles for figures or diagrams will be in italics. </p>
+    <h3>1.3 Intended Audience and Reading Suggestions</h3>
+    <p>This document is intended for the use of developers, project managers, marketing staff, users, testers, and
+      documentation writers.
+      The SRS contains an overview of the product, External Interface Requirements, System Features, performance
+      requirements, and additional
+      requirements. In order to read this document, the reader should begin from the overall description of the product
+      and move sequentially
+      according to the table of contents for a detailed understanding of the product. However, the most pertinent
+      segments of are the Design and
+      implementation segments and the user classes segment which provides an understanding of the design of the
+      software. Alongside that, the system
+      features segments is essential to cross-check if the clients' requirements are met.</p>
+  </div>
+  <div class="main" style="font-size: large;">
+    <h3>1.4 Product Scope</h3>
+    <p>This software is for in-house use for the employees and students of North South University.
+      This system allows for a smooth complaint lodging system for students, faculty members, and staff
+      through a web app and an Android app. Its purpose is to enable a smooth and efficient system that
+      addresses all complaints and ensures greater efficiency in reaching the desired person who needs to
+      process the complaint. The benefit of this system is that it replaces the need for people to individually
+      send emails for sending a complaint where follow-ups and additional updates are difficult to visualize.
+      One of the key benefits is that this platform organizes the complaints therefore less time is required. The
+      objective of the system is to implement a hassle-free complaint lodging system for all parties involved in North
+      South University.
+      This software is largely not used for business purposes but rather for providing a service on behalf of
+      North-South University.
+      The corporate goal from this implementation is a provide a good user experience for students and their employees.
+    </p>
+    <h3>1.5 References</h3>
+    <p>The template that has been provided by our course instructor was used as the basis for this document. The link to the template is attached here.</p>
+    <a href="https://northsouth.instructure.com/courses/11108/pages/welcome-module-slash-class-information-slash-meet-link?module_item_id=348009">Click here</a>
+  </div>
+
+</body>
+
 </html>
