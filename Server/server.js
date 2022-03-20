@@ -152,12 +152,13 @@ app.post('/createcomplaint', async (req, res) => {
 // Added on 12/03/2022
 //Comment out if it doesn't work
 
-app.delete('/deletecomplaint', async (req, res) => {
+app.post('/deletecomplaint', async (req, res) => {
   try {
     let id     = req.body.id
     
-    let sql = 'DELETE * FROM complaint WHERE'
-    sql = sql + mysql.escape(id)
+    // let sql = 'DELETE * FROM complaint WHERE'
+    let sql = 'DELETE FROM complaint WHERE complaintid=\'' + id + '\';'
+    
 
     db.query(sql, function (err, results, fields){
       console.log(results);

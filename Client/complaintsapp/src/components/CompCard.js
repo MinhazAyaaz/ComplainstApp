@@ -12,26 +12,17 @@ import Typography from '@mui/material/Typography';
 import { Badge } from '@mui/material';
 import CommentIcon from '@mui/icons-material/Comment';
 import EditIcon from '@mui/icons-material/Edit';
-import { Button } from '@mui/material';
-import { Box } from '@mui/system';
-import { TextField } from '@mui/material';
-import { FormControl } from '@mui/material';
-import { InputLabel } from '@mui/material';
-import { Select } from '@mui/material';
-import MenuList from '@mui/material/MenuList';
 import { MenuItem } from '@mui/material';
-import { Dialog } from '@mui/material';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
-import ListItemText from '@mui/material/ListItemText';
-import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import CloseIcon from '@mui/icons-material/Close';
+import Menu from '@mui/material/Menu';
 
 import Dialogs from './Dialogs';
 
 import { Alert } from '@mui/material';
+
+import axios from 'axios';
 
 
 const ExpandMore = styled((props) => {
@@ -53,7 +44,15 @@ export default function CreateComplaintCard( fetchedData ) {
   const [age, setAge] = React.useState('');
   const [backendData, setBackEndData] = React.useState([]);
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  
+  const openMenu = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
 
   React.useEffect(()=>{
@@ -80,6 +79,23 @@ export default function CreateComplaintCard( fetchedData ) {
     setExpanded(!expanded);
   };
 
+  const handleDelete = () => {
+    
+    
+    axios.post('/deletecomplaint', {
+      id: backendData.complaintid
+    })
+    .then(function (response) {
+      console.log(response);
+      window.location.reload()
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert(error);
+    });
+    
+  };
+
 
   return (
     <Card sx={{ maxWidth: 900,  p: 3,
@@ -102,6 +118,45 @@ export default function CreateComplaintCard( fetchedData ) {
         </Typography>
         }
         subheader={fetchedData.fetchedData.creationdate}
+        action={
+          <>
+              
+              <IconButton
+                aria-label="more"
+                id="long-button"
+                aria-controls={openMenu ? 'long-menu' : undefined}
+                aria-expanded={openMenu ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="long-menu"
+                MenuListProps={{
+                  'aria-labelledby': 'long-button',
+                }}
+                anchorEl={anchorEl}
+                open={openMenu}
+                onClose={handleClose}
+                PaperProps={{
+                  style: {
+                    maxHeight: 48 * 4.5,
+                    width: '20ch',
+                  },
+                }}
+              >
+                
+                  <MenuItem onClick={handleClose}>
+                    Edit Complaint
+                  </MenuItem>
+                  <MenuItem onClick={handleDelete}>
+                    Delete Complaint
+                  </MenuItem>
+                
+              </Menu>
+            </>
+        }
       />
       
       <CardContent>
