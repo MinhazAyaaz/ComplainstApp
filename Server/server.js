@@ -44,7 +44,7 @@ app.post('/signup', async (req, res) => {
       password: hashedPassword,
      };
     
-    
+    let role = req.body.role
     let name= req.body.name;
     let nsuid= req.body.nsuid;
     let email= req.body.email;
@@ -52,8 +52,8 @@ app.post('/signup', async (req, res) => {
     let idscan = "n/a"
     let photo = "n/a"
     let status = "n/a"
-    let sql = 'INSERT INTO user(nsuid, name, email, password, idscan, photo, status) VALUES ('
-    sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +');'
+    let sql = 'INSERT INTO user(nsuid, name, email, password, idscan, photo, status, role) VALUES ('
+    sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +', '+ mysql.escape(role) +');'
     db.query(sql)
     res.status(201).send()
   } catch {
@@ -115,11 +115,13 @@ function authenticateToken(req, res, next){
   })
 }
 
-app.get('/getcomplaint', authenticateToken, async (req, res) => {
+app.get('/getcomplaint/filed', authenticateToken, async (req, res) => {
+  
   try {
     let id     = req.body.id
+    let createdby = req.user.user
     
-    let sql = 'SELECT * FROM complaint ORDER BY complaintid DESC'
+    let sql = 'SELECT * FROM complaint WHERE createdby = \''+ createdby+'\'ORDER BY complaintid DESC'
 
     db.query(sql, function (err, results, fields){
       console.log(results);
@@ -131,17 +133,36 @@ app.get('/getcomplaint', authenticateToken, async (req, res) => {
   }
 })
 
-app.post('/createcomplaint', async (req, res) => {
+app.get('/getcomplaint/received', authenticateToken, async (req, res) => {
+  
+  try {
+    let id     = req.body.id
+    let createdby = req.user.user
+    
+    let sql = 'SELECT * FROM complaint WHERE createdby = \''+ createdby+'\'ORDER BY complaintid DESC'
+
+    db.query(sql, function (err, results, fields){
+      console.log(results);
+      res.json(results).status(201)
+    })
+    
+  } catch {
+    res.status(500).send()
+  }
+})
+
+app.post('/createcomplaint', authenticateToken, async (req, res) => {
+  // res.json(req.user)
   try {
     let title     = req.body.title
     let against   = req.body.against
     let category  = req.body.category
     let body      = req.body.body
     let reviewer  = req.body.reviewer
-    
+    let createdby = req.user.user
 
-    let sql = 'INSERT INTO complaint(title, against, category, body, reviewer) VALUES ('
-    sql = sql + mysql.escape(title) +', '+ mysql.escape(against) +', '+ mysql.escape(category) +', '+ mysql.escape(body) +', '+ mysql.escape(reviewer) +');'
+    let sql = 'INSERT INTO complaint(title, against, category, body, reviewer, createdby) VALUES ('
+    sql = sql + mysql.escape(title) +', '+ mysql.escape(against) +', '+ mysql.escape(category) +', '+ mysql.escape(body) +', '+ mysql.escape(reviewer) +', '+ mysql.escape(createdby) +');'
     db.query(sql)
     res.status(201).send()
   } catch {

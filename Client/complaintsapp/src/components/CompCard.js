@@ -67,7 +67,7 @@ export default function CreateComplaintCard( fetchedData ) {
        category: fetchedData.fetchedData.category,
        body: fetchedData.fetchedData.body,
        reviewer: fetchedData.fetchedData.reviewer,
-
+       createdby: fetchedData.fetchedData.createdby,
      })
      
     
@@ -100,7 +100,8 @@ export default function CreateComplaintCard( fetchedData ) {
   return (
     <Card sx={{ maxWidth: 900,  p: 3,
       margin: 'auto',
-      marginTop: 5,
+      marginTop: 1,
+      padding: 3,
       maxWidth: 1000,
       flexGrow: 1,
       backgroundColor: (theme) =>
@@ -117,7 +118,7 @@ export default function CreateComplaintCard( fetchedData ) {
           {backendData.title}
         </Typography>
         }
-        subheader={fetchedData.fetchedData.creationdate}
+        subheader={"Created by: " +fetchedData.fetchedData.createdby}
         action={
           <>
               
