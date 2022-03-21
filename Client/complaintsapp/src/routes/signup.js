@@ -83,6 +83,7 @@ export default function SignUp() {
       setNsuidError(false);
       setNameError(false);
       setIncompleteError(false)
+      window.location.href = '/login';
 
     })
     .catch(function (error) {

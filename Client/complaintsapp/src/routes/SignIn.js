@@ -67,11 +67,11 @@ export default function SignIn() {
       console.log(response);
       sessionStorage.setItem("jwtkey", response.data)
       console.log(sessionStorage.getItem("jwtkey"))
-
+      window.location.href = '/dashboard';
     })
     .catch(function (error) {
       console.log(error);
-      
+
     });
 
     // axios.post('/login', {
