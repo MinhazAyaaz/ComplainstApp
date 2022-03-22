@@ -7,44 +7,149 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>CSE327 SRS</title>
   <link type="text/css" rel="stylesheet" href="style.css">
+  <style>
+    * {
+  box-sizing: border-box;
+}
+html,
+body {
+  padding: 1rem;
+  min-height: 100%;
+}
+
+div {
+  padding: 3rem;
+  min-height: 100%;
+  background: #fff;
+  color: #000;
+  font-family: Arial;
+}
+
+body {
+  font-size: 1.4rem;
+  text-rendering: optimizeLegibility;
+}
+
+h1 {
+  font-size: 5rem;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+}
+
+.sidenav {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 400px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #111; /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+
+.a1 {
+  padding: 6px 2px 6px 0px;
+  margin-left: 1.5rem;
+  text-decoration: none;
+  font-size: 15px;
+  color: #ffffff;
+  display: block;
+}
+
+.a2 {
+  padding: 6px 2px 6px 0px;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: #0094ff;
+}
+
+/* Style page content */
+.main {
+  margin-left: 450px; /* Same as the width of the sidebar */
+  padding: 0px 10px;
+}
+
+@media print and (max-width: 600px) {
+  @page {
+    size: A4; /* DIN A4 standard, Europe */
+    margin-top: 50px;
+  }
+  .sidenav {
+    display: none;
+  }
+  .main {
+    display: block;
+    margin-left: 0px;
+    page-break-before: always;
+    padding: 10px 20px;
+  }
+  footer {
+    page-break-after: always;
+  }
+}
+
+</style>
 </head>
 
 <body>
+  <!-- Side Navigation Bar -->
   <div class="sidenav" id="noprint">
     <h2 style="color: white; font-size: larger;">Table of Content</h2>
-    <a href="#introduction" class="a2">1. Introduction</a>
-    <a href="#purpose" class="a1">1.1 Purpose</a>
-    <a href="#" class="a1">1.2 Document Conventions</a>
-    <a href="#" class="a1">1.3 Intended Audience and Reading Suggestions</a>
-    <a href="#" class="a1">1.4 Product Scope</a>
-    <a href="#" class="a1">1.5 References</a>
-    <a href="#" class="a2">2. Overall Description</a>
-    <a href="#" class="a1">2.1 Product Perspective</a>
-    <a href="#" class="a1">2.2 Product Functions</a>
-    <a href="#" class="a1">2.3 User Classes and Characteristics</a>
-    <a href="#" class="a1">2.4 Operating Environment</a>
-    <a href="#" class="a1">2.5 Design and Implementation Constraints</a>
-    <a href="#" class="a1">2.6 User Documentation</a>
-    <a href="#" class="a1">2.7 Assumptions and Dependencies</a>
-    <a href="#" class="a2">3. External Interface Requirements</a>
-    <a href="#" class="a1">3.1 User Interfaces</a>
-    <a href="#" class="a1">3.2 Hardware Interfaces</a>
-    <a href="#" class="a1">3.3 Software Interfaces</a>
-    <a href="#" class="a1">3.4 Communications Interfaces</a>
-    <a href="#" class="a2">4. System Features</a>
-    <a href="#" class="a1">4.1 System Feature 1</a>
-    <a href="#" class="a1">4.1.1 Description and Priority</a>
-    <a href="#" class="a1">4.1.2 Stimulus/Response Sequences</a>
-    <a href="#" class="a1">4.1.3 Functional Requirements</a>
-    <a href="#" class="a1">4.2 System Feature 2</a>
-    <a href="#" class="a2">5. Other Nonfunctional Requirements</a>
-    <a href="#" class="a1">5.1 Performance Requirements</a>
-    <a href="#" class="a1">5.2 Safety Requirements</a>
-    <a href="#" class="a1">5.3 Security Requirements</a>
-    <a href="#" class="a1">5.4 Software Quality Attributes</a>
-    <a href="#" class="a1">5.5 Business Rules</a>
+    <a href="#title" class="a1">Title Page</a>
+    <a href="#TOC" class="a1">Table of Contents</a>
+    <a href="#1" class="a2">1. Introduction</a>
+    <a href="#1.1" class="a1">1.1 Purpose</a>
+    <a href="#1.2" class="a1">1.2 Document Conventions</a>
+    <a href="#1.3" class="a1">1.3 Intended Audience and Reading Suggestions</a>
+    <a href="#1.4" class="a1">1.4 Product Scope</a>
+    <a href="#1.5" class="a1">1.5 References</a>
+    <a href="#2" class="a2">2. Overall Description</a>
+    <a href="#2.1" class="a1">2.1 Product Perspective</a>
+    <a href="#2.2" class="a1">2.2 Product Functions</a>
+    <a href="#2.3" class="a1">2.3 User Classes and Characteristics</a>
+    <a href="#2.4" class="a1">2.4 Operating Environment</a>
+    <a href="#2.5" class="a1">2.5 Design and Implementation Constraints</a>
+    <a href="#2.6" class="a1">2.6 User Documentation</a>
+    <a href="#2.7" class="a1">2.7 Assumptions and Dependencies</a>
+    <a href="#3" class="a2">3. External Interface Requirements</a>
+    <a href="#3.1" class="a1">3.1 User Interfaces</a>
+    <a href="#3.2" class="a1">3.2 Hardware Interfaces</a>
+    <a href="#3.3" class="a1">3.3 Software Interfaces</a>
+    <a href="#3.4" class="a1">3.4 Communications Interfaces</a>
+    <a href="#4" class="a2">4. System Features</a>
+    <a href="#4.1" class="a1">4.1 Sign Up</a>
+    <a href="#4.2" class="a1">4.2 Login</a>
+    <a href="#4.3" class="a1">4.3 Create Complaint</a>
+    <a href="#4.4" class="a1">4.4 Edit Complaint</a>
+    <a href="#4.5" class="a1">4.5 Close Complaints</a>
+    <a href="#4.6" class="a1">4.6 Email Notification</a>
+    <a href="#4.7" class="a1">4.7 Disable account</a>
+    <a href="#4.8" class="a1">4.8 Post a Comment</a>
+    <a href="#4.9" class="a1">4.9 Post a reply to a comment</a>
+    <a href="#4.10" class="a1">4.10 View a Complaint</a>
+    <a href="#5" class="a2">5. Other Nonfunctional Requirements</a>
+    <a href="#5.1" class="a1">5.1 Performance Requirements</a>
+    <a href="#5.2" class="a1">5.2 Safety Requirements</a>
+    <a href="#5.3" class="a1">5.3 Security Requirements</a>
+    <a href="#5.4" class="a1">5.4 Software Quality Attributes</a>
+    <a href="#5.5" class="a1">5.5 Business Rules</a>
+    <a href="#6" class="a2">6. Other Requirements</a>
+    <a href="#appendixA" class="a2">Appendix A: Glossary</a>
+    <a href="#appendixB" class="a2">Appendix B: Analysis Models</a>
+    <a href="#appendixC" class="a2">Appendix C: To Be Determined List</a>
   </div>
-  <div class="main">
+
+  <!-- Title page -->
+
+  <div class="main" id="title" style="padding-top: 50px;">
     <h1>Software Requirements</h1>
     <h1>Specification</h1>
     <h2>for</h2>
@@ -60,60 +165,504 @@
       </br>14/02/2022
     </h3>
   </div>
-  </div>
-  <div class="main" style="font-size: large;">
-    <h3 id="introduction">1. Introduction</h3>
-    <p>The product whose software requirements are specified in the document is a Complaint Lodging system
-      for North South University. This is the first release of the software.
-      This SRS covers the entire product requirements. However, there might be revisions to this SRS once a
-      deeper understanding of the problem is achieved. </p>
-    <h3 id="purpose">1.1 Purpose</h3>
-    <p>The product whose software requirements are specified in the document is a Complaint Lodging system for North
-      South University.
-      This is the first release of the software. This SRS covers the entire product requirements. However, there might
-      be revisions to this
-      SRS once a deeper understanding of the problem is achieved.</p>
-    <h3>1.2 Document Conventions</h3>
-    <p>The standard convention that will be followed when writing this SRS is that standard Arial font will be used when
-      writing this.
-      Text that is in italics will be used to indicate special information. The words in bold will either be heading for
-      various segments
-      of this document or keywords that will be explained. Every requirement statement will have its own priority that
-      will be stated. All
-      titles for figures or diagrams will be in italics. </p>
-    <h3>1.3 Intended Audience and Reading Suggestions</h3>
-    <p>This document is intended for the use of developers, project managers, marketing staff, users, testers, and
-      documentation writers.
-      The SRS contains an overview of the product, External Interface Requirements, System Features, performance
-      requirements, and additional
-      requirements. In order to read this document, the reader should begin from the overall description of the product
-      and move sequentially
-      according to the table of contents for a detailed understanding of the product. However, the most pertinent
-      segments of are the Design and
-      implementation segments and the user classes segment which provides an understanding of the design of the
-      software. Alongside that, the system
-      features segments is essential to cross-check if the clients' requirements are met.</p>
-  </div>
-  <div class="main" style="font-size: large;">
-    <h3>1.4 Product Scope</h3>
-    <p>This software is for in-house use for the employees and students of North South University.
-      This system allows for a smooth complaint lodging system for students, faculty members, and staff
-      through a web app and an Android app. Its purpose is to enable a smooth and efficient system that
-      addresses all complaints and ensures greater efficiency in reaching the desired person who needs to
-      process the complaint. The benefit of this system is that it replaces the need for people to individually
-      send emails for sending a complaint where follow-ups and additional updates are difficult to visualize.
-      One of the key benefits is that this platform organizes the complaints therefore less time is required. The
-      objective of the system is to implement a hassle-free complaint lodging system for all parties involved in North
-      South University.
-      This software is largely not used for business purposes but rather for providing a service on behalf of
-      North-South University.
-      The corporate goal from this implementation is a provide a good user experience for students and their employees.
+
+  <!-- Content page code -->
+
+  <div class="main">
+    <h3 id="TOC"> Table of Contents</h3>
+
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;">1. Introduction</h4>
+    <p style="font-size: medium;">
+      &emsp;1.1 Purpose<br>
+      &emsp;1.2 Document Conventions<br>
+      &emsp;1.3 Intended Audience and Reading Suggestions<br>
+      &emsp;1.4 Product Scope<br>
+      &emsp;1.5 References<br>
     </p>
-    <h3>1.5 References</h3>
-    <p>The template that has been provided by our course instructor was used as the basis for this document. The link to the template is attached here.</p>
-    <a href="https://northsouth.instructure.com/courses/11108/pages/welcome-module-slash-class-information-slash-meet-link?module_item_id=348009">Click here</a>
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;">2. Overall Description </h4>
+    <p style="font-size: medium;">
+      &emsp;2.1 Product Perspective<br>
+      &emsp;2.2 Product Functions<br>
+      &emsp;2.3 User Classes and Characteristics<br>
+      &emsp;2.4 Operating Environment<br>
+      &emsp;2.5 Design and Implementation Constraints<br>
+      &emsp;2.6 User Documentation<br>
+      &emsp;2.7 Assumptions and Dependencies<br>
+    </p>
+
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;">3. External Interface Requirements </h4>
+    <p style="font-size: medium;">
+      &emsp;3.1 User Interfaces<br>
+      &emsp;3.2 Hardware Interfaces<br>
+      &emsp;3.3 Software Interfaces<br>
+      &emsp;3.4 Communications Interfaces<br>
+    </p>
+
+
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;"> 4. System Features</h4>
+    <p style="font-size: medium;">
+      &emsp;4.1 Sign Up<br>
+      &emsp;4.2 Log In<br>
+      &emsp;4.3 Create Clusters<br>
+      &emsp;4.4 Perform Search (through text)<br>
+      &emsp;4.5 Perform Search (thorugh voice)<br>
+      &emsp;4.6 Log Out<br>
+      &emsp;4.7 Install Plugins<br>
+    </p>
+
+
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;"> 5. Other Nonfunctional Requirements </h4>
+    <p style="font-size: medium;">
+      &emsp;5.1 Performance Requirements<br>
+      &emsp;5.2 Safety Requirements<br>
+      &emsp;5.3 Security Requirements<br>
+      &emsp;5.4 Software Quality Attributes<br>
+      &emsp;5.5 Business Rules<br>
+    </p>
+
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;"> 6. Other Requirements </h4>
+    <p style="font-size: medium; font-weight: bold;">
+      Appendix A: Glossary<br>
+      Appendix B: Analysis Models<br>
+      Appendix C: To Be Determined List<br>
+    </p>
   </div>
 
+  <!-- Code for srs body below-->
+
+  <div class="main" style="font-size: large;">
+
+    <!-- Section 1 starts here -->
+
+    <h3 id="1">1. Introduction</h3>
+    <p>The introduction of the Software Requirements Specification (SRS) provides an overview of the entire SRS with
+      purpose, scope, references, and an overview of SRS where the product details are specified. The detailed
+      requirements of the NSU complaints system are provided in this document.</p>
+    <h3 id="1.1">1.1 Purpose</h3>
+    <p>The software requirements specified in the document are for a Complaint Lodging system for North South
+      University. This is the first release of the software. This SRS covers the entire product requirements. This SRS
+      contains the product description for the entire system and this SRS will be followed by an SDS. However, there
+      might be revisions to this SRS once a deeper understanding of the problem is achieved.
+    </p>
+    <h3 id="1.2">1.2 Document Conventions</h3>
+    <p>The standard convention that will be followed when writing this SRS is that standard Arial font will be used when
+      writing
+      this. Text that is in italics will be used to indicate special information. The words in bold will either be
+      heading for
+      various segments of this document or keywords that will be explained. Every requirement statement will have its
+      own priority
+      that will be stated. All titles for figures or diagrams will be in italics.</br>
+      Main Topics: Font Name: Arial, Font Style: Bold, Size: 11</br>
+      Sub Topics: Font Name: Calibri, Font Style: Bold, Size: 14</br>
+      Other Explanations: Font Name: Calibri, Font Style: Normal, Size: 12
+    </p>
+    <h3 id="1.3">1.3 Intended Audience and Reading Suggestions</h3>
+    <p>This document is intended for the use of developers, project managers, business analysts, users, testers, and
+      documentation writers. The SRS contains an overview of the product, External Interface Requirements, System
+      Features, performance requirements, and additional requirements.SRS will provide readers with a better
+      understanding of the finer details of this project. By understanding the project, business analysts will be able
+      effectively to communicate with the developers and the clients. The document is written in simple English for a
+      wide range of audiences. The developer team will be most benefited from the document as with will work as a guide
+      for the entire project. In order to read this document, the reader should begin from the overall description of
+      the product and move sequentially according to the table of contents for a detailed understanding of the product.
+      However, the most pertinent segments are the Design and implementation segments and the user classes segment which
+      provides an understanding of the design of the software. Alongside that, the system features segments is essential
+      to cross-check if the clients' requirements are met.</p>
+    <h3 id="1.4">1.4 Product Scope</h3>
+    <p>This software is for in-house use for the employees and students of North South University. This system allows
+      for a smooth complaint lodging system for students, faculty members, and staff through a website application and
+      an Android application. Its purpose is to enable a smooth and efficient system that addresses all complaints and
+      ensures greater efficiency in reaching the desired person who needs to process the complaint. The benefit of this
+      system is that it replaces the need for people to individually send emails for sending a complaint where
+      follow-ups and additional updates are difficult to visualize. One of the key benefits is that this platform
+      organizes the complaints therefore saves time and money. The objective of the system is to implement a hassle-free
+      complaint lodging system for all parties involved in North South University. This software is largely not used for
+      business purposes but rather for providing a service on behalf of North-South University. The business goal to be
+      achieved from this implementation is a provide a good user experience for students and their employees.
+    </p>
+    <h3 id="1.5">1.5 References</h3>
+    <p>The template that has been provided by our course instructor was used as the basis for this document. The link to
+      the template is attached here.</p>
+    <a
+      href="https://northsouth.instructure.com/courses/11108/pages/welcome-module-slash-class-information-slash-meet-link?module_item_id=348009">
+      Click here</a>
+
+    <!-- Section 1 ends here -->
+
+    <footer></footer>
+
+    <!-- Section 2 starts here -->
+
+    <h3 id="2">2. Overall Description</h3>
+    <p>
+      This section deals with a broad overview of the product NSU complaints system where the functionalities and goals
+      that the software aims to achieve are noted. It also provides details on the dependencies, constraints, operating
+      environment of the product along with user classes and user manuals.
+    </p>
+    <h3 id="2.1">2.1 Product Perspective</h3>
+    <p>The product specified in this SRS is of a complaint system to be used by the members of North South University.
+      The existing student service software “RDS” does not currently have an option to record complaints and this system
+      does not integrate with it nor does it rely on fetching any of the data stored in the RDS database. The system is
+      a new product in itself and allows users to lodge complaints so that they may be handled in a controlled manner by
+      the concerned personnel.
+    </p>
+    <h3 id="2.2">2.2 Product Functions</h3>
+    <p>The product functions are fixed for all users as this has only one use: complaint management. The product is used
+      by the people in NSU to lodge complaints against other people at NSU. There is a reviewer that addresses these
+      complaints and resolves the issue; afterward, that complaint is closed. There is also an admin account that has
+      the ability to monitor account creation, deletion, and banning. They can also edit and close complaints..</p>
+    <img src="useCaseDiagram.png" alt="yes">
+    <h3 id="2.3">2.3 User Classes and Characteristics</h3>
+    <p>The user can access the software from two different platforms: Web and Android App. There are 4 actors for the
+      software: user, admin employee, system admin, and the system. The user and reviewer can use both web and mobile to
+      interact with the product. The admin can only use the web. The user can lodge multiple complaints to multiple
+      people and receive complaints that are addressed to them. Edit complaints and view previous versions of
+      complaints. Assign a person to review the complaint. The user can also post comments and replies. The reviewer can
+      view and review complaints where they are assigned as the reviewer. Leave comments and close complaints when
+      necessary. Admins can manipulate accounts (create or disable). They can close complaints as well. All the users of
+      the system except the admin must have NSU ID’s to have access to the system. The Android app also accesses all
+      functionalities available on the web app other than the option for signing up.</p>
+    <h3 id="2.4">2.4 Operating Environment</h3>
+    <p>The operating environment of the NSU Complaints App is listed as follows:</br>
+      Platform: Web and Android</br>
+      Web server: Any node server</br>
+      Client System: Any system with a modern web browser running ES6 or for android with android version 6+
+      minimum.</br>
+      Database Configuration: MySql</br>
+      Platform Requirements: </br>
+      Windows 7 or later, MacOS and Linux; Android Marshmallow 6.0 or later</br>
+      Hardware Requirements:</br>
+      An Intel Pentium 4 processor or later that's SSE3 capable
+    </p>
+    <h3 id="2.5">2.5 Design and Implementation Constraints</h3>
+    <p>The option to record complaints using voice and taking pictures is only available on the android app but it is
+      not available on the web. People using devices with Android versions lower than 5 (Marshmallow) can not use the
+      android version of this application. For voice search, it relies on google speech to text API and will not work if
+      Google is down. For the android app, there is a constraint that no backend framework can be used other than java
+      and kotlin.No external APIs can be used for the backend for the web.</p>
+    <h3 id="2.6">2.6 User Documentation</h3>
+    <p>The product will provide users with basic running instructions and a short l video that shows how to use the
+      entire software.</p>
+    <h3 id="2.7">2.7 Assumptions and Dependencies</h3>
+    <p>Assumptions:</br>
+      1.Users have a stable internet connection</br>
+      2.They have a modern browser</br>
+      3.Have access to an android device</br></br>
+      Dependencies:</br>
+      1.Google API for</br>
+      a.Authentication</br>
+      b.Speech to text</br>
+      c.Speech recognition</p>
+
+    <!-- Section 2 ends here -->
+
+    <footer></footer>
+
+    <!-- Section 3 starts here -->
+
+    <h3 id="3">3. External Interface Requirements</h3>
+    <h3 id="3.1">3.1 User Interfaces</h3>
+    <p>A first-time user of the app should see the Role Selection screen and depend on the selected role, the user will
+      be redirected to the role-specific login page. Users can log in using the email used to sign in or their google
+      account (which will require NSU ID and a scanned picture).
+      At the bottom of the login page, there should be a Sign-Up button that redirects users to the Sign-Up webpage
+      using the default browser.</br></br>
+      Upon successful login, the user should be at the main homepage where they have to fill the required fields to
+      submit a complaint. The fields require information such as the complaint description, who the complaint is
+      against, evidence submission, who should review the complaint. This is done using a create complaint icon and then
+      the form is visible. The dashboard will have a view of complaints and there will be a show more button that lets
+      users view more details. The edit complaint button serves as the form to edit the past complaint.The edit icon
+      shows a drop-down with the previous versions of the complaints. The comment button shows a view of the thread of
+      comments and allows to post comments. The is a profile icon that allows the users to see their profile details. On
+      the navigation bar, there is a logout option for all users. There’s also a notification button that shows the user
+      the latest updates. For the admin UI, there are buttons to add accounts, disable accounts, icons to create
+      accounts. The admin UI will have the same navigation bar as the user Ui but with an added search bar.
+
+    </p>
+    <h3 id="3.2">3.2 Hardware Interfaces</h3>
+    <p>The mobile version needs:</br>
+      - Microphone access for speech to text and speech recording</br>
+      - Camera access to scan and upload ID cards</p>
+    <h3 id="3.3">3.3 Software Interfaces</h3>
+    <p>- React.js is our front end framework</br>
+      - XML is android front end framework</br>
+      - Express.js as our backend framework</br>
+      - MySql as our Database</br>
+      <h3 id="3.4">3.4 Communications Interfaces</h3>
+      <p>Both web and the android app will communicate through the REST API. The system also interacts with the Google
+        Sign-in API granted by google</p>
+
+      <!-- Section 3 ends here -->
+
+      <!-- Section 4 starts here -->
+
+      <h3 id="4">4. System Features</h3>
+      <p>The key features of the NSU Complaints system are listed below.</p>
+
+      <!-- Sign Up Feature -->
+      <h3 id="4.1">4.1 Sign Up</h3>
+      <h3 id="4.1.1">4.1.1 Description and Priority</h3>
+      <p>Use Case: Sign up</br>
+        Preconditions: Connection to the internet</br>
+        Actors: User</br>
+        Goal: Sign Up for a new account to access the app features</br>
+        Overview: A user has to sign up and create an account before he is able to access the app features. The user has
+        to fill in the appropriate
+        fields and upload the appropriate documents depending on their role. On successful sign-up, an account will be
+        created and the user can proceed
+        to log in.</br>
+        Cross References: Not applicable.</br>
+        Priority: High
+      </p>
+      <h3 id="4.1.2">4.1.2 Stimulus/Response Sequences</h3>
+      <img src="signUpCase.png" alt="Italian Trulli">
+      <h3 id="4.1.3">4.1.3 Functional Requirements</h3>
+      <p>Same as the general requirements. It uses the Google Sign In API.Therefore OAuth is necessary.</p>
+
+      <!-- Login Feature -->
+      <h3 id="4.2">4.2 Login</h3>
+      <h3 id="4.2.1">4.2.1 Description and Priority</h3>
+      <p>Use Case: Login</br>
+        Preconditions: The user must register or sign up first to log in to the system.</br>
+        Actors: User</br>
+        Goal: Log into a user's account.</br>
+        Overview: A user has to log in to the system first to use the features of the system. For login, a user can use
+        the NSU ID and password.
+        Once logged in, a user is ready to create, view or edit complaints.</br>
+        Cross Reference: Not applicable.</br>
+        Priority: High
+      </p>
+      <h3 id="4.2.2">4.2.2 Stimulus/Response Sequences</h3>
+      <img src="loginCase.png" alt="Italian Trulli">
+      <h3 id="4.2.3">4.2.3 Functional Requirements</h3>
+      <p>No additional requirement.</p>
+
+      <!-- Create Complaint Feature -->
+      <h3 id="4.3">4.3 Create Complaint</h3>
+      <h3 id="4.3.1">4.3.1 Description and Priority</h3>
+      <p>Use Case: Create Complaint</br>
+        Preconditions: The user must log in to the system.</br>
+        Actors: User</br>
+        Goal: Create a complaint and save it to the database.</br>
+        Overview: A user has to log in and the user is served a form to create a complaint where mandatory fields are
+        inserted and that is saved to the database.</br>
+        Cross Reference: Not applicable.</br>
+        Priority: N/A
+      </p>
+      <h3 id="4.3.2">4.3.2 Stimulus/Response Sequences</h3>
+      <img src="createComplaintCase.png" alt="Italian Trulli">
+      <h3 id="4.3.3">4.3.3 Functional Requirements</h3>
+      <p>No additional requirement.</p>
+
+      <!-- Edit Complaints Feature -->
+      <h3 id="4.4">4.4 Edit Complaints</h3>
+      <h3 id="4.4.1">4.4.1 Description and Priority</h3>
+      <p>Use Case: Edit Complaints</br>
+        Preconditions: The user must be the creator of the complaint</br>
+        Actors: User</br>
+        Goal: Change the description, details, or documents regarding the complaint.</br>
+        Overview: The user can edit the complaint that he/she has already created. The user cannot leave any of the
+        existing fields blank.
+        Upon editing the complaint the user can save it and the complaint will get updated.</br>
+        Cross References: Create Complaint </br>
+        Priority: Medium
+      </p>
+      <h3 id="4.4.2">4.4.2 Stimulus/Response Sequences</h3>
+      <img src="editComplaintCase.png" alt="Italian Trulli">
+      <h3 id="4.4.3">4.4.3 Functional Requirements</h3>
+      <p>No additional requirement.</p>
+
+      <!-- Close Complaints Feature -->
+      <h3 id="4.5">4.5 Close Complaints</h3>
+      <h3 id="4.5.1">4.5.1 Description and Priority</h3>
+      <p>Use Case: Close Complaints</br>
+        Preconditions: The user must have the role of reviewer or system administrator</br>
+        Actors: Admin Employee,Admin</br>
+        Goal: Close a complaint after the issue has been resolved.</br>
+        Overview: The Admin Employee or the Admin can close a complaint after the issue has been resolved. After
+        closing,
+        the complaint can
+        no longer be edited or modified in any way. It gets saved in the database under closed complaints.</br>
+        Cross References: Create Complaint </br>
+        Priority: Medium
+      </p>
+      <h3 id="4.5.2">4.5.2 Stimulus/Response Sequences</h3>
+      <img src="closeComplaintCase.png" alt="Italian Trulli">
+      <h3 id="4.5.3">4.5.3 Functional Requirements</h3>
+      <p>No additional requirement.</p>
+
+      <!-- Email Notification Feature -->
+      <h3 id="4.6">4.6 Email Notification</h3>
+      <h3 id="4.6.1">4.6.1 Description and Priority</h3>
+      <p>Use Case: Email Notification</br>
+        Preconditions: The user must be logged into the system and must be one of the parties involved in the
+        complaint</br>
+        Actors: System</br>
+        Goal: Send an email notification when a complaint is lodged, any update to the complaint happens and any
+        comments
+        are posted </br>
+        Overview: The system updates all the parties involved with email notifications whenever any change to a
+        complaint
+        happens or initially
+        when a complaint is lodged.</br>
+        Cross References: Create Complaint</br>
+        Priority: Medium
+      </p>
+      <h3 id="4.6.2">4.6.2 Stimulus/Response Sequences</h3>
+      <img src="emailNotificationCase.png" alt="Italian Trulli">
+      <h3 id="4.6.3">4.6.3 Functional Requirements</h3>
+      <p>No additional requirement.</p>
+
+      <!-- Disable account  Feature -->
+      <h3 id="4.7">4.7 Disable account </h3>
+      <h3 id="4.7.1">4.7.1 Description and Priority</h3>
+      <p>Use Case: Disable account</br>
+        Preconditions: The actor must be an admin and needs to be logged into the system </br>
+        Actors: Admin</br>
+        Goal: Disable an account because it is no longer in use or due to some flagging of a potentially harmful
+        account.</br>
+        Overview: The system disables an account removing access of that account from the system.</br>
+        Cross References: Login, create account</br>
+        Priority: Medium
+      </p>
+      <h3 id="4.7.2">4.7.2 Stimulus/Response Sequences</h3>
+      <img src="disableAccountCase.png" alt="Italian Trulli">
+      <h3 id="4.7.3">4.7.3 Functional Requirements</h3>
+      <p>No additional requirement.</p>
+
+      <!-- Post a Comment Feature -->
+      <h3 id="4.8">4.8 Post a Comment</h3>
+      <h3 id="4.8.1">4.8.1 Description and Priority</h3>
+      <p>Use Case: Post a comment </br>
+        Preconditions: The actor must be logged into the system</br>
+        Actors: User, admin employee, system admin</br>
+        Goal: Post a comment under a complaint thread that is visible to all the parties involved in that complaint</br>
+        Overview: The action allows the actors to post a comment.</br>
+        Priority: Medium
+      </p>
+      <h3 id="4.8.2">4.8.2 Stimulus/Response Sequences</h3>
+      <img src="postCommentCase.png" alt="Italian Trulli">
+      <h3 id="4.8.3">4.8.3 Functional Requirements</h3>
+      <p>No additional requirement.</p>
+
+      <!-- Post a reply to a comment Feature -->
+      <h3 id="4.9">4.9 Post a reply to a comment</h3>
+      <h3 id="4.9.1">4.9.1 Description and Priority</h3>
+      <p>Use Case: Post a reply to a comment </br>
+        Preconditions: The actor must be logged into the system</br>
+        Actors: User, admin employee, system admin</br>
+        Goal: Post a comment under a comment that is visible to all the parties involved in that complaint</br>
+        Overview: The action allows the actors to post a comment.</br>
+        Priority: Medium
+      </p>
+      <h3 id="4.9.2">4.9.2 Stimulus/Response Sequences</h3>
+      <img src="replyCommentCase.png" alt="Italian Trulli">
+      <h3 id="4.9.3">4.9.3 Functional Requirements</h3>
+      <p>No additional requirement.</p>
+
+      <!-- View a Complaint Feature -->
+      <h3 id="4.10">4.10 View a Complaint</h3>
+      <h3 id="4.10.1">4.10.1 Description and Priority</h3>
+      <p>Use Case: View a complaint </br>
+        Preconditions: The actor must be logged into the system</br>
+        Actors: User, admin employee, system admin</br>
+        Goal: The user can view all the complaints with their relevant details </br>
+        Overview: The user should be able to see all the previous complaints that are posted.</br>
+        Priority: High
+      </p>
+      <h3 id="4.10.2">4.10.2 Stimulus/Response Sequences</h3>
+      <img src="viewComplaintCase.png" alt="Italian Trulli">
+      <h3 id="4.10.3">4.10.3 Functional Requirements</h3>
+      <p>No additional requirement.</p>
+
+      <!-- Section 4 ends here -->
+
+      <footer></footer>
+
+      <!-- Section 5 starts here -->
+      <h3 id="5">5. Other Nonfunctional Requirements</h3>
+      <h3 id="5.1">5.1 Performance Requirements</h3>
+      <p>The performance requirement for the system is that system must be usable for all browsers that are currently
+        used. The site must be loaded on
+        the user's end completely in under 5 seconds. The app must be deployed in all versions of android operating
+        systems without damaging the system
+        of the device. The database used in the system must be updated in real-time with minimal delays. </p>
+      <h3 id="5.2">5.2 Safety Requirements</h3>
+      <p>1. Targeted Harassment</br>
+        a. Students can be picked on by bullies. The platform can be weaponized if people target a student with various
+        complaints to get them in
+        trouble with the authorities.</br></br>
+        Solution: When such cases of targetting occur, the admin need to disable the commenting against a student</br>
+        2. Can cause cases of vigilantism</br>
+        a. If the complaints are open to everyone. A certain complaint could garner public scrutiny. People who are
+        deeply
+        affected may take things
+        to a personal level rather than let the due process be carried out.</br></br>
+        Solution: Complaints will be confidential and so only the involved parties can view them. This will help ensure
+        that the complaints remain private and does not garner any attention.</p>
+      <h3 id="5.3">5.3 Security Requirements</h3>
+      <p>For users with a G-Suite email, authorization and authentication are handled by the npm package ‘React Google
+        Login’ which is a Google OAuth
+        Sign-in / Log-in Component for React. The data type is validated whenever input is taken from the user to ensure
+        that parameters are of the
+        correct type: numeric, text, etcetera. The format for data is also validated so that they follow proper
+        guidelines. Both the web app and the
+        Android app shall not execute any commands embedded in data provided by users that force the application to
+        manipulate the database tables in
+        unintended ways. All passwords received from the users shall be encrypted and will not be visible to the users
+        of
+        the database. Each general
+        users’ privileges are limited to only what is required for them to be able to successfully fulfill their
+        functional requirements. Admins will
+        enjoy a higher level of privilege compared to general users but they too shall be restricted so that they are
+        not
+        able to perform any operations
+        which may compromise the overall security of the application and the integrity of the data stored in the
+        database.
+      </p>
+      <h3 id="5.4">5.4 Software Quality Attributes</h3>
+      <p>The internal architecture of the software must be clean and simple so that if the need to change/test/maintain
+        the software arises, it can be done with ease.</br>
+        Software must ensure correctness, that is, it should perform the necessary tasks correctly and without any
+        instance of bugs and errors.</br>
+        Ease of use is another necessary attribute as the software should have an interface that is clean and easy to
+        use
+        without having to do extensive research.</br>
+        The software must be efficient in performing its required task. It should be able to complete its required tasks
+        with the available hardware in an optimum amount of time.</br>
+        Maintainability: Each version of the software should be easy to maintain. The code should be structured and
+        clean
+        so that new code can be easily added to the software</br>
+        Interoperability: The software must be able to communicate with other solutions with ease.
+      </p>
+      <h3 id="5.5">5.5 Business Rules</h3>
+      <p>There are 5 roles available in the system. This includes the students, the helper staff, the system admin, the
+        admin employee, and the faculty members. Under specific circumstances such as in the case of the helper staff,
+        they can sign up without using their NSU email ID. Under specific circumstances there might be a need to disable
+        a particular account, the system admin can perform that operation.</p>
+
+      <!-- Section 5 ends here -->
+
+      <!-- Section 6 starts here -->
+
+      <h3 id="6">6. Other Requirements</h3>
+      <p>Not applicable </p>
+
+      <!-- Section 6 ends here -->
+
+      <footer></footer>
+
+      <!-- Appendix Page -->
+
+      <h3 id="appendixA">Appendix A: Glossary</h3>
+      <p>API: Application Protocol Interface.</br>
+        Framework: It is like the base of a program that provides generic functionality but can be custom-built for
+        specific purposes.
+      </p>
+      <h3 id="appendixB">Appendix B: Analysis Models</h3>
+      <p>Not applicable </p>
+      <h3 id="appendixC">Appendix C: To Be Determined List</h3>
+  </div>
 </body>
 
 </html>
