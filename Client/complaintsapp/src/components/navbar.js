@@ -24,10 +24,16 @@ export default function PrimarySearchAppBar() {
 
 
 
-  const logout = () => {
-
-  };
-
+  // const logout = () => {
+  //     sessionStorage.deleteItem("jwt")
+  //     window.location.reload()
+  //     console.log("LOGOUT")
+  // };
+  function logout(){
+    sessionStorage.removeItem("jwtkey")
+    window.location.reload()
+    console.log("LOGOUT")
+  }
 
 
 
@@ -103,7 +109,7 @@ export default function PrimarySearchAppBar() {
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 
            <Button
-           onClick={logout}
+           onClick={()=>{logout()}}
 
            color="inherit">Logout</Button>
 

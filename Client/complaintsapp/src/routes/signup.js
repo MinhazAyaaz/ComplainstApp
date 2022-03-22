@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -43,6 +44,13 @@ const theme = createTheme();
 export default function SignUp() {
   
   const [role, setRole] = React.useState('');
+  const [roleError, setRoleError] = React.useState(false);
+  const [nameError, setNameError] = React.useState(false);
+  const [nsuidError, setNsuidError] = React.useState(false);
+  const [emailError, setEmailError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
+  const [incompleteError, setIncompleteError] = React.useState(false);
+  const [nsuidErrorMessage, setNsuidErrorMessage] = React.useState("");
 
   const handleChange = (event) => {
     setRole(event.target.value);
@@ -53,6 +61,7 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log({
+      role: role,
       name: data.get('name'),
       nsuid: data.get('nsuid'),
       email: data.get('email'),
@@ -60,6 +69,7 @@ export default function SignUp() {
     });
     
     axios.post('/signup', {
+      role: role,
       name: data.get('name'),
       nsuid: data.get('nsuid'),
       email: data.get('email'),
@@ -67,9 +77,60 @@ export default function SignUp() {
     })
     .then(function (response) {
       console.log(response);
+      setRoleError(false);
+      setPasswordError(false);
+      setEmailError(false);
+      setNsuidError(false);
+      setNameError(false);
+      setIncompleteError(false)
+      window.location.href = '/login';
+
     })
     .catch(function (error) {
-      console.log(error);
+      console.log(error.response.status);
+      console.log(error.response.data);
+      let errorCode = error.response.status;
+
+      //Manages state of error messages
+      //For each 
+      if(errorCode == 410)
+        setRoleError(true)
+      else
+        setRoleError(false)
+      
+      if(errorCode == 411)
+        setNameError(true)
+      else
+        setNameError(false)
+      
+      if(errorCode == 412)
+        setNsuidError(true)
+      else
+        setNsuidError(false)
+      
+      if(errorCode == 413)
+        setEmailError(true)
+      else
+        setEmailError(false)
+      
+      if(errorCode == 414)
+        setPasswordError(true)
+      else
+        setPasswordError(false)
+      
+      if(errorCode == 601) {
+        setNsuidError(true)
+        setNsuidErrorMessage(error.response.data)
+      }
+      else
+        setNsuidError(false)
+
+      if(errorCode > 400 && errorCode < 500)
+        setIncompleteError(true)
+      else
+        setIncompleteError(false)
+      
+        
     });
 
     // axios({
@@ -104,17 +165,19 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, backgroundColor: '#1976d2' }}>
-            <LockIcon />
+          <Avatar sx={{ m: 3, backgroundColor: '#1976d2' }}>
+            <LockIcon /> 
           </Avatar>
 
           <Typography component="h1" variant="h5">
-            Sign Up
+            NSU COMPLAINTS // SIGN UP 
           </Typography>
-
-          <FormControl fullWidth>
+          <br/>
+          <FormControl fullWidth error={roleError}>
           <InputLabel id="demo-simple-select-label">Role*</InputLabel>
               <Select
+                error={roleError}
+                helperText="shit"
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={role}
@@ -127,10 +190,14 @@ export default function SignUp() {
                 <MenuItem value={'staff'}>Helping Staff</MenuItem>
                 <MenuItem value={'admin'}>System Admin</MenuItem>
               </Select>
+              
+                
+              
           </FormControl>
 
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
+              error={nameError}
               margin="normal"
               required
               fullWidth
@@ -141,6 +208,8 @@ export default function SignUp() {
               autoFocus
             />
             <TextField
+              error={nsuidError}
+              helperText={nsuidErrorMessage}
               margin="normal"
               required
               fullWidth
@@ -153,6 +222,7 @@ export default function SignUp() {
             />
 
             <TextField
+              error={emailError}
               margin="normal"
               required
               fullWidth
@@ -163,6 +233,7 @@ export default function SignUp() {
               autoComplete="email"
             />
              <TextField
+                error={passwordError}
                 margin="normal"
                 required
                 fullWidth
@@ -171,10 +242,9 @@ export default function SignUp() {
                 id="outlined-password-input"
                 label="Password"
                 type="password"
-                autoComplete="current-password"
+           
                 name="password"
             />
-
 
             <label htmlFor="icon-button-file">
             <InputLabel id="demo-simple-select-label">Scan of NSU ID</InputLabel>
@@ -191,11 +261,13 @@ export default function SignUp() {
 
 
             <GoogleLoginComponent />
+            {(incompleteError ? (<Typography align="center" color="red"><br/>Required fields cannot be empty.</Typography>):(null))}
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, }}
             >
               Continue
             </Button>
@@ -203,7 +275,7 @@ export default function SignUp() {
             <Grid container>
 
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link href="/signin" variant="body2">
                   {"Have an account? Sign In"}
                 </Link>
               </Grid>

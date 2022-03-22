@@ -1,39 +1,27 @@
 
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
-import LockIcon from '@mui/icons-material/Lock';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MenuItem } from '@mui/material';
 
 import PrimarySearchAppBar from '../components/navbar';
-import NavBar from '../components/complaintEditor'
 import React, {useEffect, useState} from 'react';
 import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import ButtonBase from '@mui/material/ButtonBase';
 import CreateComplaintCard from '../components/CompCard';
-import TopDashCard from '../components/TopDashCard';
 
 import { FormControl } from '@mui/material';
 import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 import axios from 'axios';
 
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Img = styled('img')({
   margin: 'auto',
@@ -45,6 +33,9 @@ const Img = styled('img')({
 export default function Dashboard() {
 
   const [backendData, setBackEndData] = useState([])
+  const [filedComplaint, setFiledComplaint] = useState([])
+  const [receivedComplaint, setReceivedComplaint] = useState([])
+  const [empty, dempty] = useState([])
   const [expanded, setExpanded] = React.useState(false);
   const [formdata, setFormdata] = React.useState('');
 
@@ -52,8 +43,48 @@ export default function Dashboard() {
   useEffect(()=>{
 
       fetchComplaint();
-    
+      
   }, [])
+
+  async function fetchComplaint (){
+    await axios.get('/getcomplaint/filed', {
+      headers: {
+        authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setFiledComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+
+    // await axios.get('/getcomplaint/received', {
+    //   headers: {
+    //     authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
+    //   },
+    //   params: {
+    //     id: 12345
+    //   }
+    // })
+    // .then(function (response) {
+    //   console.log(response.data);
+    //   setBackEndData(response.data)
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // })
+    // .then(function () {
+    //   // always executed
+    // });
+  }
 
   const expandForm = () =>{
     setExpanded(true);
@@ -85,7 +116,12 @@ export default function Dashboard() {
       category: formdata,
       body: data.get('body'),
       reviewer: data.get('reviewer'),
-    })
+    }, {
+      headers: {
+        authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
+      },
+    }
+    )
     .then(function (response) {
       console.log(response);
       fetchComplaint();
@@ -95,31 +131,16 @@ export default function Dashboard() {
       console.log(error);
       alert(error);
     });
-    
-    setTimeout(fetchComplaint(), 5000);
+    document.getElementById("myForm").reset();
+    setFiledComplaint(empty)
+    fetchComplaint();
   };
 
   const handleChange = (event) => {
     setFormdata(event.target.value);
   };
 
-  function fetchComplaint (){
-    axios.get('/getcomplaint', {
-      params: {
-        ID: 12345
-      }
-    })
-    .then(function (response) {
-      console.log(response.data);
-      setBackEndData(response.data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
-    .then(function () {
-      // always executed
-    });
-  }
+  
   return (
     <>
       <PrimarySearchAppBar />
@@ -134,7 +155,7 @@ export default function Dashboard() {
         theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
     
 
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+      <Box id="myForm" component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
         
         <TextField
           multiline={true}
@@ -235,23 +256,49 @@ export default function Dashboard() {
       
     
   </Card>
-
-      {( backendData.length === 0) ? (
+      <Typography sx={{ maxWidth: 900,  p: 3,
+      color: '#555555',
+      margin: 'auto',
+      fontSize: 25,
+      borderBottom: 'solid',
+      borderColor: '#777777',
+      padding: 1,
+      paddingTop: 3,
+      maxWidth: 1000,
+      flexGrow: 1,
+       }}
+       align="center" > Complaints Filed // {filedComplaint.length} posted</Typography>
+      {( filedComplaint.length === 0) ? (
         <p> Wait </p>
       ) : (
-        backendData.map((data, i) => (
+        filedComplaint.map((data, i) => (
+          <CreateComplaintCard fetchedData={data}/>
+        ))
+        
+      )}
+
+      <Typography sx={{ maxWidth: 900,  p: 3,
+        color: '#555555',
+        margin: 'auto',
+        fontSize: 25,
+        borderBottom: 'solid',
+        borderColor: '#777777',
+        padding: 1,
+        paddingTop: 3,
+        maxWidth: 1000,
+        flexGrow: 1,
+       }}
+       align="center" > Complaints Received // {receivedComplaint.length} complaints</Typography>
+      {( receivedComplaint.length === 0) ? (
+        <CircularProgress />
+      ) : (
+        receivedComplaint.map((data, i) => (
           <CreateComplaintCard fetchedData={data}/>
         ))
         
       )}
       
     </>
-
-
-
-
-
-
 
 
   );

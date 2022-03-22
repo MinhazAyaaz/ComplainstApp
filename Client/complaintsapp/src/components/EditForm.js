@@ -41,12 +41,31 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-export default function EditForm() {
+export default function EditForm( fetchedData ) {
 
  
   const [formdata, setFormdata] = React.useState('');
 
+  const [backendData, setBackEndData] = React.useState([]);
 
+  React.useEffect(()=>{
+    console.log(fetchedData)
+    setBackEndData({
+
+      complaintid: fetchedData.data.complaintid,
+      creationdate: fetchedData.data.creationdate,
+      status: fetchedData.data.status,
+      title: fetchedData.data.title,
+      against: fetchedData.data.against,
+      category: fetchedData.data.category,
+      body: fetchedData.data.body,
+      reviewer: fetchedData.data.reviewer,
+
+    })
+
+    setFormdata(fetchedData.data.category)
+   
+ }, [])
 
 
  
@@ -82,19 +101,20 @@ export default function EditForm() {
           autoFocus
           variant="standard"
           size="medium"
-        
+          defaultValue={backendData.title}
         />
 
-        
         <TextField
+          multiline={true}
           margin="normal"
           required
           fullWidth
-          name="against"
+          name="agaisnt"
           label="Who is it against?"
-          type="string"
+          type="against"
           id="against"
           autoComplete="against"
+          defaultValue={backendData.against}
         />
       
 
@@ -107,6 +127,7 @@ export default function EditForm() {
               value={formdata}
               label="category"
               onChange={handleChange}
+              defaultValue={formdata}
             >
               <MenuItem value={"bullying"}>Bullying</MenuItem>
               <MenuItem value={"sanitation"}>Sanitation</MenuItem>
@@ -127,11 +148,11 @@ export default function EditForm() {
           id="body"
           autoComplete="Body"
           rows={5}
+          defaultValue={backendData.body}
         />
   
-
- 
         <TextField
+          multiline={true}
           margin="normal"
           required
           fullWidth
@@ -140,6 +161,7 @@ export default function EditForm() {
           type="reviewer"
           id="reviewer"
           autoComplete="reviewer"
+          defaultValue={backendData.reviewer}
         />
     
 

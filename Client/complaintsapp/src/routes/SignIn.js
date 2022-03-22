@@ -20,6 +20,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { Input } from '@mui/material';
 import GoogleLoginComponent from '../components/GoogleLoginComponent';
 
+
 import axios from 'axios';
  
 
@@ -63,10 +64,14 @@ export default function SignIn() {
       password: data.get('password'),
     })
     .then(function (response) {
-      console.log(response.data);
+      console.log(response);
+      sessionStorage.setItem("jwtkey", response.data)
+      console.log(sessionStorage.getItem("jwtkey"))
+      window.location.href = '/dashboard';
     })
     .catch(function (error) {
       console.log(error);
+
     });
 
     // axios.post('/login', {
@@ -135,7 +140,6 @@ export default function SignIn() {
                 id="outlined-password-input"
                 label="Password"
                 type="password"
-                autoComplete="current-password"
                 name="password"
             />
 

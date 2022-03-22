@@ -26,6 +26,7 @@ import { Select } from '@mui/material';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
+
 import PrimarySearchAppBar from '../components/navbar';
 import NavBar from '../components/complaintEditor'
 import * as React from 'react';
@@ -52,12 +53,17 @@ export default function TopDashCard() {
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
   const [age, setAge] = React.useState('');
-
+ 
   
 
-  const createcomplaint = () => {
 
+  const submit = () => {
+    console.log(" Submited");
   };
+
+ 
+
+
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -73,6 +79,7 @@ export default function TopDashCard() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
+    
 
     console.log({
       title: data.get('title'),
@@ -98,8 +105,9 @@ export default function TopDashCard() {
 
   };
 
-  const handleChange = (event) => {
+  const handleChange1 = (event) => {
     setAge(event.target.value);
+   
   };
 
   const handleClickOpen = () => {
@@ -130,8 +138,7 @@ export default function TopDashCard() {
           id="title"
           label="Write a complaint"
           name="title"
-          autoComplete="title"
-          autoFocus
+          autoComplete="off"
           variant="standard"
           size="medium"
           onClick={expandForm}
@@ -147,6 +154,7 @@ export default function TopDashCard() {
           type="string"
           id="against"
           autoComplete="against"
+
         />
         :null}
 
@@ -158,7 +166,7 @@ export default function TopDashCard() {
               id="category"
               value={age}
               label="category"
-              onChange={handleChange}
+              onChange={handleChange1}
             >
               <MenuItem value={"bullying"}>Bullying</MenuItem>
               <MenuItem value={"sanitation"}>Sanitation</MenuItem>
@@ -191,7 +199,7 @@ export default function TopDashCard() {
           label="Who will review it?"
           type="reviewer"
           id="reviewer"
-          autoComplete="reviewer"
+       
         />
         :null}
 
