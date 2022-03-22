@@ -16,7 +16,6 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
 import axios from 'axios';
@@ -38,7 +37,7 @@ export default function Dashboard() {
   const [empty, dempty] = useState([])
   const [expanded, setExpanded] = React.useState(false);
   const [formdata, setFormdata] = React.useState('');
-
+  const [studentList, setStudentList] = useState([]);
 
   useEffect(()=>{
 
@@ -184,6 +183,14 @@ export default function Dashboard() {
           autoComplete="against"
         />
         :null}
+
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={studentList}
+          sx={{ width: 300 }}
+          renderInput={(params) => <TextField {...params} label="Movie" />}
+        />
 
         {expanded ? 
         <FormControl fullWidth>

@@ -61,6 +61,35 @@ app.post('/signup', async (req, res) => {
   }
 })
 
+app.post('/Gsignup', async (req, res) => {
+
+  
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const user = { 
+      name: req.body.name,
+      nsuid: req.body.nsuid,
+      email: req.body.email,
+      password: hashedPassword,
+     };
+    
+    let role = "n/a"
+    let name= req.body.name;
+    let nsuid= req.body.nsuid;
+    let email= req.body.email;
+    let password= hashedPassword;
+    let idscan = "n/a"
+    let photo = "n/a"
+    let status = "n/a"
+    let sql = 'INSERT INTO user(nsuid, name, email, password, idscan, photo, status, role) VALUES ('
+    sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +', '+ mysql.escape(role) +');'
+    db.query(sql)
+    res.status(201).send()
+  } catch {
+    res.status(500).send()
+  }
+})
+
 app.post('/login', async (req, res) => {
 
   
