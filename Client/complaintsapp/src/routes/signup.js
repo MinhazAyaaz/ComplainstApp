@@ -121,12 +121,11 @@ export default function SignUp() {
       setNsuidError(false);
       setNameError(false);
       setIncompleteError(false)
-      window.location.href = '/login';
+      // window.location.href = '/login';
 
     })
     .catch(function (error) {
-      console.log(error.response.status);
-      console.log(error.response.data);
+      console.log(error);
       let errorCode = error.response.status;
 
       //Manages state of error messages
