@@ -4,7 +4,7 @@ const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt')
 const mysql = require('mysql')
-
+const nodemailer = require('nodemailer')
 
 //Database connection credentials
 const db = mysql.createConnection({
@@ -17,13 +17,23 @@ db.connect()
 
 app.use(express.json());
 
+//Mailing info
+const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
+const transporter = nodemailer.createTransport({
+  sendmail: true,
+  service: 'Gmail',
+  auth: {
+    user: "nsucomplaints.noreply@gmail.com",
+    pass: "NSUcomplaints#123456789",
+  },
+});
+
 app.get("/api", (req,res)=>{
   res.json({"users": ["userOne", "userTwo", "userThree"]})
 })
 
 app.listen(5000, ()=>{console.log("Server started on port 5000")})
 
-// //Use this for every endpoint to validate api calls
 
 app.post('/signup', async (req, res) => {
 
@@ -45,6 +55,68 @@ app.post('/signup', async (req, res) => {
      };
     
     let role = req.body.role
+    let name= req.body.name;
+    let nsuid= req.body.nsuid;
+    let email= req.body.email;
+    let password= hashedPassword;
+    let idscan = "n/a"
+    let photo = "n/a"
+    let status = "n/a"
+    let verified = "false"
+    let sql = 'INSERT INTO user(nsuid, name, email, password, idscan, photo, status, role, verified) VALUES ('
+    sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +', '+ mysql.escape(role) +', '+ mysql.escape(verified) +');'
+    db.query(sql)
+
+     try{
+
+      // emailToken = await jwt.sign( {user: nsuid}, EMAIL_SECRET )
+      // const url = `http://localhost:3000/confirmation/${emailToken}`
+
+        transporter.sendMail({
+          from: "nsucomplaints.noreply@gmail.com",
+          to: "emon331@gmail.com",
+          subject: "test",
+          text: "test",
+      })
+     }catch(e){
+      res.status(808).send()
+     }
+
+    res.status(201).send()
+  } catch {
+    res.status(500).send()
+  }
+})
+
+
+
+app.get('/confirmation/:token', async (req, res) => {
+  try {
+    const { user: { nsuid } } = jwt.verify(req.params.token, EMAIL_SECRET);
+    // await models.User.update({ confirmed: true }, { where: { id } });
+    let sql = 'UPDATE user SET verified=true WHERE nsuid=\''+user.nsuid+'\';'
+    sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +', '+ mysql.escape(role) +', '+ mysql.escape(verified) +');'
+    db.query(sql)
+  } catch (e) {
+    res.send('error');
+  }
+
+  return res.redirect('http://localhost:3000/login');
+});
+
+app.post('/Gsignup', async (req, res) => {
+
+  
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const user = { 
+      name: req.body.name,
+      nsuid: req.body.nsuid,
+      email: req.body.email,
+      password: hashedPassword,
+     };
+    
+    let role = "n/a"
     let name= req.body.name;
     let nsuid= req.body.nsuid;
     let email= req.body.email;
@@ -115,6 +187,24 @@ function authenticateToken(req, res, next){
   })
 }
 
+app.get('/users', authenticateToken, async (req, res) => {
+  
+  try {
+    let id     = req.body.id
+    let createdby = req.user.user
+    
+    let sql = 'SELECT name, nsuid FROM user '
+
+    db.query(sql, function (err, results, fields){
+      console.log(results);
+      res.json(results).status(201)
+    })
+    
+  } catch {
+    res.status(500).send()
+  }
+})
+
 app.get('/getcomplaint/filed', authenticateToken, async (req, res) => {
   
   try {
@@ -137,9 +227,9 @@ app.get('/getcomplaint/received', authenticateToken, async (req, res) => {
   
   try {
     let id     = req.body.id
-    let createdby = req.user.user
+    let against = req.user.user
     
-    let sql = 'SELECT * FROM complaint WHERE createdby = \''+ createdby+'\'ORDER BY complaintid DESC'
+    let sql = 'SELECT * FROM complaint WHERE against = \''+ against+'\'ORDER BY complaintid DESC'
 
     db.query(sql, function (err, results, fields){
       console.log(results);

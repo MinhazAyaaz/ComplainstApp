@@ -16,7 +16,6 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
 import axios from 'axios';
@@ -38,12 +37,12 @@ export default function Dashboard() {
   const [empty, dempty] = useState([])
   const [expanded, setExpanded] = React.useState(false);
   const [formdata, setFormdata] = React.useState('');
-
-
+  const [studentList, setStudentList] = useState([]);
+  const [value, setValue] = useState({name: "", nsuid: ""})
   useEffect(()=>{
 
       fetchComplaint();
-      
+      fetchUserList();
   }, [])
 
   async function fetchComplaint (){
@@ -58,6 +57,25 @@ export default function Dashboard() {
     .then(function (response) {
       console.log(response.data);
       setFiledComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+
+    await axios.get('/getcomplaint/received', {
+      headers: {
+        authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setReceivedComplaint(response.data)
     })
     .catch(function (error) {
       console.log(error);
@@ -86,6 +104,35 @@ export default function Dashboard() {
     // });
   }
 
+  async function fetchUserList (){
+    await axios.get('/users', {
+      headers: {
+        authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      
+      // var tempArray = []
+      // for( var i=0; i<response.data.length; i++){
+      //   tempArray.push(response.data[i])
+      // }
+      setStudentList(response.data)
+
+      console.log(studentList)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+
+    
+  }
+
   const expandForm = () =>{
     setExpanded(true);
   };
@@ -104,7 +151,7 @@ export default function Dashboard() {
 
     console.log({
       title: data.get('title'),
-      against: data.get('against'),
+      against: value.nsuid,
       category: formdata,
       body: data.get('body'),
       reviewer: data.get('reviewer'),
@@ -112,7 +159,7 @@ export default function Dashboard() {
     
     axios.post('/createcomplaint', {
       title: data.get('title'),
-      against: data.get('against'),
+      against: value.nsuid,
       category: formdata,
       body: data.get('body'),
       reviewer: data.get('reviewer'),
@@ -172,17 +219,30 @@ export default function Dashboard() {
           onClick={expandForm}
         />
 
-        {expanded ? 
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="against"
-          label="Who is it against?"
-          type="string"
-          id="against"
-          autoComplete="against"
+
+        {expanded ? <>
+          <br/> <br/> 
+        {(studentList.length === 0) ? ( <p>Fetching user list</p>) : (
+          <Autocomplete
+          disablePortal
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+          options={studentList}
+          getOptionLabel={(option) => option.name}
+          sx={{ width: 'max' }}
+          renderOption={(props, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+              {option.name} ({option.nsuid})
+            </Box>
+          )}
+          renderInput={(params) => <TextField {...params} label="Who is the complaint against" />}
+          
         />
+        )}
+        <br/> 
+        </>
         :null}
 
         {expanded ? 
@@ -256,46 +316,51 @@ export default function Dashboard() {
       
     
   </Card>
-      <Typography sx={{ maxWidth: 900,  p: 3,
-      color: '#555555',
-      margin: 'auto',
-      fontSize: 25,
-      borderBottom: 'solid',
-      borderColor: '#777777',
-      padding: 1,
-      paddingTop: 3,
-      maxWidth: 1000,
-      flexGrow: 1,
-       }}
-       align="center" > Complaints Filed // {filedComplaint.length} posted</Typography>
+      
       {( filedComplaint.length === 0) ? (
         <p> Wait </p>
       ) : (
-        filedComplaint.map((data, i) => (
+        <>
+        <Typography sx={{ maxWidth: 900,  p: 3,
+          color: '#888',
+          margin: 'auto',
+          fontSize: 25,
+          borderBottom: 'solid',
+          borderColor: '#888',
+          padding: 1,
+          paddingTop: 3,
+          maxWidth: 1000,
+          flexGrow: 1,
+       }}
+       align="center" > Complaints Filed // {filedComplaint.length} posted</Typography>
+
+        {filedComplaint.map((data, i) => (
           <CreateComplaintCard fetchedData={data}/>
-        ))
-        
+        ))}
+        </>
       )}
 
-      <Typography sx={{ maxWidth: 900,  p: 3,
-        color: '#555555',
+      
+      {( receivedComplaint.length === 0) ? (
+        <CircularProgress />
+      ) : (
+      <>
+        <Typography sx={{ maxWidth: 900,  p: 3,
+        color: '#888',
         margin: 'auto',
         fontSize: 25,
         borderBottom: 'solid',
-        borderColor: '#777777',
+        borderColor: '#888',
         padding: 1,
         paddingTop: 3,
         maxWidth: 1000,
         flexGrow: 1,
        }}
        align="center" > Complaints Received // {receivedComplaint.length} complaints</Typography>
-      {( receivedComplaint.length === 0) ? (
-        <CircularProgress />
-      ) : (
-        receivedComplaint.map((data, i) => (
+        {receivedComplaint.map((data, i) => (
           <CreateComplaintCard fetchedData={data}/>
-        ))
-        
+        ))}
+      </>
       )}
       
     </>

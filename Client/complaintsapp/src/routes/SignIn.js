@@ -18,7 +18,6 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { Input } from '@mui/material';
-import GoogleLoginComponent from '../components/GoogleLoginComponent';
 
 
 import axios from 'axios';
@@ -146,7 +145,7 @@ export default function SignIn() {
 
         
 
-            <GoogleLoginComponent />
+            
             <Button
               type="submit"
               fullWidth

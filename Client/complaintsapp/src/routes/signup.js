@@ -19,7 +19,8 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { Input } from '@mui/material';
-import GoogleLoginComponent from '../components/GoogleLoginComponent';
+
+import GoogleLogin from 'react-google-login';
 
 import axios from 'axios';
 
@@ -51,6 +52,43 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [incompleteError, setIncompleteError] = React.useState(false);
   const [nsuidErrorMessage, setNsuidErrorMessage] = React.useState("");
+  //check if login data is available locally
+  const [loginData, setLoginData] = React.useState(
+    localStorage.getItem('loginData')
+      ? JSON.parse(localStorage.getItem('loginData'))
+      : null
+  );
+
+  const handleGFailure = (result) => {
+    alert(result);
+    
+  };
+
+  const handleGLogin = async (googleData) => {
+    console.log(googleData.profileObj.name);
+ 
+    axios.post('/Gsignup', {
+      name: googleData.profileObj.givenName,
+      nsuid: googleData.profileObj.familyName,
+      email: googleData.profileObj.email,
+      password: googleData.profileObj.googleId,
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    //local storage
+    // const data = await res.json();
+    // setLoginData(data);
+    // localStorage.setItem('loginData', JSON.stringify(data));
+  };
+
+  const handleGLogout = () => {
+    localStorage.removeItem('loginData');
+    setLoginData(null);
+  };
 
   const handleChange = (event) => {
     setRole(event.target.value);
@@ -83,12 +121,11 @@ export default function SignUp() {
       setNsuidError(false);
       setNameError(false);
       setIncompleteError(false)
-      window.location.href = '/login';
+      // window.location.href = '/login';
 
     })
     .catch(function (error) {
-      console.log(error.response.status);
-      console.log(error.response.data);
+      console.log(error);
       let errorCode = error.response.status;
 
       //Manages state of error messages
@@ -257,11 +294,16 @@ export default function SignUp() {
             </label>
 
 
-
-
-
-            <GoogleLoginComponent />
             {(incompleteError ? (<Typography align="center" color="red"><br/>Required fields cannot be empty.</Typography>):(null))}
+
+            <GoogleLogin
+              clientId={'689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com'}
+              buttonText="Log in with Google"
+              onSuccess={handleGLogin}
+              onFailure={handleGFailure}
+              hostedDomain="northsouth.edu"
+              cookiePolicy={'single_host_origin'}
+            ></GoogleLogin>
 
             <Button
               type="submit"

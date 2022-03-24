@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "E:\\cse327.1.4\\ComplainstApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_login.xml",
+        "source": "E:\\cse327.1.4\\ComplainstApp\\app\\src\\main\\res\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "E:\\cse327.1.4\\ComplainstApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_homepage.xml",
+        "source": "E:\\cse327.1.4\\ComplainstApp\\app\\src\\main\\res\\layout\\activity_homepage.xml"
+    },
+    {
+        "merged": "E:\\cse327.1.4\\ComplainstApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\list_item.xml",
+        "source": "E:\\cse327.1.4\\ComplainstApp\\app\\src\\main\\res\\layout\\list_item.xml"
+    },
+    {
+        "merged": "E:\\cse327.1.4\\ComplainstApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\card_layout.xml",
+        "source": "E:\\cse327.1.4\\ComplainstApp\\app\\src\\main\\res\\layout\\card_layout.xml"
+    },
+    {
+        "merged": "E:\\cse327.1.4\\ComplainstApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\expanded_card.xml",
+        "source": "E:\\cse327.1.4\\ComplainstApp\\app\\src\\main\\res\\layout\\expanded_card.xml"
+    },
+    {
+        "merged": "E:\\cse327.1.4\\ComplainstApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_main.xml",
+        "source": "E:\\cse327.1.4\\ComplainstApp\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "E:\\cse327.1.4\\ComplainstApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_complaint.xml",
+        "source": "E:\\cse327.1.4\\ComplainstApp\\app\\src\\main\\res\\layout\\activity_complaint.xml"
+    }
+]
