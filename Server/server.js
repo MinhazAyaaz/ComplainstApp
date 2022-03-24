@@ -249,3 +249,5 @@ app.put('/updatecomplaint', async (req, res) => {
 //     next()
 //   })
 // }
+
+module.exports = app;
