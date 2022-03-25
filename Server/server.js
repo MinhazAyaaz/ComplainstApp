@@ -19,13 +19,19 @@ app.use(express.json());
 
 //Mailing info
 const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
-const transporter = nodemailer.createTransport({
-  sendmail: true,
+const transporter = nodemailer.createTransport( {
   service: 'Gmail',
   auth: {
+    type: 'OAuth2',
     user: "nsucomplaints.noreply@gmail.com",
     pass: "NSUcomplaints#123456789",
+    clientId: '189085341403-6jkd13am7e6r6e75os36vmh2g4phunqi.apps.googleusercontent.com',
+    clientSecret: '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',
+    refreshToken: '1//04VfxLkicBl8XCgYIARAAGAQSNwF-L9IrVRnX8xAc9F866a0SOR4E8yEI94o2aych6N2ERoXVaRr-0l1HLOK8dbJCMeagUSZgzlo',
   },
+  tls: {
+    rejectUnauthorized: false
+}
 });
 
 app.get("/api", (req,res)=>{
@@ -65,19 +71,20 @@ app.post('/signup', async (req, res) => {
     let verified = "false"
     let sql = 'INSERT INTO user(nsuid, name, email, password, idscan, photo, status, role, verified) VALUES ('
     sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +', '+ mysql.escape(role) +', '+ mysql.escape(verified) +');'
-    db.query(sql)
+    
 
      try{
 
-      // emailToken = await jwt.sign( {user: nsuid}, EMAIL_SECRET )
-      // const url = `http://localhost:3000/confirmation/${emailToken}`
+      emailToken = await jwt.sign( {user: nsuid}, EMAIL_SECRET )
+      const url = `http://localhost:5000/confirmation/${emailToken}`
 
         transporter.sendMail({
           from: "nsucomplaints.noreply@gmail.com",
-          to: "emon331@gmail.com",
-          subject: "test",
-          text: "test",
+          to: email,
+          subject: "Confirm Email",
+          html: `Please click this email to confirm your email: <a target="_blank" href="${url}">${url}</a>`,
       })
+      db.query(sql)
      }catch(e){
       res.status(808).send()
      }
@@ -92,11 +99,15 @@ app.post('/signup', async (req, res) => {
 
 app.get('/confirmation/:token', async (req, res) => {
   try {
-    const { user: { nsuid } } = jwt.verify(req.params.token, EMAIL_SECRET);
-    // await models.User.update({ confirmed: true }, { where: { id } });
-    let sql = 'UPDATE user SET verified=true WHERE nsuid=\''+user.nsuid+'\';'
-    sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +', '+ mysql.escape(role) +', '+ mysql.escape(verified) +');'
-    db.query(sql)
+    jwt.verify(req.params.token, EMAIL_SECRET, (err, user)=>{
+      let nsuid = user.user
+      // await models.User.update({ confirmed: true }, { where: { id } });
+      let sql = 'UPDATE user SET verified=\'true\' WHERE nsuid=\''+ nsuid+'\';'
+      // sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +', '+ mysql.escape(role) +', '+ mysql.escape(verified) +');'
+      db.query(sql)
+    });
+    
+    
   } catch (e) {
     res.send('error');
   }
@@ -228,7 +239,7 @@ app.get('/getcomplaint/received', authenticateToken, async (req, res) => {
   try {
     let id     = req.body.id
     let against = req.user.user
-    
+     
     let sql = 'SELECT * FROM complaint WHERE against = \''+ against+'\'ORDER BY complaintid DESC'
 
     db.query(sql, function (err, results, fields){
@@ -263,40 +274,40 @@ app.post('/createcomplaint', authenticateToken, async (req, res) => {
 // Added on 12/03/2022
 //Comment out if it doesn't work
 
-app.post('/deletecomplaint', async (req, res) => {
-  try {
-    let id     = req.body.id
+// app.post('/deletecomplaint', async (req, res) => {
+//   try {
+//     let id     = req.body.id
     
-    // let sql = 'DELETE * FROM complaint WHERE'
-    let sql = 'DELETE FROM complaint WHERE complaintid=\'' + id + '\';'
+//     // let sql = 'DELETE * FROM complaint WHERE'
+//     let sql = 'DELETE FROM complaint WHERE complaintid=\'' + id + '\';'
     
 
-    db.query(sql, function (err, results, fields){
-      console.log(results);
-      res.status(201).send("Deleted successfully")
-    })
+//     db.query(sql, function (err, results, fields){
+//       console.log(results);
+//       res.status(201).send("Deleted successfully")
+//     })
     
-  } catch {
-    res.status(500).send()
-  }
-})
+//   } catch {
+//     res.status(500).send()
+//   }
+// })
 
-app.put('/updatecomplaint', async (req, res) => {
-  try {
-    let id     = req.body.id
+// app.put('/updatecomplaint', async (req, res) => {
+//   try {
+//     let id     = req.body.id
     
-    // let sql = 'UPDATE * FROM complaint WHERE'
-    // sql = sql + mysql.escape(id)
+//     // let sql = 'UPDATE * FROM complaint WHERE'
+//     // sql = sql + mysql.escape(id)
 
-    db.query(sql, function (err, results, fields){
-      console.log(results);
-      res.status(201).send("Deleted successfully")
-    })
+//     db.query(sql, function (err, results, fields){
+//       console.log(results);
+//       res.status(201).send("Deleted successfully")
+//     })
     
-  } catch {
-    res.status(500).send()
-  }
-})
+//   } catch {
+//     res.status(500).send()
+//   }
+// })
 
 //JWT test code
 
