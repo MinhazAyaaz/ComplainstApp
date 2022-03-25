@@ -45,6 +45,7 @@ const theme = createTheme();
 export default function SignUp() {
   
   const [role, setRole] = React.useState('');
+  const [role2, setRole2] = React.useState('');
   const [roleError, setRoleError] = React.useState(false);
   const [nameError, setNameError] = React.useState(false);
   const [nsuidError, setNsuidError] = React.useState(false);
@@ -98,16 +99,22 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
+
+    
+    if(role == "1" || role == "2" || role == "3" )
+      setRole("user")
+
     console.log({
-      role: role,
+      roles: role,
       name: data.get('name'),
       nsuid: data.get('nsuid'),
       email: data.get('email'),
       password: data.get('password'),
     });
     
+
     axios.post('/signup', {
-      role: role,
+      // roles: role,
       name: data.get('name'),
       nsuid: data.get('nsuid'),
       email: data.get('email'),
@@ -221,11 +228,10 @@ export default function SignUp() {
                 label="role"
                 onChange={handleChange}
               >
-                <MenuItem value={'student'}>Student</MenuItem>
-                <MenuItem value={'faculty'}>Faculty</MenuItem>
-                <MenuItem value={'adminEmployee'}>Admin Employee</MenuItem>
-                <MenuItem value={'staff'}>Helping Staff</MenuItem>
-                <MenuItem value={'admin'}>System Admin</MenuItem>
+                <MenuItem value={'1'}>Student</MenuItem>
+                <MenuItem value={'2'}>Faculty</MenuItem>
+                <MenuItem value={'moderator'}>Admin Employee</MenuItem>
+                <MenuItem value={'3'}>Helping Staff</MenuItem>
               </Select>
               
                 

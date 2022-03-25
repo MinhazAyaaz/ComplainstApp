@@ -1,352 +1,68 @@
-require('dotenv').config()
-const jwt = require('jsonwebtoken')
-const express = require('express')
-const app = express()
-const bcrypt = require('bcrypt')
+
+
+const bcrypt = require('bcryptjs')
 const mysql = require('mysql')
-const nodemailer = require('nodemailer')
 
-//Database connection credentials
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'nsucomplaints'
-})
-db.connect()
+const jwt = require('jsonwebtoken')
+const express = require("express");
+// const bodyParser = require("body-parser"); /* deprecated */
+const cors = require("cors");
 
-app.use(express.json());
+const app = express();
 
-//Mailing info
-const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
-const transporter = nodemailer.createTransport( {
-  service: 'Gmail',
-  auth: {
-    type: 'OAuth2',
-    user: "nsucomplaints.noreply@gmail.com",
-    pass: "NSUcomplaints#123456789",
-    clientId: '189085341403-6jkd13am7e6r6e75os36vmh2g4phunqi.apps.googleusercontent.com',
-    clientSecret: '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',
-    refreshToken: '1//04VfxLkicBl8XCgYIARAAGAQSNwF-L9IrVRnX8xAc9F866a0SOR4E8yEI94o2aych6N2ERoXVaRr-0l1HLOK8dbJCMeagUSZgzlo',
-  },
-  tls: {
-    rejectUnauthorized: false
-}
+var corsOptions = {
+  origin: "http://localhost:5001"
+};
+
+app.use(cors(corsOptions));
+
+// parse requests of content-type - application/json
+app.use(express.json());  /* bodyParser.json() is deprecated */
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));   /* bodyParser.urlencoded() is deprecated */
+
+const db = require("./models");
+
+require('./routes/auth.routes.js')(app);
+require('./routes/user.routes')(app);
+// // drop the table if it already exists
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and re-sync db.");
+// });
+const Role = db.role;
+db.sequelize.sync()
+// db.sequelize.sync({force: true}).then(() => {
+//   console.log('Drop and Resync Db');
+//   initial();
+// }); 
+
+// simple route
+app.get("/api", (req, res) => {
+  res.json({"users": ["userOne", "userTwo", "userThree"]});
 });
 
-app.get("/api", (req,res)=>{
-  res.json({"users": ["userOne", "userTwo", "userThree"]})
-})
+require("./routes/tutorial.routes")(app);
 
-app.listen(5000, ()=>{console.log("Server started on port 5000")})
-
-
-app.post('/signup', async (req, res) => {
-
-  if(req.body.role == '') res.sendStatus(410)
-  if(req.body.name == '') res.sendStatus(411)
-  if(req.body.nsuid == '') res.sendStatus(412)
-  if(isNaN(req.body.nsuid)) res.status(601).send("Illegal ID wee woo")
-  if(req.body.email == '') res.sendStatus(413)
-  if(req.body.password == '') res.sendStatus(414)
-  
-  
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const user = { 
-      name: req.body.name,
-      nsuid: req.body.nsuid,
-      email: req.body.email,
-      password: hashedPassword,
-     };
-    
-    let role = req.body.role
-    let name= req.body.name;
-    let nsuid= req.body.nsuid;
-    let email= req.body.email;
-    let password= hashedPassword;
-    let idscan = "n/a"
-    let photo = "n/a"
-    let status = "n/a"
-    let verified = "false"
-    let sql = 'INSERT INTO user(nsuid, name, email, password, idscan, photo, status, role, verified) VALUES ('
-    sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +', '+ mysql.escape(role) +', '+ mysql.escape(verified) +');'
-    
-
-     try{
-
-      emailToken = await jwt.sign( {user: nsuid}, EMAIL_SECRET )
-      const url = `http://localhost:5000/confirmation/${emailToken}`
-
-        transporter.sendMail({
-          from: "nsucomplaints.noreply@gmail.com",
-          to: email,
-          subject: "Confirm Email",
-          html: `Please click this email to confirm your email: <a target="_blank" href="${url}">${url}</a>`,
-      })
-      db.query(sql)
-     }catch(e){
-      res.status(808).send()
-     }
-
-    res.status(201).send()
-  } catch {
-    res.status(500).send()
-  }
-})
-
-
-
-app.get('/confirmation/:token', async (req, res) => {
-  try {
-    jwt.verify(req.params.token, EMAIL_SECRET, (err, user)=>{
-      let nsuid = user.user
-      // await models.User.update({ confirmed: true }, { where: { id } });
-      let sql = 'UPDATE user SET verified=\'true\' WHERE nsuid=\''+ nsuid+'\';'
-      // sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +', '+ mysql.escape(role) +', '+ mysql.escape(verified) +');'
-      db.query(sql)
-    });
-    
-    
-  } catch (e) {
-    res.send('error');
-  }
-
-  return res.redirect('http://localhost:3000/login');
+function initial() {
+  Role.create({
+    id: 1,
+    name: "user"
+  });
+ 
+  Role.create({
+    id: 2,
+    name: "moderator"
+  });
+ 
+  Role.create({
+    id: 3,
+    name: "admin"
+  });
+}
+// set port, listen for requests
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
 });
 
-app.post('/Gsignup', async (req, res) => {
-
-  
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const user = { 
-      name: req.body.name,
-      nsuid: req.body.nsuid,
-      email: req.body.email,
-      password: hashedPassword,
-     };
-    
-    let role = "n/a"
-    let name= req.body.name;
-    let nsuid= req.body.nsuid;
-    let email= req.body.email;
-    let password= hashedPassword;
-    let idscan = "n/a"
-    let photo = "n/a"
-    let status = "n/a"
-    let sql = 'INSERT INTO user(nsuid, name, email, password, idscan, photo, status, role) VALUES ('
-    sql = sql + mysql.escape(nsuid) +', '+ mysql.escape(name) +', '+ mysql.escape(email) +', '+ mysql.escape(password) +', '+ mysql.escape(idscan) +', '+ mysql.escape(photo) +', '+ mysql.escape(status) +', '+ mysql.escape(role) +');'
-    db.query(sql)
-    res.status(201).send()
-  } catch {
-    res.status(500).send()
-  }
-})
-
-app.post('/login', async (req, res) => {
-
-  
-  try{
-    
-    let id  = await req.body.nsuid
-    let password = await req.body.password
-    var fetchedData = null
-
-    // let sql = 'SELECT * FROM user WHERE nsuid=\'54321\';'
-    let sql = 'SELECT * FROM user WHERE nsuid=\'' + id + '\';'
-    db.query(sql, async function (err, results, fields){
-      console.log(results);
-      fetchedData = results[0];
-      // res.json(fetchedData).status(201)
-
-      try {
-        if(await bcrypt.compare(password, fetchedData.password)) {
-          
-          const accessToken = await jwt.sign({user: id}, process.env.ACCESS_TOKEN_SECRET)
-          // console.log(accessToken)
-          const at = {accessToken: accessToken}
-          res.json(at.accessToken)
-
-          // res.json(accessToken)
-        } else {
-          res.send('Failed')
-        }
-      } catch {
-        res.status(502)
-      }
-
-    })
-    
-    
-    
-  }catch {
-    res.status(501).send()
-  }
-  
-})
-
-function authenticateToken(req, res, next){
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-  if(token == null) return res.sendStatus(401)
-
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user)=>{
-    if(err) return res.sendStatus(403)
-    req.user = user
-    next()
-  })
-}
-
-app.get('/users', authenticateToken, async (req, res) => {
-  
-  try {
-    let id     = req.body.id
-    let createdby = req.user.user
-    
-    let sql = 'SELECT name, nsuid FROM user '
-
-    db.query(sql, function (err, results, fields){
-      console.log(results);
-      res.json(results).status(201)
-    })
-    
-  } catch {
-    res.status(500).send()
-  }
-})
-
-app.get('/getcomplaint/filed', authenticateToken, async (req, res) => {
-  
-  try {
-    let id     = req.body.id
-    let createdby = req.user.user
-    
-    let sql = 'SELECT * FROM complaint WHERE createdby = \''+ createdby+'\'ORDER BY complaintid DESC'
-
-    db.query(sql, function (err, results, fields){
-      console.log(results);
-      res.json(results).status(201)
-    })
-    
-  } catch {
-    res.status(500).send()
-  }
-})
-
-app.get('/getcomplaint/received', authenticateToken, async (req, res) => {
-  
-  try {
-    let id     = req.body.id
-    let against = req.user.user
-     
-    let sql = 'SELECT * FROM complaint WHERE against = \''+ against+'\'ORDER BY complaintid DESC'
-
-    db.query(sql, function (err, results, fields){
-      console.log(results);
-      res.json(results).status(201)
-    })
-    
-  } catch {
-    res.status(500).send()
-  }
-})
-
-app.post('/createcomplaint', authenticateToken, async (req, res) => {
-  // res.json(req.user)
-  try {
-    let title     = req.body.title
-    let against   = req.body.against
-    let category  = req.body.category
-    let body      = req.body.body
-    let reviewer  = req.body.reviewer
-    let createdby = req.user.user
-
-    let sql = 'INSERT INTO complaint(title, against, category, body, reviewer, createdby) VALUES ('
-    sql = sql + mysql.escape(title) +', '+ mysql.escape(against) +', '+ mysql.escape(category) +', '+ mysql.escape(body) +', '+ mysql.escape(reviewer) +', '+ mysql.escape(createdby) +');'
-    db.query(sql)
-    res.status(201).send()
-  } catch {
-    res.status(500).send()
-  }
-})
-
-// Added on 12/03/2022
-//Comment out if it doesn't work
-
-// app.post('/deletecomplaint', async (req, res) => {
-//   try {
-//     let id     = req.body.id
-    
-//     // let sql = 'DELETE * FROM complaint WHERE'
-//     let sql = 'DELETE FROM complaint WHERE complaintid=\'' + id + '\';'
-    
-
-//     db.query(sql, function (err, results, fields){
-//       console.log(results);
-//       res.status(201).send("Deleted successfully")
-//     })
-    
-//   } catch {
-//     res.status(500).send()
-//   }
-// })
-
-// app.put('/updatecomplaint', async (req, res) => {
-//   try {
-//     let id     = req.body.id
-    
-//     // let sql = 'UPDATE * FROM complaint WHERE'
-//     // sql = sql + mysql.escape(id)
-
-//     db.query(sql, function (err, results, fields){
-//       console.log(results);
-//       res.status(201).send("Deleted successfully")
-//     })
-    
-//   } catch {
-//     res.status(500).send()
-//   }
-// })
-
-//JWT test code
-
-// app.post('/token', (req, res) => {
-//   const refreshToken = req.body.token
-//   if (refreshToken == null) return res.sendStatus(401)
-//   if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
-//   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-//     if (err) return res.sendStatus(403)
-//     const accessToken = generateAccessToken({ name: user.name })
-//     res.json({ accessToken: accessToken })
-//   })
-// })
-
-// function generateAccessToken(user) {
-//   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
-// }
-
-// app.post('/testlogin', (req, res) => {
-//   // Authenticate User
-
-//   const username = req.body.username
-//   const user = { name: username }
-
-//   const accessToken = generateAccessToken(user)
-//   const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
-//   refreshTokens.push(refreshToken)
-//   res.json({ accessToken: accessToken, refreshToken: refreshToken })
-// })
-
-// function authenticateToken(req, res, next) {
-//   const authHeader = req.headers['authorization']
-//   const token = authHeader && authHeader.split(' ')[1]
-//   if (token == null) return res.sendStatus(401)
-
-//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-//     console.log(err)
-//     if (err) return res.sendStatus(403)
-//     req.user = user
-//     next()
-//   })
-// }
