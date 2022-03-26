@@ -116,7 +116,11 @@ exports.Gsignup = async (req, res) => {
   // })
   // const { family_name, given_name, email, picture } = ticket.getPayload();
   
-  let checkUser = await User.findOne({email : email});
+  let checkUser = await User.findOne({
+    where: {
+      nsuid: family_name
+    }
+  });
   if(checkUser){
 
     var authToken = jwt.sign({ id: family_name }, config.secret, {
@@ -215,7 +219,7 @@ exports.signin = (req, res) => {
       if(user.verified == "false"){
         return res.status(512).send({
           accessToken: null,
-          message: "Invalid Password!"
+          message: "User Not Verified!"
         });
       }
 
