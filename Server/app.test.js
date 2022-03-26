@@ -4,8 +4,36 @@ const app = require('./server');
 
 var token = null;
 
-describe("Testing Login POST", () => {
- it("Should post login", async () => {
+describe("Testing Login Endpoint", () => {
+
+  it("User not found!", async () => {
+    await request(app)
+      .post("/login")
+      .set('Content-Type',  'application/json')
+      .send({ nsuid: "1931671642", password: "minhazabedin1" })
+      .expect("Content-Type", /json/)
+      .expect(404)
+  });
+
+  it("Password is Invalid!", async () => {
+    await request(app)
+      .post("/login")
+      .set('Content-Type',  'application/json')
+      .send({ nsuid: "1931672642", password: "minhaz" })
+      .expect("Content-Type", /json/)
+      .expect(401)
+  });
+
+  it("User not verified!", async () => {
+    await request(app)
+      .post("/login")
+      .set('Content-Type',  'application/json')
+      .send({ nsuid: "1931672642", password: "minhaz" })
+      .expect("Content-Type", /json/)
+      .expect(512)
+  });
+
+  it("Login successful!", async () => {
    await request(app)
      .post("/login")
      .set('Content-Type',  'application/json')
@@ -13,11 +41,11 @@ describe("Testing Login POST", () => {
      .expect("Content-Type", /json/)
      .expect(200)
      .expect(function(res) {
-      console.log(res.body.accessToken)
       token = res.body.accessToken;
     })
  });
 });
+
 
 describe("Get all users", () => {
   it("Should get all users", async () => {
