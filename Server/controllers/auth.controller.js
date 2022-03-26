@@ -146,6 +146,16 @@ exports.Gsignup = async (req, res) => {
     
   })
     .then(user => {
+      
+      var authToken2 = jwt.sign({ id: user.nsuid }, config.secret, {
+        expiresIn: 86400 // 24 hours
+      });
+      res.status(200).send({
+        nsuid: user.nsuid,
+        email: user.email,
+        verified: user.verified,
+        accessToken: authToken2
+      });
 
       if (req.body.roles) {
         Role.findAll({
@@ -165,7 +175,7 @@ exports.Gsignup = async (req, res) => {
               email: user.email,
               roles: authorities,
               verified: user.verified,
-              accessToken: authToken2,
+              accessToken: authToken2
             });
           });
         });
