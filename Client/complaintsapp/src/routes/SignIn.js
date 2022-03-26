@@ -12,14 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import { Input } from '@mui/material';
-
-
+import GoogleLogin from 'react-google-login';
 import axios from 'axios';
  
 
@@ -38,6 +31,36 @@ function Copyright(props) {
 
 
 const theme = createTheme();
+
+const handleGFailure = (result) => {
+  alert(result);
+  
+};
+
+const handleGLogin = async (googleData) => {
+  console.log(googleData);
+
+  axios.post('/Gsignup', {
+    token: googleData.tokenId,
+    // nsuid: googleData.profileObj.familyName,
+    // email: googleData.profileObj.email,
+    // password: googleData.profileObj.googleId,
+  })
+  .then(function (response) {
+    console.log(response);
+    console.log(response);
+      sessionStorage.setItem("jwtkey", response.data.accessToken)
+      console.log(sessionStorage.getItem("jwtkey"))
+      window.location.href = '/dashboard';
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  //local storage
+  // const data = await res.json();
+  // setLoginData(data);
+  // localStorage.setItem('loginData', JSON.stringify(data));
+};
 
 
 
@@ -143,7 +166,14 @@ export default function SignIn() {
             />
 
 
-        
+            <GoogleLogin
+              clientId={'689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com'}
+              buttonText="Log in with Google"
+              onSuccess={handleGLogin}
+              onFailure={handleGFailure}
+              hostedDomain="northsouth.edu"
+              cookiePolicy={'single_host_origin'}
+            ></GoogleLogin>
 
             
             <Button

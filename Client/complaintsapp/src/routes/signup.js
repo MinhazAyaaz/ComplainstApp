@@ -66,13 +66,13 @@ export default function SignUp() {
   };
 
   const handleGLogin = async (googleData) => {
-    console.log(googleData.profileObj.name);
+    console.log(googleData);
  
     axios.post('/Gsignup', {
-      name: googleData.profileObj.givenName,
-      nsuid: googleData.profileObj.familyName,
-      email: googleData.profileObj.email,
-      password: googleData.profileObj.googleId,
+      token: googleData.tokenId,
+      // nsuid: googleData.profileObj.familyName,
+      // email: googleData.profileObj.email,
+      // password: googleData.profileObj.googleId,
     })
     .then(function (response) {
       console.log(response);
@@ -177,6 +177,14 @@ export default function SignUp() {
         
     });
 
+    axios.post('/signup/idupload',{
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      params:{
+        "nsuid": data.get('nsuid')
+      }
+    })
     // axios({
     //   method: 'post',
     //   url: '/signup',
@@ -289,15 +297,19 @@ export default function SignUp() {
                 name="password"
             />
 
-            <label htmlFor="icon-button-file">
-            <InputLabel id="demo-simple-select-label">Scan of NSU ID</InputLabel>
-
-            <Input accept="image/*"  id="icon-button-file" type="file"
-            />
+            <form 
+                  value="test"
+                  id='uploadForm' 
+                  action='http://localhost:5000/signup/idupload' 
+                  method='post' 
+                  encType="multipart/form-data" onSubmit={ (event) => { event.preventDefault(); } }>
+            <input type="file" name="idScan" /> 
+                     <input type='submit' value='Upload' /> 
+                        </form>
             <AttachFileIcon/>
 
 
-            </label>
+      
 
 
             {(incompleteError ? (<Typography align="center" color="red"><br/>Required fields cannot be empty.</Typography>):(null))}

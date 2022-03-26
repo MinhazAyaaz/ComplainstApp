@@ -20,11 +20,7 @@ module.exports = function(app) {
   app.post("/login", controller.signin);
   app.post(
     "/Gsignup",
-    [
-      verifySignUp.checkDuplicateNsuidOrEmail,
-      verifySignUp.checkRolesExisted
-    ],
-    controller.signup
+    controller.Gsignup
   );
   app.get(
     "/users",

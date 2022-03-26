@@ -5,7 +5,10 @@ const Role = db.role;
 const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+const { OAuth2Client } = require('google-auth-library');
+
+const client = new OAuth2Client('689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com');
 
 const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
 const transporter = nodemailer.createTransport( {
@@ -24,6 +27,19 @@ const transporter = nodemailer.createTransport( {
 });
 
 exports.signup = (req, res) => {
+  
+  // if(req.files === null){
+  //   return res.status(400).send()
+  // }
+  // const file = req.files.file
+  // file.mv(`${__dirname}/idScan/${file.name}`, err =>{
+  //   if(err){
+  //     return res.status(500).send()
+  //   }
+  //   res.status(69).send
+  // })
+  // return
+  
   // Save User to Database
   User.create({
     nsuid: req.body.nsuid,
@@ -78,6 +94,93 @@ exports.signup = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+exports.Gsignup = async (req, res) => {
+  
+  const { token } = req.body;
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience:'689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com',
+    hd: "northsouth.edu"
+  });
+
+  let family_name = ticket.payload.family_name
+  let given_name = ticket.payload.given_name
+  let email = ticket.payload.email
+  let picture = ticket.payload.picture
+  // return res.send({
+  //   id: family_name,
+  //   name: given_name,
+  //   email: email,
+  //   picture: picture
+  // })
+  // const { family_name, given_name, email, picture } = ticket.getPayload();
+  
+  let checkUser = await User.findOne({email : email});
+  if(checkUser){
+
+    var authToken = jwt.sign({ id: family_name }, config.secret, {
+      expiresIn: 86400 // 24 hours
+    });
+        res.status(200).send({
+          id: checkUser.id,
+          nsuid: checkUser.nsuid,
+          email: checkUser.email,
+          verified: checkUser.verified,
+          accessToken: authToken
+        });
+      ;
+
+    return res.send(999)
+  }
+
+  User.create({
+    nsuid: family_name,
+    email: email,
+    password: "",
+    name: given_name,
+    verified: req.body.verified ? req.body.verified : "false",
+    status:"activated",
+    photo: picture,
+    idscan:"n/a"
+    
+  })
+    .then(user => {
+
+      if (req.body.roles) {
+        Role.findAll({
+          where: {
+            name: {
+              [Op.or]: req.body.roles
+            }
+          }
+        }).then(roles => {
+          user.setRoles(roles).then(() => {
+            
+            var authToken2 = jwt.sign({ id: user.nsuid }, config.secret, {
+              expiresIn: 86400 // 24 hours
+            });
+            res.status(200).send({
+              nsuid: user.nsuid,
+              email: user.email,
+              roles: authorities,
+              verified: user.verified,
+              accessToken: authToken2,
+            });
+          });
+        });
+      } else {
+        // user role = 1
+        user.setRoles([1]).then(() => {
+          res.send({ message: "User was registered successfully!" });
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
 exports.signin = (req, res) => {
   User.findOne({
     where: {
