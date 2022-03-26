@@ -1,46 +1,34 @@
 const request = require("supertest");
+const { response } = require("./server");
 const app = require('./server');
 
-describe("Testing /api", () => {
+var token = null;
 
-   var token = null;
-
-   beforeEach(async () => {
-    request(app)
-      .post('/user/token')
-      .send({ id: "1931461642", password: "$2b$10$Bl3/Qbhw58E1QJQ7tEw.veni5bvfD/mjXlpb2YyiUEdZ/E3JrYdTW" })
-      .end(function(err, res) {
-        token = res.body.token; // Or something    
-      });
-  });
-
-  it("Should get response", async () => {
-    await request(app)
-      .get("/api")
-      .set('Authorization', 'Bearer ' + token)
-      .expect("Content-Type", /json/)
-      .expect(200);
-  });
+describe("Testing Login POST", () => {
+ it("Should post login", async () => {
+   await request(app)
+     .post("/login")
+     .set('Content-Type',  'application/json')
+     .send({ nsuid: "1931672642", password: "minhazabedin1" })
+     .expect("Content-Type", /json/)
+     .expect(200)
+     .expect(function(res) {
+      console.log(res.body.accessToken)
+      token = res.body.accessToken;
+    })
+ });
 });
 
 describe("Get all users", () => {
-
-  var token = null;
-   beforeEach(async () => {
-    request(app)
-      .post('/login')
-      .send({ id: "1931461642", password: "$2b$10$Bl3/Qbhw58E1QJQ7tEw.veni5bvfD/mjXlpb2YyiUEdZ/E3JrYdTW" })
-      .end(function(err, res) {
-        token = res.body.data.token;
-      });
-  });
-
   it("Should get all users", async () => {
     await request(app)
       .get("/users")
-      .set('Authorization', 'Bearer ' + token)
+      .set('x-access-token',token)
       .expect("Content-Type", /json/)
-      .expect(200);
+      .expect(200)
+      .expect(function(res) {
+        console.log(res.body)
+      })
   });
 });
 

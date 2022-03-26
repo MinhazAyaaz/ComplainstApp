@@ -64,9 +64,9 @@ export default function SignIn() {
     })
     .then(function (response) {
       console.log(response);
-      sessionStorage.setItem("jwtkey", response.data)
+      sessionStorage.setItem("jwtkey", response.data.accessToken)
       console.log(sessionStorage.getItem("jwtkey"))
-      window.location.href = '/dashboard';
+      // window.location.href = '/dashboard';
     })
     .catch(function (error) {
       console.log(error);

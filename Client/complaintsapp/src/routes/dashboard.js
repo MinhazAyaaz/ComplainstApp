@@ -48,7 +48,7 @@ export default function Dashboard() {
   async function fetchComplaint (){
     await axios.get('/getcomplaint/filed', {
       headers: {
-        authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
+        "x-access-token": sessionStorage.getItem("jwtkey")
       },
       params: {
         id: 12345
@@ -67,7 +67,7 @@ export default function Dashboard() {
 
     await axios.get('/getcomplaint/received', {
       headers: {
-        authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
+        "x-access-token": sessionStorage.getItem("jwtkey")
       },
       params: {
         id: 12345
@@ -107,7 +107,7 @@ export default function Dashboard() {
   async function fetchUserList (){
     await axios.get('/users', {
       headers: {
-        authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
+        "x-access-token": sessionStorage.getItem("jwtkey")
       },
       params: {
         id: 12345
@@ -165,7 +165,7 @@ export default function Dashboard() {
       reviewer: data.get('reviewer'),
     }, {
       headers: {
-        authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
+        "x-access-token": sessionStorage.getItem("jwtkey")
       },
     }
     )
