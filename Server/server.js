@@ -2,7 +2,7 @@
 
 const bcrypt = require('bcryptjs')
 const mysql = require('mysql')
-
+const fileUpload = require('express-fileupload');
 const jwt = require('jsonwebtoken')
 const express = require("express");
 // const bodyParser = require("body-parser"); /* deprecated */
@@ -14,6 +14,7 @@ var corsOptions = {
   origin: "http://localhost:5001"
 };
 
+app.use(fileUpload())
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json

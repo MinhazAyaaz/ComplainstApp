@@ -6,6 +6,8 @@ const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const nodemailer = require('nodemailer');
+// const fileUpload = require('express-fileupload');
+
 const { OAuth2Client } = require('google-auth-library');
 
 const client = new OAuth2Client('689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com');
@@ -260,8 +262,6 @@ exports.findAll = (req, res) => {
       });
   };
  
-
-
 exports.update = (req, res) => {
   try {
     jwt.verify(req.params.token, EMAIL_SECRET, (err, user)=>{
@@ -278,4 +278,20 @@ exports.update = (req, res) => {
   }
 
   return res.redirect('http://localhost:3000/login');
+  };
+
+exports.uploadId = (req, res) => {
+  if(req.files === null){
+    return res.status(423)
+  }
+
+  const file = req.files.file
+
+  file.mv(`${__dirname}/upload/${file.name}`), (err)=>{
+    if(err){
+      res.status(523)
+    }
+  }
+
+  res.send({ fileName: file.name, filePath: '/uploads/${file.name}'})
   };

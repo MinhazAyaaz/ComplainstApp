@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 
 import App from './App';
+import FileUpload from './components/FileUpload';
 import SignUp from './routes/signup';
 import SignIn from './routes/SignIn';
 import Profile from './routes/profile';
@@ -23,6 +24,7 @@ ReactDOM.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}/>
+      <Route path="/fileupload" element={<FileUpload />}/>
       <Route path="signup" element={<SignUp />}/>
       <Route path="login" element={<SignIn />}/>
       <Route path="dashboard" element={
