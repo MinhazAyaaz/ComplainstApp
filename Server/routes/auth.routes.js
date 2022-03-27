@@ -14,7 +14,7 @@ module.exports = function(app) {
     [
       verifySignUp.checkDuplicateNsuidOrEmail,
       verifySignUp.checkRolesExisted, verifySignUp.checkId,
-      verifySignUp.checkname,verifySignUp.checkpassword
+      verifySignUp.checkname,verifySignUp.checkpassword,verifySignUp.checkemail
       
       
     ],
