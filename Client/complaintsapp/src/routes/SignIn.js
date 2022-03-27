@@ -166,16 +166,10 @@ export default function SignIn() {
             />
 
 
-            <GoogleLogin
-              clientId={'689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com'}
-              buttonText="Log in with Google"
-              onSuccess={handleGLogin}
-              onFailure={handleGFailure}
-              hostedDomain="northsouth.edu"
-              cookiePolicy={'single_host_origin'}
-            ></GoogleLogin>
-
             
+            
+            
+
             <Button
               type="submit"
               fullWidth
@@ -187,12 +181,40 @@ export default function SignIn() {
 
             <Grid container>
 
-              <Grid item>
-                <Link href="/" variant="body2">
-                  {"Have an account? Sign In"}
+              <Grid item xs={12}>
+                <Link href="/signup" variant="body2">
+                  <Typography align="center">
+                    {"Don't have an account? Sign Up"}
+                  </Typography>
                 </Link>
               </Grid>
             </Grid>
+
+            <Typography sx={{ maxWidth: 900,  p: 3,
+                color: '#888',
+                margin: 'auto',
+                borderBottom: 'solid',
+                borderColor: '#888',
+                padding: 1,
+                paddingTop: 2,
+                marginBottom: 2,
+                maxWidth: 1000,
+                flexGrow: 1,
+              }}
+              align="center" /> 
+            
+              <GoogleLogin
+              clientId={'689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com'}
+              buttonText="Log in with Google"
+              onSuccess={handleGLogin}
+              onFailure={handleGFailure}
+              hostedDomain="northsouth.edu"
+              cookiePolicy={'single_host_origin'}
+              className="GoogleButton"
+              >
+                or continue with Google
+              </GoogleLogin>
+
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

@@ -38,4 +38,8 @@ module.exports = function(app) {
     "/confirmation/:token",
     controller.update
   );
+  app.post(
+    "/uploadId",
+    controller.uploadId
+  );
 };
