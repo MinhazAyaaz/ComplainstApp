@@ -45,15 +45,6 @@ checkRolesExisted = (req, res, next) => {
    
   
   }
-  else 
-  {
-    if(req.body.roles=='')
-    {
-      res.status(415).send({
-        message: "Role is required"
-      });
-    }
-  }
 
   next();
 };
@@ -75,14 +66,12 @@ checkname = (req, res, next) => {
 };
 function validateEmail(email) { 
   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  if(re.test(email)){
-      //Email valid. 
-      if(email.indexOf("@northsouth.edu", email.length - "@northsouth.edu".length) !== -1){
-          //VALID
-          return true;
-      }
+  if(re.match(email)){
+      return true;
+     
   }
 }
+
 checkemail = (req, res, next) => {
   
   
@@ -114,7 +103,18 @@ checkpassword = (req, res, next) => {
   
   next();
 };
+checkrole  = (req, res, next) => {
+  
+  
+  if((req.body.roles)=="")
+  {
+    res.sendStatus(585).send({message:"Role required"})
 
+  }
+ 
+  
+  next();
+};
 
 
 const verifySignUp = {
@@ -124,7 +124,8 @@ const verifySignUp = {
   checkId: checkId,
   checkname:checkname,
   checkpassword:checkpassword,
-  checkemail: checkemail
+  checkemail: checkemail,
+  checkrole:checkrole
  
 };
 module.exports = verifySignUp;
