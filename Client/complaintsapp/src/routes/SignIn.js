@@ -89,7 +89,7 @@ export default function SignIn() {
       console.log(response);
       sessionStorage.setItem("jwtkey", response.data.accessToken)
       console.log(sessionStorage.getItem("jwtkey"))
-      // window.location.href = '/dashboard';
+      window.location.href = '/dashboard';
     })
     .catch(function (error) {
       console.log(error);

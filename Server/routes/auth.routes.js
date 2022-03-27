@@ -40,6 +40,7 @@ module.exports = function(app) {
   );
   app.post(
     "/uploadId",
+    [authJwt.verifyToken],
     controller.uploadId
   );
 };
