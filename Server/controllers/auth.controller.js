@@ -284,10 +284,10 @@ exports.uploadId = (req, res) => {
   if(req.files === null){
     return res.status(423)
   }
-
+  nsuid = req.userId;
   const file = req.files.file
 
-  file.mv(`${__dirname}/upload/${file.name}`), (err)=>{
+  file.mv(`${__dirname}/${nsuid}`), (err)=>{
     if(err){
       res.status(523)
     }
