@@ -4,7 +4,7 @@ const app = require('./server');
 
 var token = null;
 
-describe("Testing Login Endpoint", () => {
+describe("Testing /login endpoint", () => {
 
   it("User not found!", async () => {
     await request(app)
@@ -47,8 +47,8 @@ describe("Testing Login Endpoint", () => {
 });
 
 
-describe("Get all users", () => {
-  it("Should get all users", async () => {
+describe("Testing /users endpoint", () => {
+  it("Retrieve all users", async () => {
     await request(app)
       .get("/users")
       .set('x-access-token',token)
@@ -58,6 +58,156 @@ describe("Get all users", () => {
         console.log(res.body)
       })
   });
+
+  it("Error retrieving users, No authentication", async () => {
+    await request(app)
+      .get("/users")
+      .expect("Content-Type", /json/)
+      .expect(403)
+      .expect(function(res) {
+        console.log(res.body)
+      })
+  });
+});
+
+describe("Testing /getcomplaints/filed endpoint", () => {
+  it("Successfully retrieved all filed complaints!", async () => {
+    await request(app)
+      .get("/getcomplaints/filed ")
+      .send({userId: "1931672642"})
+      .set('x-access-token',token)
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .expect(function(res) {
+        console.log(res.body)
+      })
+  });
+
+  it("Could not retrieve all filed complaints!", async () => {
+    await request(app)
+      .get("/getcomplaints/filed")
+      .expect("Content-Type", /json/)
+      .expect(500)
+      .expect(function(res) {
+        console.log(res.body)
+      })
+  });
+});
+
+describe("Testing /getcomplaints/completed endpoint", () => {
+  it("Successfully retrieved all completed complaints!", async () => {
+    await request(app)
+      .get("/getcomplaints/completed ")
+      .set('x-access-token',token)
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .expect(function(res) {
+        console.log(res.body)
+      })
+  });
+
+  it("Could not retrieve all completed complaints!", async () => {
+    await request(app)
+      .get("/getcomplaints/completed")
+      .expect("Content-Type", /json/)
+      .expect(500)
+      .expect(function(res) {
+        console.log(res.body)
+      })
+  });
+});
+
+describe("Testing Signup Endpoint", () => {
+  it("Sign Up is successful!", async () => {
+    await request(app)
+      .post("/signup")
+      .set('Content-Type',  'application/json')
+      .send({ nsuid: "2311672642", email: "2311672642@gmail.com",password: "12345",name:"TestBot1"})
+      .expect("Content-Type", /json/)
+      .expect(200)
+  });
+
+  it("Failed! Username is already in use", async () => {
+    await request(app)
+      .post("/signup")
+      .send({ nsuid: "1931672642", email: "minhazabedin1@gmail.com",password: "minhazabedin1",name:"Minhazul Abedin Ayaaz"})
+      .expect("Content-Type", /json/)
+      .expect(400)
+  });
+
+  it("Failed! Email already in use", async () => {
+   await request(app)
+     .post("/signup")
+     .set('Content-Type',  'application/json')
+     .send({ nsuid: "1931672642", email: "minhazabedin1@gmail.com",password: "minhazabedin1",name:"Minhazul Abedin Ayaaz"})
+     .expect("Content-Type", /json/)
+     .expect(400)
+ });
+
+
+// it("Confirmation Email was sent", async () => {
+//   await request(app)
+//     .post("/signup")
+//     .set('Content-Type',  'application/json')
+//     .send({ nsuid: "1931672642", password: "minhaz" })
+//     .expect("Content-Type", /json/)
+//     .expect(512)
+// });
+
+// it("Role has not been selected", async () => {
+//   await request(app)
+//     .post("/signup")
+//     .set('Content-Type',  'application/json')
+//     .send({ nsuid: "1931672642", email: "minhazabedin1@gmail.com",password: "minhazabedin1",name:"Minhazul Abedin Ayaaz"})
+//     .expect("Content-Type", /json/)
+//     .expect(512)
+// });
+
+// it("NSU has not been scanned", async () => {
+//   await request(app)
+//     .post("/signup")
+//     .set('Content-Type',  'application/json')
+//     .send({ nsuid: "1931672642", email: "minhazabedin1@gmail.com",password: "minhazabedin1",name:"Minhazul Abedin Ayaaz"})
+//     .expect("Content-Type", /json/)
+//     .expect(512)
+// });
+
+});
+
+describe("Testing Create Complaint end point", () => {
+  it("Empty Content Test", async () => {
+    await request(app)
+      .get("/createcomplaint")
+      .set('x-access-token',token)
+      .expect("Content-Type", /json/)
+      .expect(400)
+      .expect(function(res) {
+        console.log(res.body)
+      })
+  });
+
+  it("Complaint successfully created!", async () => {
+    await request(app)
+      .get("/createcomplaint")
+      .set('x-access-token',token)
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .expect(function(res) {
+        console.log(res.body)
+      })
+  });
+
+  it("Complaint did not post!", async () => {
+    await request(app)
+      .get("/createcomplaint")
+      .set('x-access-token',token)
+      .expect("Content-Type", /json/)
+      .expect(500)
+      .expect(function(res) {
+        console.log(res.body)
+      })
+  });
+
 });
 
 
