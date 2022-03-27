@@ -13,11 +13,18 @@ module.exports = function(app) {
     "/signup",
     [
       verifySignUp.checkDuplicateNsuidOrEmail,
-      verifySignUp.checkRolesExisted
+      verifySignUp.checkRolesExisted, verifySignUp.checkId,
+      verifySignUp.checkname,verifySignUp.checkpassword
+      
+      
     ],
     controller.signup
   );
-  app.post("/login", controller.signin);
+  app.post("/login",   [
+   verifySignUp.checkId,verifySignUp.checkpassword
+    
+    
+  ],controller.signin);
   app.post(
     "/Gsignup",
     controller.Gsignup
