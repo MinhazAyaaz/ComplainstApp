@@ -78,6 +78,11 @@ exports.create = async (req, res) => {
 
   };
 
+  let creator = await User.findOne({
+    where: {
+      nsuid: req.userId
+    }
+  });
   let agaisnt = await User.findOne({
     where: {
       nsuid: req.body.against
@@ -103,15 +108,30 @@ exports.create = async (req, res) => {
 
   transporter.sendMail({
     from: "nsucomplaints.noreply@gmail.com",
+    to: creator.email,
+    subject: "Your complaint has been lodged.",
+    html: `<p>A complaint has been filed by you: ${creator.name}, (${creator.nsuid})</p>
+    <h2> Complaint: ${req.body.title}</h2>
+    <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+    `,
+  })
+  transporter.sendMail({
+    from: "nsucomplaints.noreply@gmail.com",
     to: agaisnt.email,
     subject: "A complaint has been made agaisnt you.",
-    html: `A complaint has been filed agaisnt you by: ${req.userId}`,
+    html: `<p>A complaint has been filed agaisnt you by: ${creator.name}, (${creator.nsuid})</p>
+    <h2> Complaint: ${req.body.title}</h2>
+    <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+    `,
   })
   transporter.sendMail({
     from: "nsucomplaints.noreply@gmail.com",
     to: reviewer.email,
     subject: "You are asked to review a complaint",
-    html: `You are asked to review a complaint by: ${req.userId}`,
+    html: `<p>You are asked to review a complaint by: ${creator.name}, (${creator.nsuid})</p>
+    <h2> Complaint: ${req.body.title}</h2>
+    <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+    `,
   })
 };
 

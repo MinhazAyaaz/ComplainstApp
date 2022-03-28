@@ -93,7 +93,7 @@ exports.signup = (req, res) => {
       }
     })
     .catch(err => {
-      res.status(500).send({ message: err.message });
+      res.status(501).send({ message: err.message });
     });
 };
 
@@ -193,7 +193,7 @@ exports.Gsignup = async (req, res) => {
       }
     })
     .catch(err => {
-      res.status(500).send({ message: err.message });
+      res.status(504).send({ message: err.message });
     });
 };
 
@@ -244,7 +244,7 @@ exports.signin = (req, res) => {
       });
     })
     .catch(err => {
-      res.status(500).send({ message: "Error" });
+      res.status(503).send({ message: "Error" });
     });
 };
 exports.findAll = (req, res) => {
@@ -255,7 +255,7 @@ exports.findAll = (req, res) => {
         res.send(data);
       })
       .catch(err => {
-        res.status(500).send({
+        res.status(502).send({
           message:
             err.message || "Some error occurred while retrieving users."
         });

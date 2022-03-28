@@ -64,26 +64,9 @@ checkname = (req, res, next) => {
   
   next();
 };
-function validateEmail(email) { 
-  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  if(re.match(email)){
-      return true;
-     
-  }
-}
 
-checkemail = (req, res, next) => {
-  
-  
-  if(!(validateEmail(req.body.email)))
-  {
-    res.sendStatus(700).send({message:"Invalid email"})
 
-  }
- 
-  
-  next();
-};
+
 
 
 checkpassword = (req, res, next) => {
@@ -124,7 +107,7 @@ const verifySignUp = {
   checkId: checkId,
   checkname:checkname,
   checkpassword:checkpassword,
-  checkemail: checkemail,
+ 
   checkrole:checkrole
  
 };

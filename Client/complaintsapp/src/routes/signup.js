@@ -56,6 +56,8 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [incompleteError, setIncompleteError] = React.useState(false);
   const [nsuidErrorMessage, setNsuidErrorMessage] = React.useState("");
+  const [emailMessage, setEmailMessage] = React.useState(false)
+  const [email, setEmail] = React.useState()
   //check if login data is available locally
   const [loginData, setLoginData] = React.useState(
     localStorage.getItem('loginData')
@@ -170,7 +172,8 @@ export default function SignUp() {
       setNameError(false);
       setIncompleteError(false)
       // window.location.href = '/login';
-
+      setEmail(data.get('email'))
+      setEmailMessage(true)
     })
     .catch(function (error) {
       console.log(error);
@@ -266,6 +269,8 @@ export default function SignUp() {
             NSU COMPLAINTS // SIGN UP 
           </Typography>
           <br/>
+          {(emailMessage ? (<Typography align="center" color="black"><br/>An email has been sent to {email} please click on the link to activate your account. </Typography>):(null))}
+
           <FormControl fullWidth error={roleError}>
           <InputLabel id="demo-simple-select-label">Role*</InputLabel>
               <Select
@@ -330,7 +335,7 @@ export default function SignUp() {
               autoComplete="email"
               value={formik.values.email}
               onChange={formik.handleChange}
-              error={ formik.touched.email && Boolean(formik.errors.email) && emailError}
+              error={ formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
             />
              <TextField
@@ -345,7 +350,7 @@ export default function SignUp() {
                 name="password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
-                error={ formik.touched.password && Boolean(formik.errors.password) && passwordError}
+                error={ formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
             />
 
