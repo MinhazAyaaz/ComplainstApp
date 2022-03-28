@@ -40,8 +40,6 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-
-
 export default function SignUp() {
   
   const [role, setRole] = React.useState('');

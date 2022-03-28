@@ -42,6 +42,7 @@ describe("Testing /login endpoint", () => {
      .expect(200)
      .expect(function(res) {
       token = res.body.accessToken;
+      console.log(token)
     })
  });
 });
@@ -74,7 +75,7 @@ describe("Testing /getcomplaints/filed endpoint", () => {
   it("Successfully retrieved all filed complaints!", async () => {
     await request(app)
       .get("/getcomplaints/filed ")
-      .send({userId: "1931672642"})
+      .send({tokenid: token})
       .set('x-access-token',token)
       .expect("Content-Type", /json/)
       .expect(200)
@@ -98,6 +99,7 @@ describe("Testing /getcomplaints/completed endpoint", () => {
   it("Successfully retrieved all completed complaints!", async () => {
     await request(app)
       .get("/getcomplaints/completed ")
+      .send({against: "1931672642"})
       .set('x-access-token',token)
       .expect("Content-Type", /json/)
       .expect(200)
