@@ -21,7 +21,7 @@ module.exports = function(app) {
     controller.signup
   );
   app.post("/login",   [
-   verifySignUp.checkId,verifySignUp.checkpassword
+   verifySignUp.checkId,
     
     
   ],controller.signin);
@@ -33,6 +33,11 @@ module.exports = function(app) {
     "/users",
     [authJwt.verifyToken] ,
     controller.findAll
+  );
+  app.get(
+    "/idStatus",
+    [authJwt.verifyToken] ,
+    controller.findID
   );
   app.get(
     "/confirmation/:token",

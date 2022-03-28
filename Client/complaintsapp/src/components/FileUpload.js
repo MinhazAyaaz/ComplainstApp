@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import axios from 'axios';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import PublishIcon from '@mui/icons-material/Publish';
 
 function FileUpload() {
 
@@ -23,28 +25,44 @@ function FileUpload() {
                     "x-access-token": sessionStorage.getItem("jwtkey")
                 }
             })
-
+            
             const {fileName, filePath } = res.data;
             setUploadedFIle({fileName, filePath})
         }catch(e){
             console.log(e)
         }
+        window.location.reload()
     }
   return (
     <>  
-        <h1>Hello</h1>
-        
+
         <form onSubmit={onSubmit}>
-            <div>
-                <input type="file" id="customFile" onChange={onChange}/>
-                    <label htmlFor='customFile'>
-                        {filename}
+            <div >
+                <input className="fileUploadBtn" type="file" id="customFile" onChange={onChange}/>
+                    <label htmlFor="customFile">
+                        { file ? 
+                        <div className="fileUpload">
+                        <img src={URL.createObjectURL(file)} width="200"/>
+                        </div>
+                        :
+                    <div className="fileUpload">
+                            <UploadFileIcon sx={{width: 100, height: 100, color: '#1cacd4'}}/>
+                            <p>Drag and drop your <b> scanned ID</b></p>
+                
+                            <p>or <b>Click Here </b> to upload it</p>
+                        </div>
+                    }
+                        
                     </label>
+
             </div>
-            <input type='submit' value='Upload'/>
-        </form>
-        
-    </>
+            <div className="uploadAction">
+                <p><b>File: </b>{filename}</p>
+                <button type='submit' value='Upload'> <PublishIcon/> Upload </button>
+            </div>
+             </form>
+    
+    </> 
   )
 }
 

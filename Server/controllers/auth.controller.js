@@ -262,6 +262,20 @@ exports.findAll = (req, res) => {
       });
   };
  
+  exports.findID = async (req, res) => {
+    
+  
+    let checkUser = await User.findOne({
+      where: {
+        nsuid: req.userId
+      }
+    });
+    if(checkUser.idscan == "n/a")
+      res.send({findID : false})
+    else
+      res.send({findID : true})
+  };
+
 exports.update = (req, res) => {
   try {
     jwt.verify(req.params.token, EMAIL_SECRET, (err, user)=>{
@@ -287,11 +301,13 @@ exports.uploadId = (req, res) => {
   nsuid = req.userId;
   const file = req.files.file
 
-  file.mv(`${__dirname}/${nsuid}`), (err)=>{
+  file.mv(`${__dirname}/upload/${nsuid}.jpg`), (err)=>{
     if(err){
       res.status(523)
     }
   }
+  let filePath = `${__dirname}/upload/${nsuid}.jpg`
+  User.update({idscan: filePath }, {where: {nsuid: nsuid}})
 
-  res.send({ fileName: file.name, filePath: '/uploads/${file.name}'})
+  res.send(600)
   };

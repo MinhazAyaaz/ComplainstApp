@@ -1,11 +1,33 @@
 const db = require("../models");
 const Tutorial = db.tutorials;
 const Op = db.Sequelize.Op;
+const User = db.user;
+const nodemailer = require('nodemailer');
+// const fileUpload = require('express-fileupload');
 
+const { OAuth2Client } = require('google-auth-library');
+
+const client = new OAuth2Client('689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com');
+
+const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
+const transporter = nodemailer.createTransport( {
+  service: 'Gmail',
+  auth: {
+    type: 'OAuth2',
+    user: "nsucomplaints.noreply@gmail.com",
+    pass: "NSUcomplaints#123456789",
+    clientId: '189085341403-6jkd13am7e6r6e75os36vmh2g4phunqi.apps.googleusercontent.com',
+    clientSecret: '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',
+    refreshToken: '1//04VfxLkicBl8XCgYIARAAGAQSNwF-L9IrVRnX8xAc9F866a0SOR4E8yEI94o2aych6N2ERoXVaRr-0l1HLOK8dbJCMeagUSZgzlo',
+  },
+  tls: {
+    rejectUnauthorized: false
+}
+});
 
 
 // Create and Save a new Tutorial
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Validate request
   
   if (!req.body.title) {
@@ -56,6 +78,17 @@ exports.create = (req, res) => {
 
   };
 
+  let agaisnt = await User.findOne({
+    where: {
+      nsuid: req.body.against
+    }
+  });
+  let reviewer = await User.findOne({
+    where: {
+      nsuid: req.body.reviewer
+    }
+  });
+
   // Save Tutorial in the database
   Tutorial.create(tutorial)
     .then(data => {
@@ -67,6 +100,19 @@ exports.create = (req, res) => {
           "Some error occurred while creating the complaint."
       });
     });
+
+  transporter.sendMail({
+    from: "nsucomplaints.noreply@gmail.com",
+    to: agaisnt.email,
+    subject: "A complaint has been made agaisnt you.",
+    html: `A complaint has been filed agaisnt you by: ${req.userId}`,
+  })
+  transporter.sendMail({
+    from: "nsucomplaints.noreply@gmail.com",
+    to: reviewer.email,
+    subject: "You are asked to review a complaint",
+    html: `You are asked to review a complaint by: ${req.userId}`,
+  })
 };
 
 // Retrieve all Tutorials from the database.
