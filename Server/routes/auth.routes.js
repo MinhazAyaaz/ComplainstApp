@@ -13,15 +13,14 @@ module.exports = function(app) {
     "/signup",
     [
       verifySignUp.checkDuplicateNsuidOrEmail,
-      verifySignUp.checkRolesExisted, verifySignUp.checkId,
-      verifySignUp.checkname,verifySignUp.checkpassword,verifySignUp.checkemail,verifySignUp.checkrole
-      
+      verifySignUp.checkId,
+      verifySignUp.checkname,verifySignUp.checkemail,verifySignUp.checkpassword,verifySignUp.checkrole
       
     ],
     controller.signup
   );
   app.post("/login",   [
-   verifySignUp.checkId,verifySignUp.checkpassword
+   verifySignUp.checkId,
     
     
   ],controller.signin);
@@ -33,6 +32,11 @@ module.exports = function(app) {
     "/users",
     [authJwt.verifyToken] ,
     controller.findAll
+  );
+  app.get(
+    "/idStatus",
+    [authJwt.verifyToken] ,
+    controller.findID
   );
   app.get(
     "/confirmation/:token",

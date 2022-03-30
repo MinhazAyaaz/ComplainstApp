@@ -19,9 +19,9 @@ import axios from 'axios';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      {'Not really by NSU // '}
+      <Link color="inherit" href="/">
+        NSU Complaints
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -67,6 +67,12 @@ const handleGLogin = async (googleData) => {
 export default function SignIn() {
   
   const [role, setRole] = React.useState('');
+  const [nsuidError, setNsuidError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
+  const [accountError, setAccountError] = React.useState(false);
+  const [nsuidErrorMessage, setNsuidErrorMessage] = React.useState('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [accountErrorMessage, setAccountErrorMessage] = React.useState('');
 
   const handleChange = (event) => {
     setRole(event.target.value);
@@ -93,6 +99,32 @@ export default function SignIn() {
     })
     .catch(function (error) {
       console.log(error);
+      let errorCode = error.response.status;
+
+      if(errorCode == 601){
+        setNsuidError(true)
+        setNsuidErrorMessage('Incorrect NSU ID')
+      }
+      else{
+        setNsuidError(false)
+        setNsuidErrorMessage('')
+      }
+      if(errorCode == 404){
+        setAccountError(true)
+        setAccountErrorMessage('Account not found')
+      }
+      else{
+        setAccountError(false)
+        setAccountErrorMessage('')
+      }
+      if(errorCode == 401){
+        setPasswordError(true)
+        setPasswordErrorMessage('Incorrect password')
+      }
+      else{
+        setPasswordError(false)
+        setPasswordErrorMessage('')
+      }
 
     });
 
@@ -134,7 +166,7 @@ export default function SignIn() {
           </Avatar>
 
           <Typography component="h1" variant="h5">
-            Log In
+            NSU Complaints Forum
           </Typography>
 
           
@@ -143,6 +175,8 @@ export default function SignIn() {
             
             <TextField
               margin="normal"
+              error={nsuidError || accountError}
+              helperText={nsuidErrorMessage}
               required
               fullWidth
               id="nsuid"
@@ -155,6 +189,8 @@ export default function SignIn() {
 
              <TextField
                 margin="normal"
+                error={passwordError || accountError}
+                helperText={passwordErrorMessage}
                 required
                 fullWidth
                 autoComplete="current-password"
@@ -165,7 +201,7 @@ export default function SignIn() {
                 name="password"
             />
 
-
+{(accountError ? (<Typography align="center" color="red"><br/>{accountErrorMessage}</Typography>):(null))}
             
             
             

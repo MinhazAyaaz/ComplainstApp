@@ -12,13 +12,16 @@ import LockIcon from '@mui/icons-material/Lock';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { Input } from '@mui/material';
+
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 import GoogleLogin from 'react-google-login';
 
@@ -27,9 +30,9 @@ import axios from 'axios';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      {'Not really by NSU // '}
+      <Link color="inherit" href="/">
+        NSU Complaints
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -53,12 +56,51 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [incompleteError, setIncompleteError] = React.useState(false);
   const [nsuidErrorMessage, setNsuidErrorMessage] = React.useState("");
+  const [emailMessage, setEmailMessage] = React.useState(false)
+  const [email, setEmail] = React.useState()
   //check if login data is available locally
   const [loginData, setLoginData] = React.useState(
     localStorage.getItem('loginData')
       ? JSON.parse(localStorage.getItem('loginData'))
       : null
   );
+
+
+    const validationSchema = yup.object({
+    role: yup
+    .string('Enter your role at North South University')
+    .required('Role is required'),
+    name: yup
+      .string('Enter your name')
+      .required('Name is required'),
+    nsuid: yup
+      .string('Enter your NSU ID')
+      .length(10, 'NSU ID should be of 10 characters length')
+      .required('NSU ID  is required'),
+      email: yup
+      .string('Enter your email')
+      .email('Enter a valid email')
+      .required('Email is required'),
+      password: yup
+      .string('Enter your password')
+    .min(8, 'Password should be of minimum 8 characters length')
+    .required('Password is required'),
+  
+  });
+  
+  
+    const formik = useFormik({
+  
+      initialValues: {
+        // email: 'foobar@example.com',
+        // password: 'foobar',
+      },
+      validationSchema: validationSchema,
+      onSubmit: (values) => {
+        alert(JSON.stringify(values, null, 2));
+      },
+    });
+
 
   const handleGFailure = (result) => {
     alert(result);
@@ -96,6 +138,7 @@ export default function SignUp() {
   };
 
   const handleSubmit = (event) => {
+    formik.handleSubmit();
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
@@ -129,7 +172,8 @@ export default function SignUp() {
       setNameError(false);
       setIncompleteError(false)
       // window.location.href = '/login';
-
+      setEmail(data.get('email'))
+      setEmailMessage(true)
     })
     .catch(function (error) {
       console.log(error);
@@ -142,7 +186,7 @@ export default function SignUp() {
       else
         setRoleError(false)
       
-      if(errorCode == 411)
+      if(errorCode == 419)
         setNameError(true)
       else
         setNameError(false)
@@ -157,7 +201,7 @@ export default function SignUp() {
       else
         setEmailError(false)
       
-      if(errorCode == 414)
+      if(errorCode == 560)
         setPasswordError(true)
       else
         setPasswordError(false)
@@ -218,13 +262,15 @@ export default function SignUp() {
           }}
         >
           <Avatar sx={{ m: 3, backgroundColor: '#1976d2' }}>
-            <LockIcon /> 
+            <AccountCircleIcon sx={{width: 40, height: 40}} /> 
           </Avatar>
 
           <Typography component="h1" variant="h5">
             NSU COMPLAINTS // SIGN UP 
           </Typography>
           <br/>
+          {(emailMessage ? (<Typography align="center" color="black"><br/>An email has been sent to {email} please click on the link to activate your account. </Typography>):(null))}
+
           <FormControl fullWidth error={roleError}>
           <InputLabel id="demo-simple-select-label">Role*</InputLabel>
               <Select
@@ -248,7 +294,7 @@ export default function SignUp() {
 
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
-              error={nameError}
+              
               margin="normal"
               required
               fullWidth
@@ -257,10 +303,13 @@ export default function SignUp() {
               name="name"
               autoComplete="name"
               autoFocus
+
+              onChange={formik.handleChange}
+              error={ formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
             />
             <TextField
-              error={nsuidError}
-              helperText={nsuidErrorMessage}
+              
               margin="normal"
               required
               fullWidth
@@ -270,10 +319,12 @@ export default function SignUp() {
               autoComplete="NSUID"
               autoFocus
               inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+              onChange={formik.handleChange}
+              error={ formik.touched.nsuid && Boolean(formik.errors.nsuid)}
+              helperText={formik.touched.nsuid && formik.errors.nsuid}
             />
 
             <TextField
-              error={emailError}
               margin="normal"
               required
               fullWidth
@@ -282,9 +333,12 @@ export default function SignUp() {
               type="email"
               id="email"
               autoComplete="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={ formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
             />
              <TextField
-                error={passwordError}
                 margin="normal"
                 required
                 fullWidth
@@ -293,35 +347,16 @@ export default function SignUp() {
                 id="outlined-password-input"
                 label="Password"
                 type="password"
-           
                 name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={ formik.touched.password && Boolean(formik.errors.password)}
+                helperText={formik.touched.password && formik.errors.password}
             />
-
-            <form 
-                  value="test"
-                  id='uploadForm' 
-                  action='http://localhost:5000/signup/idupload' 
-                  method='post' 
-                  encType="multipart/form-data" onSubmit={ (event) => { event.preventDefault(); } }>
-            <input type="file" name="idScan" /> 
-                     <input type='submit' value='Upload' /> 
-                        </form>
-            <AttachFileIcon/>
-
-
-      
 
 
             {(incompleteError ? (<Typography align="center" color="red"><br/>Required fields cannot be empty.</Typography>):(null))}
 
-            <GoogleLogin
-              clientId={'689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com'}
-              buttonText="Log in with Google"
-              onSuccess={handleGLogin}
-              onFailure={handleGFailure}
-              hostedDomain="northsouth.edu"
-              cookiePolicy={'single_host_origin'}
-            ></GoogleLogin>
 
             <Button
               type="submit"
@@ -334,9 +369,11 @@ export default function SignUp() {
 
             <Grid container>
 
-              <Grid item>
-                <Link href="/signin" variant="body2">
-                  {"Have an account? Sign In"}
+              <Grid item xs={12}>
+                <Link href="/login" variant="body2">
+                  <Typography align="center">
+                    {"Have an account? Log In"}
+                  </Typography>
                 </Link>
               </Grid>
             </Grid>

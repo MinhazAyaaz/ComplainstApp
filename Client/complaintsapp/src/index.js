@@ -23,7 +23,7 @@ import PrivateRoute from './routes/PrivateRoute';
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />}/>
+      <Route path="/" element={<SignIn />}/>
       <Route path="/fileupload" element={<FileUpload />}/>
       <Route path="signup" element={<SignUp />}/>
       <Route path="login" element={<SignIn />}/>

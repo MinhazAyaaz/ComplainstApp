@@ -18,6 +18,10 @@ import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import Autocomplete from '@mui/material/Autocomplete';
 
+import { Dialog } from "@mui/material";
+import { DialogContent } from "@mui/material";
+import FileUpload from '../components/FileUpload';
+
 import axios from 'axios';
 
 import CircularProgress from '@mui/material/CircularProgress';
@@ -31,6 +35,7 @@ const Img = styled('img')({
 
 export default function Dashboard() {
 
+  const [open, setOpen] = useState(true)
   const [backendData, setBackEndData] = useState([])
   const [filedComplaint, setFiledComplaint] = useState([])
   const [receivedComplaint, setReceivedComplaint] = useState([])
@@ -39,8 +44,9 @@ export default function Dashboard() {
   const [formdata, setFormdata] = React.useState('');
   const [studentList, setStudentList] = useState([]);
   const [value, setValue] = useState({name: "", nsuid: ""})
+  const [value2, setValue2] = useState({name: "", nsuid: ""})
   useEffect(()=>{
-
+    checkIdStatus();
       fetchComplaint();
       fetchUserList();
   }, [])
@@ -114,13 +120,7 @@ export default function Dashboard() {
       }
     })
     .then(function (response) {
-      
-      // var tempArray = []
-      // for( var i=0; i<response.data.length; i++){
-      //   tempArray.push(response.data[i])
-      // }
       setStudentList(response.data)
-
       console.log(studentList)
     })
     .catch(function (error) {
@@ -129,8 +129,27 @@ export default function Dashboard() {
     .then(function () {
       // always executed
     });
+  }
 
-    
+  async function checkIdStatus (){
+    await axios.get('/idStatus', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      setOpen(!response.data.findID)
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
   }
 
   const expandForm = () =>{
@@ -154,7 +173,7 @@ export default function Dashboard() {
       against: value.nsuid,
       category: formdata,
       body: data.get('body'),
-      reviewer: data.get('reviewer'),
+      reviewer: value2.nsuid,
     });
     
     axios.post('/createcomplaint', {
@@ -162,7 +181,7 @@ export default function Dashboard() {
       against: value.nsuid,
       category: formdata,
       body: data.get('body'),
-      reviewer: data.get('reviewer'),
+      reviewer: value2.nsuid,
     }, {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
@@ -191,6 +210,14 @@ export default function Dashboard() {
   return (
     <>
       <PrimarySearchAppBar />
+
+      <Dialog open={open}  maxWidth="lg">
+    
+        <DialogContent>
+          <FileUpload/>
+        </DialogContent>
+          
+      </Dialog>
 
       <Card sx={{ maxWidth: 900,  p: 3,
       margin: 'auto',
@@ -278,16 +305,27 @@ export default function Dashboard() {
         :null}
 
         {expanded ?
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="reviewer"
-          label="Who will review it?"
-          type="reviewer"
-          id="reviewer"
-          autoComplete="reviewer"
+        <>
+        {(studentList.length === 0) ? ( <p>Fetching user list</p>) : (
+          <Autocomplete
+          disablePortal
+          value={value2}
+          onChange={(event, newValue) => {
+            setValue2(newValue);
+          }}
+          options={studentList}
+          getOptionLabel={(option) => option.name}
+          sx={{ width: 'max' }}
+          renderOption={(props, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+              {option.name} ({option.nsuid})
+            </Box>
+          )}
+          renderInput={(params) => <TextField {...params} label="Who will review the complaint" />}
+          
         />
+        )}
+        </>
         :null}
 
         {expanded ?
