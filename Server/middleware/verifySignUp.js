@@ -49,28 +49,31 @@ checkRolesExisted = (req, res, next) => {
   next();
 };
 checkId = (req, res, next) => {
-  
-  if(isNaN(req.body.nsuid)) res.status(601).send({message:"Illegal ID "})
-  
 
+  let textid = req.body.nsuid;
+  let lengthid= textid.length;
+  
+  if(isNaN(req.body.nsuid)) res.status(601).send({message:"Illegal ID, ID needs to be a number "})
+  else if(!(lengthid==10))
+  {
+    res.sendStatus(709).send({message:"ID must be 10 characters long"})
+  }
   next();
 };
 
 checkname = (req, res, next) => {
   
-  if(req.body.name == ''){
+  if(req.body.name == null){
     res.sendStatus(419).send({message:"Name is required"})
   }
   
   next();
 };
-function validateEmail(email) { 
-  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  if(re.match(email)){
-      return true;
-     
-  }
-}
+const validateEmail = (email) => {
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  );
+};
 
 checkemail = (req, res, next) => {
   
