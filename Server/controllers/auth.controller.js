@@ -12,7 +12,11 @@ const { OAuth2Client } = require('google-auth-library');
 
 const client = new OAuth2Client('689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com');
 
+//Used to encode and decode JWT for email confirmation link
+//Should probably get this to be an environmental variable
 const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
+
+//Configuration of email host (the account emails are sent from)
 const transporter = nodemailer.createTransport( {
   service: 'Gmail',
   auth: {
@@ -28,19 +32,10 @@ const transporter = nodemailer.createTransport( {
 }
 });
 
+
+//HANDLES ALL SIGN UP FORM RELATED WORK
 exports.signup = (req, res) => {
   
-  // if(req.files === null){
-  //   return res.status(400).send()
-  // }
-  // const file = req.files.file
-  // file.mv(`${__dirname}/idScan/${file.name}`, err =>{
-  //   if(err){
-  //     return res.status(500).send()
-  //   }
-  //   res.status(69).send
-  // })
-  // return
   
   // Save User to Database
   User.create({
@@ -57,10 +52,11 @@ exports.signup = (req, res) => {
     .then(user => {
 
       try{
-
+        //generates confirmation email link
         emailToken = jwt.sign( {user: req.body.nsuid}, EMAIL_SECRET )
         const url = `http://localhost:5000/confirmation/${emailToken}`
   
+          //confirmation email configuration
           transporter.sendMail({
             from: "nsucomplaints.noreply@gmail.com",
             to: req.body.email,
@@ -72,6 +68,7 @@ exports.signup = (req, res) => {
         res.status(808).send()
        }
 
+       //Assign role to the user while signing up
       if (req.body.roles) {
         Role.findAll({
           where: {
@@ -87,6 +84,7 @@ exports.signup = (req, res) => {
         });
       } else {
         // user role = 1
+        // set as default role
         user.setRoles([1]).then(() => {
           res.send({ message: "User was registered successfully!" });
         });
@@ -97,19 +95,25 @@ exports.signup = (req, res) => {
     });
 };
 
-exports.Gsignup = async (req, res) => {
+
+//HANDLES ALL GOOGLE RELATED AUTH
+exports.GoogleSignup = async (req, res) => {
   
   const { token } = req.body;
+
+  //Fetched idToken is used to verify the user using Google's API
+  //hd: northsouth.edu is used to restrict domain to northsouth university
   const ticket = await client.verifyIdToken({
     idToken: token,
     audience:'689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com',
     hd: "northsouth.edu"
   });
 
-  let family_name = ticket.payload.family_name
-  let given_name = ticket.payload.given_name
-  let email = ticket.payload.email
-  let picture = ticket.payload.picture
+  
+  let family_name = ticket.payload.family_name; //nsu id
+  let given_name = ticket.payload.given_name; //user name
+  let email = ticket.payload.email;
+  let picture = ticket.payload.picture;
   // return res.send({
   //   id: family_name,
   //   name: given_name,
@@ -118,13 +122,15 @@ exports.Gsignup = async (req, res) => {
   // })
   // const { family_name, given_name, email, picture } = ticket.getPayload();
   
+
+  //Check if Google account user already exists in database
   let checkUser = await User.findOne({
     where: {
       nsuid: family_name
     }
   });
   if(checkUser){
-
+    //if they exist, just return a verification token
     var authToken = jwt.sign({ id: family_name }, config.secret, {
       expiresIn: 86400 // 24 hours
     });
@@ -137,8 +143,10 @@ exports.Gsignup = async (req, res) => {
         });
       ;
 
-    return res.send(999)
+    return res.send(999);
   }
+
+  //else create a new user in the database with Google information
 
   User.create({
     nsuid: family_name,
@@ -152,7 +160,7 @@ exports.Gsignup = async (req, res) => {
     
   })
     .then(user => {
-      
+      //then send back a verification token
       var authToken2 = jwt.sign({ id: user.nsuid }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
@@ -172,7 +180,7 @@ exports.Gsignup = async (req, res) => {
           }
         }).then(roles => {
           user.setRoles(roles).then(() => {
-            
+            //this probably needs to be removed !important
             var authToken2 = jwt.sign({ id: user.nsuid }, config.secret, {
               expiresIn: 86400 // 24 hours
             });
@@ -197,7 +205,7 @@ exports.Gsignup = async (req, res) => {
     });
 };
 
-exports.signin = (req, res) => {
+exports.login = (req, res) => {
   User.findOne({
     where: {
       nsuid: req.body.nsuid
