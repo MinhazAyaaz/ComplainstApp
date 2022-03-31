@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -38,6 +42,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
 
     private TextInputLayout usernameLayout;
@@ -52,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        AndroidNetworking.initialize(getApplicationContext());
 
         usernameLayout = findViewById(R.id.outlinedTextField);
         passwordLayout = findViewById(R.id.outlinedPassField);
@@ -86,8 +94,25 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
-                startActivity(intent);
+                AndroidNetworking.post("http://192.168.0.106:5000/login")
+                        .addBodyParameter("nsuid", usernameLayout.getEditText().toString())
+                        .addBodyParameter("password", passwordLayout.getEditText().toString())
+                        .setTag("test")
+                        .setPriority(Priority.HIGH)
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.e("Access Token", response.toString());
+                            }
+                            @Override
+                            public void onError(ANError error) {
+                                Log.e("Error", error.toString());
+                            }
+                        });
+
+//                Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
+//                startActivity(intent);
 
             }
         });
@@ -150,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
             usernameLayout.setError("Field can't be empty!");
             return false;
         }
-        else if(!emailInput.contains("@northsouth.edu")){
+        else if(!emailInput.contains("@gmail.com")){
             usernameLayout.setError("Please use a valid NSU email!");
             return false;
         }

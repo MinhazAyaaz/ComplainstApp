@@ -6,6 +6,10 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +35,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +49,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomepageActivity extends AppCompatActivity {
 
     private Button createButton;
+    private ImageButton backButton;
     private RadioGroup filterGroup;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -56,9 +63,31 @@ public class HomepageActivity extends AppCompatActivity {
         filterGroup = findViewById(R.id.filterGrouping);
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.dataView);
+        backButton = findViewById(R.id.imageButton3);
         int selectedId = filterGroup.getCheckedRadioButtonId();
 
         progressBar.setVisibility(View.VISIBLE);
+
+        databaseFunction();
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomepageActivity.this, CreateComplaint.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    public void databaseFunction(){
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.0.106:5000/")
@@ -92,16 +121,7 @@ public class HomepageActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Complaint>> call, Throwable t) {
                 Toast.makeText(HomepageActivity.this,t.getMessage(),Toast.LENGTH_SHORT);
-                createButton.setText(t.getMessage());
                 progressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomepageActivity.this, CreateComplaint.class);
-                startActivity(intent);
             }
         });
 
