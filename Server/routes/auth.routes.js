@@ -15,24 +15,25 @@ module.exports = function(app) {
       verifySignUp.checkDuplicateNsuidOrEmail,
       verifySignUp.checkId,
       verifySignUp.checkname,verifySignUp.checkemail,verifySignUp.checkpassword,verifySignUp.checkrole
-      
     ],
     controller.signup
   );
+
   app.post("/login",   [
    verifySignUp.checkId,
-    
-    
-  ],controller.signin);
+  ],controller.login);
+
   app.post(
     "/Gsignup",
-    controller.Gsignup
+    controller.GoogleSignup
   );
+
   app.get(
     "/users",
     [authJwt.verifyToken] ,
     controller.findAll
   );
+
   app.get(
     "/againstusers",
     [authJwt.verifyToken] ,
@@ -43,10 +44,12 @@ module.exports = function(app) {
     [authJwt.verifyToken] ,
     controller.findID
   );
+
   app.get(
     "/confirmation/:token",
     controller.update
   );
+
   app.post(
     "/uploadId",
     [authJwt.verifyToken],

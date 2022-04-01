@@ -356,7 +356,7 @@ export default function Dashboard() {
   </Card>
       
       {( filedComplaint.length === 0) ? (
-        <p> Wait </p>
+        <p> </p>
       ) : (
         <>
         <Typography sx={{ maxWidth: 900,  p: 3,
@@ -380,7 +380,7 @@ export default function Dashboard() {
 
       
       {( receivedComplaint.length === 0) ? (
-        <CircularProgress />
+        <p></p>
       ) : (
       <>
         <Typography sx={{ maxWidth: 900,  p: 3,
