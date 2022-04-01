@@ -261,6 +261,26 @@ exports.findAll = (req, res) => {
         });
       });
   };
+  exports.findAll2 = (req, res) => {
+    
+  
+    User.findAll({
+      attributes: ['name', 'nsuid'],
+      where: {
+        nsuid: {
+          [Op.ne]: req.body.nsuid
+        }
+      }})
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(509).send({
+          message:
+            err.message || "Some error occurred while retrieving reviewers."
+        });
+      });
+  };
  
   exports.findID = async (req, res) => {
     
