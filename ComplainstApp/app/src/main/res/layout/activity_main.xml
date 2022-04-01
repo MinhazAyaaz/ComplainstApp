@@ -12,14 +12,18 @@
         android:layout_width="297dp"
         android:layout_height="48dp"
         android:layout_marginBottom="90dp"
+        android:background="@android:color/transparent"
         android:backgroundTint="#1C87DC"
+        android:foregroundTint="#00FFFFFF"
+        android:textColorHint="#6A6A6A"
+        app:boxBackgroundColor="@android:color/white"
         app:boxStrokeColor="#1C87DC"
+        app:endIconTint="#1C87DC"
         app:hintTextColor="#1C87DC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:placeholderTextColor="#3A3A3A">
+        app:layout_constraintTop_toBottomOf="@+id/imageView3">
 
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView"
@@ -27,9 +31,8 @@
             android:layout_height="wrap_content"
             android:hint="Role"
             android:inputType="none"
-            android:textColorHighlight="#232323"
-            android:textColorHint="#3A3A3A"
-            android:textColorLink="#232323" />
+            android:textColor="#121212"
+            android:textColorHighlight="#121212" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

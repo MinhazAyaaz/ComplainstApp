@@ -38,7 +38,7 @@
             android:layout_width="303dp"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:translationY="-180dp"
+            android:translationY="-190dp"
             app:boxStrokeColor="#2196F3"
             app:counterEnabled="true"
             app:counterMaxLength="30"
@@ -47,25 +47,25 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/outlinedTextField"
+            app:layout_constraintTop_toBottomOf="@+id/outlinedIdField"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passField"
-                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
                 android:textColor="@color/black"
                 android:textColorLink="#0E0E0E" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/outlinedTextField"
+            android:id="@+id/outlinedIdField"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="303dp"
             android:layout_height="wrap_content"
-            android:hint="Username"
+            android:hint="NSU ID"
             android:translationY="-120dp"
             app:boxStrokeColor="#2196F3"
             app:counterEnabled="true"
@@ -79,7 +79,7 @@
             app:startIconTint="#0E0E0E">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailField"
+                android:id="@+id/idField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"

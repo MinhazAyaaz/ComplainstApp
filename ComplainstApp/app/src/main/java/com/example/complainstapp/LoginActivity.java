@@ -1,6 +1,5 @@
 package com.example.complainstapp;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,10 +13,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -28,25 +25,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.example.complainstapp.databinding.ActivityMainBinding;
 import com.google.android.material.textfield.TextInputLayout;
 
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextInputLayout usernameLayout;
+    private String accessToken;
+    private TextInputLayout idLayout;
     private TextInputLayout passwordLayout;
     private Button loginButton;
     private TextView signUpButton;
@@ -61,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
         AndroidNetworking.initialize(getApplicationContext());
 
-        usernameLayout = findViewById(R.id.outlinedTextField);
+        idLayout = findViewById(R.id.outlinedIdField);
         passwordLayout = findViewById(R.id.outlinedPassField);
         loginButton = findViewById(R.id.button);
         signUpButton = findViewById(R.id.textView4);
@@ -94,25 +86,52 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                AndroidNetworking.post("http://192.168.0.106:5000/login")
-                        .addBodyParameter("nsuid", usernameLayout.getEditText().toString())
-                        .addBodyParameter("password", passwordLayout.getEditText().toString())
+//                AndroidNetworking.get("http://192.168.0.109:5000/api")
+//                        .setTag("test1")
+//                        .setPriority(Priority.LOW)
+//                        .build()
+//                        .getAsJSONObject(new JSONObjectRequestListener() {
+//                            @Override
+//                            public void onResponse(JSONObject response) {
+//                                Log.e("notError",response.toString());
+//                            }
+//                            @Override
+//                            public void onError(ANError error) {
+//                                Log.e("error",error.toString());
+//                            }
+//                        });
+
+                AndroidNetworking.post("http://192.168.0.109:5000/login")
+                        .addBodyParameter("nsuid", idLayout.getEditText().getText().toString())
+                        .addBodyParameter("password", passwordLayout.getEditText().getText().toString())
                         .setTag("test")
                         .setPriority(Priority.HIGH)
                         .build()
                         .getAsJSONObject(new JSONObjectRequestListener() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                Log.e("Access Token", response.toString());
+                                try {
+                                    accessToken = response.getString("accessToken");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
+                                intent.putExtra("token",accessToken);
+                                startActivity(intent);
                             }
                             @Override
                             public void onError(ANError error) {
-                                Log.e("Error", error.toString());
+                                if(error.getErrorCode()==401) {
+                                    Toast.makeText(LoginActivity.this, "Password is incorrect!", Toast.LENGTH_SHORT).show();
+                                }
+                                else if(error.getErrorCode()==512){
+                                    Toast.makeText(LoginActivity.this, "User is not verified!", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Toast.makeText(LoginActivity.this, "An error occurred.Try again!", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
-
-//                Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
-//                startActivity(intent);
 
             }
         });
@@ -120,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse("http://www.google.com"); // missing 'http://' will cause crash
+                Uri uri = Uri.parse("http://192.168.0.109:3000/signup");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
@@ -159,6 +178,13 @@ public class LoginActivity extends AppCompatActivity {
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
                 Uri personPhoto = acct.getPhotoUrl();
+
+                Intent myIntent = new Intent(LoginActivity.this, HomepageActivity.class);
+                startActivity(myIntent);
+                finish();
+            }else {
+                // Signed out, show unauthenticated UI.
+                Toast.makeText(this,"Account does not exist. Please sign up!",Toast.LENGTH_LONG).show();
             }
 
         } catch (ApiException e) {
@@ -169,18 +195,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean validateEmail(){
-        String emailInput = usernameLayout.getEditText().getText().toString().trim();
+        String emailInput = idLayout.getEditText().getText().toString().trim();
 
         if(emailInput.isEmpty()){
-            usernameLayout.setError("Field can't be empty!");
+            idLayout.setError("Field can't be empty!");
             return false;
         }
-        else if(!emailInput.contains("@gmail.com")){
-            usernameLayout.setError("Please use a valid NSU email!");
+        else if(!(emailInput.length()==10)){
+            idLayout.setError("NSU id must be 10 characters long!");
             return false;
         }
         else{
-            usernameLayout.setError(null);
+            idLayout.setError(null);
             return true;
         }
     }
