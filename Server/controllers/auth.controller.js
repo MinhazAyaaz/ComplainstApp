@@ -205,7 +205,10 @@ exports.GoogleSignup = async (req, res) => {
     });
 };
 
+//HANDLES LOGIN FORM FUCNTIONS 
 exports.login = (req, res) => {
+
+  //Look for an account with the ID
   User.findOne({
     where: {
       nsuid: req.body.nsuid
@@ -266,26 +269,6 @@ exports.findAll = (req, res) => {
         res.status(502).send({
           message:
             err.message || "Some error occurred while retrieving users."
-        });
-      });
-  };
-  exports.findAll2 = (req, res) => {
-    
-  
-    User.findAll({
-      attributes: ['name', 'nsuid'],
-      where: {
-        nsuid: {
-          [Op.ne]: req.body.nsuid
-        }
-      }})
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(509).send({
-          message:
-            err.message || "Some error occurred while retrieving reviewers."
         });
       });
   };
