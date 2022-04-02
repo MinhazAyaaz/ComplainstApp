@@ -37,7 +37,7 @@ module.exports = function(app) {
   app.get(
     "/againstusers",
     [authJwt.verifyToken] ,
-    controller.findAll2
+    controller.findUserToComplainAgainst
   );
   app.get(
     "/idStatus",

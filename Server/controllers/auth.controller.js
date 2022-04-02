@@ -269,14 +269,14 @@ exports.findAll = (req, res) => {
         });
       });
   };
-  exports.findAll2 = (req, res) => {
+  exports.findUserToComplainAgainst = (req, res) => {
     
   
     User.findAll({
       attributes: ['name', 'nsuid'],
       where: {
         nsuid: {
-          [Op.ne]: req.body.nsuid
+          [Op.ne]: req.userId
         }
       }})
       .then(data => {

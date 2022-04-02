@@ -111,7 +111,7 @@ export default function Dashboard() {
   }
 
   async function fetchUserList (){
-    await axios.get('/users', {
+    await axios.get('/againstusers', {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
       },
@@ -122,6 +122,7 @@ export default function Dashboard() {
     .then(function (response) {
       setStudentList(response.data)
       console.log(studentList)
+      console.log(response)
     })
     .catch(function (error) {
       console.log(error);
