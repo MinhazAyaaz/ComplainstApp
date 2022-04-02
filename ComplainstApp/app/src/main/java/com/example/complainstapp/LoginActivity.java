@@ -86,21 +86,6 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-//                AndroidNetworking.get("http://192.168.0.109:5000/api")
-//                        .setTag("test1")
-//                        .setPriority(Priority.LOW)
-//                        .build()
-//                        .getAsJSONObject(new JSONObjectRequestListener() {
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                Log.e("notError",response.toString());
-//                            }
-//                            @Override
-//                            public void onError(ANError error) {
-//                                Log.e("error",error.toString());
-//                            }
-//                        });
-
                 AndroidNetworking.post("http://192.168.0.109:5000/login")
                         .addBodyParameter("nsuid", idLayout.getEditText().getText().toString())
                         .addBodyParameter("password", passwordLayout.getEditText().getText().toString())
