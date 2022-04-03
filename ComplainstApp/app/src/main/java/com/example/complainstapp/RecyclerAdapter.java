@@ -14,9 +14,11 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.complaintViewHolder> {
 
     private ArrayList<Complaint> complaints;
+    private final ClickListener clickListener;
 
-    public RecyclerAdapter(ArrayList<Complaint> complaints) {
+    public RecyclerAdapter(ArrayList<Complaint> complaints,ClickListener clickListener) {
         this.complaints = complaints;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -31,7 +33,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.complaintViewHolder viewHolder, int position) {
         viewHolder.bind(complaints.get(position));
-
     }
 
     @Override
@@ -51,6 +52,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
             against = itemView.findViewById(R.id.cardAgainst);
             description = itemView.findViewById(R.id.cardDescription);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(clickListener != null){
+                        int pos = getBindingAdapterPosition();
+
+                        if(pos != RecyclerView.NO_POSITION){
+                            clickListener.onItemClicked(pos);
+                        }
+                    }
+                }
+            });
         }
 
         public void bind(Complaint complaints){

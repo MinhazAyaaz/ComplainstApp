@@ -1,5 +1,5 @@
 package com.example.complainstapp;
 
 public interface ClickListener {
-    void onItemClicked(Complaint complaint);
+    void onItemClicked(int position);
 }

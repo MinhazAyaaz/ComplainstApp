@@ -49,7 +49,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomepageActivity extends AppCompatActivity {
+public class HomepageActivity extends AppCompatActivity implements ClickListener{
 
     private Button createButton;
     private ImageButton backButton;
@@ -57,7 +57,6 @@ public class HomepageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private String accessToken;
-    RecyclerAdapter recyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,6 @@ public class HomepageActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.dataView);
         backButton = findViewById(R.id.imageButton3);
-        int selectedId = filterGroup.getCheckedRadioButtonId();
 
         accessToken = getIntent().getExtras().getString("token");
 
@@ -210,4 +208,9 @@ public class HomepageActivity extends AppCompatActivity {
         moveTaskToBack(false);
     }
 
+
+    @Override
+    public void onItemClicked(int position) {
+
+    }
 }
