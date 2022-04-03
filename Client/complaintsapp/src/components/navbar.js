@@ -14,9 +14,11 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Button } from '@mui/material';
-
-
-
+import { Avatar, Card, CardHeader } from '@mui/material';
+import { Navigate, useNavigate } from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
+import InfoIcon from '@mui/icons-material/Info';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 export default function PrimarySearchAppBar() {
 
@@ -40,6 +42,7 @@ export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
+
   const isMenuOpen = Boolean(anchorEl);
 
 
@@ -57,29 +60,51 @@ export default function PrimarySearchAppBar() {
     
   };
 
+  
+
 
 
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+    <Card>
+      
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        sx={{ width: '550', height: 1000}}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+      >
+        <CardHeader
+        avatar={
+          <Avatar sx={{ width: 50, height: 50,backgroundColor: '#1976d2'}}>
+            X
+          </Avatar>
+        }
+        title={
+          <Typography gutterBottom  component="div">
+          Emon Sarker
+        </Typography>
+        }
+        subheader={"1931461642"}
+        
+      />
+        <MenuItem onClick={()=>{window.location.href = '/profile';}}> <ManageAccountsIcon sx={{paddingRight: 1}}/> View profile</MenuItem>
+        <MenuItem onClick={handleMenuClose}> <InfoIcon  sx={{paddingRight: 1}}/> Contact Support</MenuItem>
+        <MenuItem onClick={handleMenuClose}><LogoutIcon sx={{paddingRight: 1}}/> Log out</MenuItem>
 
-    </Menu>
+      </Menu>
+    </Card>
   );
 
 
