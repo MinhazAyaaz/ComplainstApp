@@ -23,9 +23,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.complainstapp.databinding.ActivityMainBinding;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -49,7 +46,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomepageActivity extends AppCompatActivity implements ClickListener{
+public class HomepageActivity extends AppCompatActivity{
 
     private Button createButton;
     private ImageButton backButton;
@@ -57,6 +54,7 @@ public class HomepageActivity extends AppCompatActivity implements ClickListener
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private String accessToken;
+    private final ArrayList<Complaint> complaintArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +69,6 @@ public class HomepageActivity extends AppCompatActivity implements ClickListener
 
         accessToken = getIntent().getExtras().getString("token");
 
-
-
         progressBar.setVisibility(View.VISIBLE);
 
         AndroidNetworking.get("http://192.168.0.109:5000/getcomplaint/filed")
@@ -83,7 +79,6 @@ public class HomepageActivity extends AppCompatActivity implements ClickListener
                 .getAsJSONArray(new JSONArrayRequestListener(){
                     @Override
                     public void onResponse(JSONArray response) {
-                        ArrayList<Complaint> complaintArrayList = new ArrayList<>();
                         for(int i=0;i<response.length();i++){
                             Complaint tempComplaint = null;
                             try {
@@ -107,10 +102,13 @@ public class HomepageActivity extends AppCompatActivity implements ClickListener
                     }
                 });
 
+
+
         filterGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int selectedId) {
 
+                complaintArrayList.clear();
                 progressBar.setVisibility(View.VISIBLE);
                 if(selectedId == R.id.radioButton3){
                     AndroidNetworking.get("http://192.168.0.109:5000/getcomplaint/filed")
@@ -121,7 +119,6 @@ public class HomepageActivity extends AppCompatActivity implements ClickListener
                             .getAsJSONArray(new JSONArrayRequestListener(){
                                 @Override
                                 public void onResponse(JSONArray response) {
-                                    ArrayList<Complaint> complaintArrayList = new ArrayList<>();
                                     for(int i=0;i<response.length();i++){
                                         Complaint tempComplaint = null;
                                         try {
@@ -154,7 +151,6 @@ public class HomepageActivity extends AppCompatActivity implements ClickListener
                             .getAsJSONArray(new JSONArrayRequestListener(){
                                 @Override
                                 public void onResponse(JSONArray response) {
-                                    ArrayList<Complaint> complaintArrayList = new ArrayList<>();
                                     for(int i=0;i<response.length();i++){
                                         Complaint tempComplaint = null;
                                         try {
@@ -206,11 +202,5 @@ public class HomepageActivity extends AppCompatActivity implements ClickListener
     @Override
     public void onBackPressed() {
         moveTaskToBack(false);
-    }
-
-
-    @Override
-    public void onItemClicked(int position) {
-
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background = "#ffffff">
 
@@ -77,22 +77,15 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/editButton"
+                    android:id="@+id/moreButton"
                     style="?attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="372dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="Edit Complaint"
+                    android:text="Click to see more"
                     android:textColor="#1C87DC" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/deleteButton"
-                    style="?attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Delete Complaint"
-                    android:textColor="#1C87DC" />
             </LinearLayout>
 
         </LinearLayout>
