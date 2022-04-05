@@ -19,6 +19,7 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { Input } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -332,6 +333,9 @@ export default function SignUp() {
               label="Email Address"
               type="email"
               id="email"
+              InputProps={{
+                endAdornment: <InputAdornment position="end">@northsouth.edu</InputAdornment>,
+              }}
               autoComplete="email"
               value={formik.values.email}
               onChange={formik.handleChange}

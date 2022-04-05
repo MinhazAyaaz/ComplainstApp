@@ -1,26 +1,45 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
+
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-
-
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
-import Paper from '@mui/material/Paper';
-import Divider from '@mui/material/Divider';
-import MenuList from '@mui/material/MenuList';
-import LockIcon from '@mui/icons-material/Lock';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import PrimarySearchAppBar from '../components/navbar';
 import Profilecard from '../components/Profilecard';
 import MiniCompCard from '../components/MiniCompCard';
 
+import axios from 'axios';
+
 export default function Profile() {
 
+  useEffect(()=>{
+    
+    fetchUserInfo();
+    
+  }, [])
 
+  async function fetchUserInfo (){
+    await axios.get('/getcomplaint/filed', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      // setFiledComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+
+  }
 
   return (
 
@@ -43,11 +62,11 @@ export default function Profile() {
           </IconButton>
 
             </Box>
-            <Typography component="h1" variant="h5"alignItems={'center'} >
-            Profile
+          <Typography component="h1" variant="h5"alignItems={'center'} >
+            Emon Sarker
           </Typography>
             <Profilecard/>
-            <Typography component="h3" variant="h7"alignItems={'center'} marginTop={5}>
+          <Typography component="h3" variant="h7"alignItems={'center'} marginTop={5}>
             Complaints Filed
           </Typography>
             <MiniCompCard/>

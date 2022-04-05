@@ -45,6 +45,7 @@ export default function Dashboard() {
   const [studentList, setStudentList] = useState([]);
   const [value, setValue] = useState({name: "", nsuid: ""})
   const [value2, setValue2] = useState({name: "", nsuid: ""})
+  
   useEffect(()=>{
     checkIdStatus();
       fetchComplaint();
