@@ -34,11 +34,11 @@ module.exports = function(app) {
     controller.findAll
   );
 
-  // app.get(
-  //   "/againstusers",
-  //   [authJwt.verifyToken] ,
-  //   controller.findAll2
-  // );
+  app.get(
+    "/againstusers",
+    [authJwt.verifyToken] ,
+    controller.findUserToComplainAgainst
+  );
   app.get(
     "/idStatus",
     [authJwt.verifyToken] ,

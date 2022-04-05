@@ -272,6 +272,26 @@ exports.findAll = (req, res) => {
         });
       });
   };
+  exports.findUserToComplainAgainst = (req, res) => {
+    
+  
+    User.findAll({
+      attributes: ['name', 'nsuid'],
+      where: {
+        nsuid: {
+          [Op.ne]: req.userId
+        }
+      }})
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(509).send({
+          message:
+            err.message || "Some error occurred while retrieving reviewers."
+        });
+      });
+  };
  
   exports.findID = async (req, res) => {
     
