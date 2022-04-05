@@ -19,7 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Menu from '@mui/material/Menu';
 
 import Dialogs from './Dialogs';
-import CompCardExpanded from './CompCardExpanded';
+import CompCardReceivedExpanded from './CompCardReceivedExpanded';
 
 import { Alert } from '@mui/material';
 
@@ -38,7 +38,7 @@ const ExpandMore = styled((props) => {
 }));
 
 
-export default function CompCard( fetchedData ) {
+export default function CompCardReceived( fetchedData ) {
 
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
@@ -195,7 +195,7 @@ export default function CompCard( fetchedData ) {
         {( backendData.length === 0) ? (
         <p> Wait </p>
       ) : (
-          <CompCardExpanded data={backendData} />
+          <CompCardReceivedExpanded data={backendData} />
       )}
 
         

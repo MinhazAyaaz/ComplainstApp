@@ -9,7 +9,8 @@ import { MenuItem } from '@mui/material';
 import PrimarySearchAppBar from '../components/navbar';
 import React, {useEffect, useState} from 'react';
 import { styled } from '@mui/material/styles';
-import CreateComplaintCard from '../components/CompCard';
+import CompCard from '../components/CompCard';
+import CompCardReceived from '../components/CompCardReceived';
 
 import { FormControl } from '@mui/material';
 import { InputLabel } from '@mui/material';
@@ -374,7 +375,7 @@ export default function Dashboard() {
        align="center" > Complaints Filed // {filedComplaint.length} posted</Typography>
 
         {filedComplaint.map((data, i) => (
-          <CreateComplaintCard fetchedData={data}/>
+          <CompCard fetchedData={data}/>
         ))}
         </>
       )}
@@ -397,7 +398,7 @@ export default function Dashboard() {
        }}
        align="center" > Complaints Received // {receivedComplaint.length} complaints</Typography>
         {receivedComplaint.map((data, i) => (
-          <CreateComplaintCard fetchedData={data}/>
+          <CompCardReceived fetchedData={data}/>
         ))}
       </>
       )}
