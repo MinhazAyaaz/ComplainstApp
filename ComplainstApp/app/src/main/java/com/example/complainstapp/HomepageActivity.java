@@ -193,6 +193,7 @@ public class HomepageActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomepageActivity.this, CreateComplaint.class);
+                intent.putExtra("token",accessToken);
                 startActivity(intent);
             }
         });
