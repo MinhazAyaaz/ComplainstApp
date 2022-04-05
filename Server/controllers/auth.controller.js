@@ -205,7 +205,10 @@ exports.GoogleSignup = async (req, res) => {
     });
 };
 
+//HANDLES LOGIN FORM FUCNTIONS 
 exports.login = (req, res) => {
+
+  //Look for an account with the ID
   User.findOne({
     where: {
       nsuid: req.body.nsuid
