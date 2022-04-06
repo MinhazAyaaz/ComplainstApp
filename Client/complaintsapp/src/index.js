@@ -19,6 +19,7 @@ import EditPage from './routes/EditPage';
 import Dashboard from './routes/dashboard';
 import CreateComplaint from './routes/CreateComplaint';
 import PrivateRoute from './routes/PrivateRoute';
+import Admin from './routes/Admin';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -33,6 +34,7 @@ ReactDOM.render(
         </PrivateRoute>
       }/>
       <Route path="profile" element={<Profile />}/>
+      <Route path="admin" element={<Admin />}/>
       <Route path="createcomplaint" element={<CreateComplaint />}/>
     </Routes>
   </BrowserRouter>,
