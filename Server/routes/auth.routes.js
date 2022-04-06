@@ -39,6 +39,13 @@ module.exports = function(app) {
     [authJwt.verifyToken] ,
     controller.findUserToComplainAgainst
   );
+
+  app.get(
+    "/findAll",
+    [authJwt.verifyToken] ,
+    controller.findAll
+  );
+
   app.get(
     "/idStatus",
     [authJwt.verifyToken] ,
