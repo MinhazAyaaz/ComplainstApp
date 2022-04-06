@@ -16,9 +16,11 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { Button } from '@mui/material';
 import { Avatar, Card, CardHeader } from '@mui/material';
 import { Navigate, useNavigate } from 'react-router-dom';
+
 import LogoutIcon from '@mui/icons-material/Logout';
 import InfoIcon from '@mui/icons-material/Info';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ForumIcon from '@mui/icons-material/Forum';
 
 export default function PrimarySearchAppBar() {
 
@@ -125,9 +127,10 @@ export default function PrimarySearchAppBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: 'none', sm: 'block' }, '&:hover': {cursor: 'pointer'} }}
+            onClick={()=>{window.location.href = '/dashboard'}}
           >
-            NSU Complaints App
+            <ForumIcon sx={{marginTop: 1}}/> NSU Complaints App
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
