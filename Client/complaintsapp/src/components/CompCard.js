@@ -18,6 +18,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CloseIcon from '@mui/icons-material/Close';
 import Menu from '@mui/material/Menu';
 
+import Comment from '@mui/icons-material/Comment';
+
 import Dialogs from './Dialogs';
 import CompCardExpanded from './CompCardExpanded';
 

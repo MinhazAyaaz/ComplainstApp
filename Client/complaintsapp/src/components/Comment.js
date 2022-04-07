@@ -17,10 +17,10 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CloseIcon from '@mui/icons-material/Close';
 import Menu from '@mui/material/Menu';
-
+import { TextField } from '@mui/material';
 import Dialogs from './Dialogs';
 import CompCardExpanded from './CompCardExpanded';
-
+import { Button } from '@mui/material';
 import { Alert } from '@mui/material';
 
 import axios from 'axios';
@@ -30,7 +30,7 @@ export default function Comment( fetchedData ) {
 
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
-  const [age, setAge] = React.useState('');
+  const [value, setValue] = React.useState('');
   const [backendData, setBackEndData] = React.useState([]);
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -88,8 +88,10 @@ export default function Comment( fetchedData ) {
 
 
   return (
+    <>
+    
     <Card sx={{ maxWidth: 900,  p: 3,
-      margin: 'auto',
+      
       marginTop: 1,
       padding: 3,
       maxWidth: 1000,
@@ -104,50 +106,22 @@ export default function Comment( fetchedData ) {
           </Avatar>
         }
         title={
-          <Typography gutterBottom variant="h5" component="div">
-          {backendData.title}
-        </Typography>
-        }
-        subheader={"Created by: " +fetchedData.fetchedData.createdby}
-        action={
           <>
-              
-              <IconButton
-                aria-label="more"
-                id="long-button"
-                aria-controls={openMenu ? 'long-menu' : undefined}
-                aria-expanded={openMenu ? 'true' : undefined}
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="long-menu"
-                MenuListProps={{
-                  'aria-labelledby': 'long-button',
-                }}
-                anchorEl={anchorEl}
-                open={openMenu}
-                onClose={handleClose}
-                PaperProps={{
-                  style: {
-                    maxHeight: 48 * 4.5,
-                    width: '20ch',
-                  },
-                }}
-              >
-                
-                  <MenuItem onClick={handleClose}>
-                    Edit Complaint
-                  </MenuItem>
-                  <MenuItem onClick={handleDelete}>
-                    Delete Complaint
-                  </MenuItem>
-                
-              </Menu>
-            </>
+          <TextField
+          id="outlined-multiline-flexible"
+          label="Multiline"
+          multiline
+          maxRows={4}
+          value={value}
+          onChange={handleChange}
+          sx={{width: '100%'}}
+        />
+        <Button variant="outlined" sx={{margin: 2,marginLeft: '89%', }}>
+            Post
+          </Button></>
         }
+        
+        
       />
       
       <CardContent>
@@ -173,6 +147,8 @@ export default function Comment( fetchedData ) {
            </CardActions>
 
     </Card>
+    </>
   );
+  
 }
 
