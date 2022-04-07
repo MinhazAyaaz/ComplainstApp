@@ -24,83 +24,97 @@ public final class ActivityComplaintBinding implements ViewBinding {
   private final ConstraintLayout rootView;
 
   @NonNull
-  public final AutoCompleteTextView autoCompleteTextView2;
+  public final AutoCompleteTextView againstField;
 
   @NonNull
-  public final AutoCompleteTextView autoCompleteTextView3;
+  public final ImageButton againstSpeech;
 
   @NonNull
-  public final Button button3;
+  public final ImageButton backButton;
 
   @NonNull
-  public final Button button4;
+  public final AutoCompleteTextView categoryField;
 
   @NonNull
-  public final EditText editTextTextMultiLine;
+  public final ImageButton categorySpeech;
 
   @NonNull
-  public final ImageButton imageButton4;
+  public final TextView complaintAgainst;
 
   @NonNull
-  public final ImageButton imageButton5;
+  public final TextView complaintCategory;
 
   @NonNull
-  public final ImageButton imageButton6;
+  public final TextView complaintDetail;
 
   @NonNull
-  public final ImageButton imageButton7;
+  public final TextView complaintEvidence;
 
   @NonNull
-  public final ImageButton imageButton8;
+  public final TextView complaintReviewer;
 
   @NonNull
-  public final EditText text3;
+  public final TextView complaintTitle;
 
   @NonNull
-  public final TextView textView10;
+  public final EditText detailsField;
 
   @NonNull
-  public final TextView textView5;
+  public final ImageButton detailsSpeech;
 
   @NonNull
-  public final TextView textView6;
+  public final TextView pageTitle;
 
   @NonNull
-  public final TextView textView7;
+  public final ImageButton reviewSpeech;
 
   @NonNull
-  public final TextView textView8;
+  public final AutoCompleteTextView reviewerField;
 
   @NonNull
-  public final TextView textView9;
+  public final Button submitButton;
+
+  @NonNull
+  public final EditText titleField;
+
+  @NonNull
+  public final ImageButton titleSpeech;
+
+  @NonNull
+  public final Button uploadButton;
 
   private ActivityComplaintBinding(@NonNull ConstraintLayout rootView,
-      @NonNull AutoCompleteTextView autoCompleteTextView2,
-      @NonNull AutoCompleteTextView autoCompleteTextView3, @NonNull Button button3,
-      @NonNull Button button4, @NonNull EditText editTextTextMultiLine,
-      @NonNull ImageButton imageButton4, @NonNull ImageButton imageButton5,
-      @NonNull ImageButton imageButton6, @NonNull ImageButton imageButton7,
-      @NonNull ImageButton imageButton8, @NonNull EditText text3, @NonNull TextView textView10,
-      @NonNull TextView textView5, @NonNull TextView textView6, @NonNull TextView textView7,
-      @NonNull TextView textView8, @NonNull TextView textView9) {
+      @NonNull AutoCompleteTextView againstField, @NonNull ImageButton againstSpeech,
+      @NonNull ImageButton backButton, @NonNull AutoCompleteTextView categoryField,
+      @NonNull ImageButton categorySpeech, @NonNull TextView complaintAgainst,
+      @NonNull TextView complaintCategory, @NonNull TextView complaintDetail,
+      @NonNull TextView complaintEvidence, @NonNull TextView complaintReviewer,
+      @NonNull TextView complaintTitle, @NonNull EditText detailsField,
+      @NonNull ImageButton detailsSpeech, @NonNull TextView pageTitle,
+      @NonNull ImageButton reviewSpeech, @NonNull AutoCompleteTextView reviewerField,
+      @NonNull Button submitButton, @NonNull EditText titleField, @NonNull ImageButton titleSpeech,
+      @NonNull Button uploadButton) {
     this.rootView = rootView;
-    this.autoCompleteTextView2 = autoCompleteTextView2;
-    this.autoCompleteTextView3 = autoCompleteTextView3;
-    this.button3 = button3;
-    this.button4 = button4;
-    this.editTextTextMultiLine = editTextTextMultiLine;
-    this.imageButton4 = imageButton4;
-    this.imageButton5 = imageButton5;
-    this.imageButton6 = imageButton6;
-    this.imageButton7 = imageButton7;
-    this.imageButton8 = imageButton8;
-    this.text3 = text3;
-    this.textView10 = textView10;
-    this.textView5 = textView5;
-    this.textView6 = textView6;
-    this.textView7 = textView7;
-    this.textView8 = textView8;
-    this.textView9 = textView9;
+    this.againstField = againstField;
+    this.againstSpeech = againstSpeech;
+    this.backButton = backButton;
+    this.categoryField = categoryField;
+    this.categorySpeech = categorySpeech;
+    this.complaintAgainst = complaintAgainst;
+    this.complaintCategory = complaintCategory;
+    this.complaintDetail = complaintDetail;
+    this.complaintEvidence = complaintEvidence;
+    this.complaintReviewer = complaintReviewer;
+    this.complaintTitle = complaintTitle;
+    this.detailsField = detailsField;
+    this.detailsSpeech = detailsSpeech;
+    this.pageTitle = pageTitle;
+    this.reviewSpeech = reviewSpeech;
+    this.reviewerField = reviewerField;
+    this.submitButton = submitButton;
+    this.titleField = titleField;
+    this.titleSpeech = titleSpeech;
+    this.uploadButton = uploadButton;
   }
 
   @Override
@@ -130,112 +144,131 @@ public final class ActivityComplaintBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.autoCompleteTextView2;
-      AutoCompleteTextView autoCompleteTextView2 = ViewBindings.findChildViewById(rootView, id);
-      if (autoCompleteTextView2 == null) {
+      id = R.id.againstField;
+      AutoCompleteTextView againstField = ViewBindings.findChildViewById(rootView, id);
+      if (againstField == null) {
         break missingId;
       }
 
-      id = R.id.autoCompleteTextView3;
-      AutoCompleteTextView autoCompleteTextView3 = ViewBindings.findChildViewById(rootView, id);
-      if (autoCompleteTextView3 == null) {
+      id = R.id.againstSpeech;
+      ImageButton againstSpeech = ViewBindings.findChildViewById(rootView, id);
+      if (againstSpeech == null) {
         break missingId;
       }
 
-      id = R.id.button3;
-      Button button3 = ViewBindings.findChildViewById(rootView, id);
-      if (button3 == null) {
+      id = R.id.backButton;
+      ImageButton backButton = ViewBindings.findChildViewById(rootView, id);
+      if (backButton == null) {
         break missingId;
       }
 
-      id = R.id.button4;
-      Button button4 = ViewBindings.findChildViewById(rootView, id);
-      if (button4 == null) {
+      id = R.id.categoryField;
+      AutoCompleteTextView categoryField = ViewBindings.findChildViewById(rootView, id);
+      if (categoryField == null) {
         break missingId;
       }
 
-      id = R.id.editTextTextMultiLine;
-      EditText editTextTextMultiLine = ViewBindings.findChildViewById(rootView, id);
-      if (editTextTextMultiLine == null) {
+      id = R.id.categorySpeech;
+      ImageButton categorySpeech = ViewBindings.findChildViewById(rootView, id);
+      if (categorySpeech == null) {
         break missingId;
       }
 
-      id = R.id.imageButton4;
-      ImageButton imageButton4 = ViewBindings.findChildViewById(rootView, id);
-      if (imageButton4 == null) {
+      id = R.id.complaintAgainst;
+      TextView complaintAgainst = ViewBindings.findChildViewById(rootView, id);
+      if (complaintAgainst == null) {
         break missingId;
       }
 
-      id = R.id.imageButton5;
-      ImageButton imageButton5 = ViewBindings.findChildViewById(rootView, id);
-      if (imageButton5 == null) {
+      id = R.id.complaintCategory;
+      TextView complaintCategory = ViewBindings.findChildViewById(rootView, id);
+      if (complaintCategory == null) {
         break missingId;
       }
 
-      id = R.id.imageButton6;
-      ImageButton imageButton6 = ViewBindings.findChildViewById(rootView, id);
-      if (imageButton6 == null) {
+      id = R.id.complaintDetail;
+      TextView complaintDetail = ViewBindings.findChildViewById(rootView, id);
+      if (complaintDetail == null) {
         break missingId;
       }
 
-      id = R.id.imageButton7;
-      ImageButton imageButton7 = ViewBindings.findChildViewById(rootView, id);
-      if (imageButton7 == null) {
+      id = R.id.complaintEvidence;
+      TextView complaintEvidence = ViewBindings.findChildViewById(rootView, id);
+      if (complaintEvidence == null) {
         break missingId;
       }
 
-      id = R.id.imageButton8;
-      ImageButton imageButton8 = ViewBindings.findChildViewById(rootView, id);
-      if (imageButton8 == null) {
+      id = R.id.complaintReviewer;
+      TextView complaintReviewer = ViewBindings.findChildViewById(rootView, id);
+      if (complaintReviewer == null) {
         break missingId;
       }
 
-      id = R.id.text3;
-      EditText text3 = ViewBindings.findChildViewById(rootView, id);
-      if (text3 == null) {
+      id = R.id.complaintTitle;
+      TextView complaintTitle = ViewBindings.findChildViewById(rootView, id);
+      if (complaintTitle == null) {
         break missingId;
       }
 
-      id = R.id.textView10;
-      TextView textView10 = ViewBindings.findChildViewById(rootView, id);
-      if (textView10 == null) {
+      id = R.id.detailsField;
+      EditText detailsField = ViewBindings.findChildViewById(rootView, id);
+      if (detailsField == null) {
         break missingId;
       }
 
-      id = R.id.textView5;
-      TextView textView5 = ViewBindings.findChildViewById(rootView, id);
-      if (textView5 == null) {
+      id = R.id.detailsSpeech;
+      ImageButton detailsSpeech = ViewBindings.findChildViewById(rootView, id);
+      if (detailsSpeech == null) {
         break missingId;
       }
 
-      id = R.id.textView6;
-      TextView textView6 = ViewBindings.findChildViewById(rootView, id);
-      if (textView6 == null) {
+      id = R.id.pageTitle;
+      TextView pageTitle = ViewBindings.findChildViewById(rootView, id);
+      if (pageTitle == null) {
         break missingId;
       }
 
-      id = R.id.textView7;
-      TextView textView7 = ViewBindings.findChildViewById(rootView, id);
-      if (textView7 == null) {
+      id = R.id.reviewSpeech;
+      ImageButton reviewSpeech = ViewBindings.findChildViewById(rootView, id);
+      if (reviewSpeech == null) {
         break missingId;
       }
 
-      id = R.id.textView8;
-      TextView textView8 = ViewBindings.findChildViewById(rootView, id);
-      if (textView8 == null) {
+      id = R.id.reviewerField;
+      AutoCompleteTextView reviewerField = ViewBindings.findChildViewById(rootView, id);
+      if (reviewerField == null) {
         break missingId;
       }
 
-      id = R.id.textView9;
-      TextView textView9 = ViewBindings.findChildViewById(rootView, id);
-      if (textView9 == null) {
+      id = R.id.submitButton;
+      Button submitButton = ViewBindings.findChildViewById(rootView, id);
+      if (submitButton == null) {
         break missingId;
       }
 
-      return new ActivityComplaintBinding((ConstraintLayout) rootView, autoCompleteTextView2,
-          autoCompleteTextView3, button3, button4, editTextTextMultiLine, imageButton4,
-          imageButton5, imageButton6, imageButton7, imageButton8, text3, textView10, textView5,
-          textView6, textView7, textView8, textView9);
+      id = R.id.titleField;
+      EditText titleField = ViewBindings.findChildViewById(rootView, id);
+      if (titleField == null) {
+        break missingId;
+      }
+
+      id = R.id.titleSpeech;
+      ImageButton titleSpeech = ViewBindings.findChildViewById(rootView, id);
+      if (titleSpeech == null) {
+        break missingId;
+      }
+
+      id = R.id.uploadButton;
+      Button uploadButton = ViewBindings.findChildViewById(rootView, id);
+      if (uploadButton == null) {
+        break missingId;
+      }
+
+      return new ActivityComplaintBinding((ConstraintLayout) rootView, againstField, againstSpeech,
+          backButton, categoryField, categorySpeech, complaintAgainst, complaintCategory,
+          complaintDetail, complaintEvidence, complaintReviewer, complaintTitle, detailsField,
+          detailsSpeech, pageTitle, reviewSpeech, reviewerField, submitButton, titleField,
+          titleSpeech, uploadButton);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

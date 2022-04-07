@@ -9,18 +9,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.complainstapp.R;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
 
 public final class ExpandedCardBinding implements ViewBinding {
   @NonNull
-  private final MaterialCardView rootView;
+  private final ConstraintLayout rootView;
 
   @NonNull
   public final TextView ID;
@@ -67,7 +67,7 @@ public final class ExpandedCardBinding implements ViewBinding {
   @NonNull
   public final LinearLayout vertical;
 
-  private ExpandedCardBinding(@NonNull MaterialCardView rootView, @NonNull TextView ID,
+  private ExpandedCardBinding(@NonNull ConstraintLayout rootView, @NonNull TextView ID,
       @NonNull TextView against, @NonNull TextView againstBody, @NonNull TextView category,
       @NonNull TextView categoryBody, @NonNull ImageButton closeButton,
       @NonNull TextView complaintID, @NonNull MaterialButton deleteButton2,
@@ -94,7 +94,7 @@ public final class ExpandedCardBinding implements ViewBinding {
 
   @Override
   @NonNull
-  public MaterialCardView getRoot() {
+  public ConstraintLayout getRoot() {
     return rootView;
   }
 
@@ -209,7 +209,7 @@ public final class ExpandedCardBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ExpandedCardBinding((MaterialCardView) rootView, ID, against, againstBody,
+      return new ExpandedCardBinding((ConstraintLayout) rootView, ID, against, againstBody,
           category, categoryBody, closeButton, complaintID, deleteButton2, detail, detailBody,
           editButton2, evidence, evidenceBody, horizontal, vertical);
     }
