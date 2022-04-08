@@ -158,7 +158,7 @@ export default function SignUp() {
     
 
     axios.post('/signup', {
-      // roles: role,
+      role: role,
       name: data.get('name'),
       nsuid: data.get('nsuid'),
       email: data.get('email'),
@@ -285,8 +285,8 @@ export default function SignUp() {
               >
                 <MenuItem value={'1'}>Student</MenuItem>
                 <MenuItem value={'2'}>Faculty</MenuItem>
-                <MenuItem value={'moderator'}>Admin Employee</MenuItem>
-                <MenuItem value={'3'}>Helping Staff</MenuItem>
+                <MenuItem value={'3'}>Admin Employee</MenuItem>
+                <MenuItem value={'4'}>Helping Staff</MenuItem>
               </Select>
               
                 
@@ -325,7 +325,29 @@ export default function SignUp() {
               helperText={formik.touched.nsuid && formik.errors.nsuid}
             />
 
-            <TextField
+            
+
+            {(role == "4") ?
+
+              <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="email"
+              label="Email Address"
+              type="email"
+              id="email"
+              
+              autoComplete="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={ formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              />
+
+            : 
+            
+              <TextField
               margin="normal"
               required
               fullWidth
@@ -342,6 +364,9 @@ export default function SignUp() {
               error={ formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
             />
+            
+            
+            }
              <TextField
                 margin="normal"
                 required

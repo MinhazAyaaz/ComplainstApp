@@ -19,6 +19,7 @@ import Menu from '@mui/material/Menu';
 
 import DialogContentText from '@mui/material/DialogContentText';
 
+import Comment from "./Comment";
 
 import ListItemText from '@mui/material/ListItemText';
 import EditForm from "./EditForm";
@@ -144,6 +145,7 @@ export default function CompCardExpanded( fetchedData ) {
             </MenuList>
 
         </DialogContent>
+        
         <DialogActions>
          
           <Button onClick={() => setOpen(null)} variant="outlined">
@@ -154,6 +156,7 @@ export default function CompCardExpanded( fetchedData ) {
           </Button>
         </DialogActions>
         
+        <Comment fetchedData={backendData}/>
       </Dialog>
 
       <Dialog open={open && open === "second"}>
@@ -175,8 +178,11 @@ export default function CompCardExpanded( fetchedData ) {
           <Button onClick={() => setOpen(null)} variant="outlined">
             Close
           </Button>
+          
         </DialogActions>
+        
       </Dialog>
+      
     </>
   );
 }

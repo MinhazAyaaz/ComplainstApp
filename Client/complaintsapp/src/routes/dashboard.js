@@ -113,7 +113,9 @@ export default function Dashboard() {
   }
 
   async function fetchUserList (){
-    await axios.get('/againstusers', {
+    //API Endpoint '/findAll' is for testing only
+    //
+    await axios.get('/findAll', {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
       },
