@@ -353,11 +353,12 @@ export default function SignUp() {
               fullWidth
               name="email"
               label="Email Address"
-              type="email"
+              
               id="email"
               InputProps={{
                 endAdornment: <InputAdornment position="end">@northsouth.edu</InputAdornment>,
               }}
+              type="text" pattern="[a-zA-Z0-9-]"
               autoComplete="email"
               value={formik.values.email}
               onChange={formik.handleChange}
