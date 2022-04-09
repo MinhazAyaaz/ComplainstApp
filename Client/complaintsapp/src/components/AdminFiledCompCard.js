@@ -20,8 +20,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import Autocomplete from '@mui/material/Autocomplete';
 import AdminNavbar from '../components/AdminNavbar';
 import TopAdminButtons from '../components/TopAdminButtons';
-import AdminTopCompCard from '../components/AdminTopCompCard';
-import AdminAddAccount from '../components/AdminAddAccount';
+import AdminCompCard from './AdminCompCard';
 
 import { Dialog } from "@mui/material";
 import { DialogContent } from "@mui/material";
@@ -30,7 +29,6 @@ import FileUpload from '../components/FileUpload';
 import axios from 'axios';
 
 import CircularProgress from '@mui/material/CircularProgress';
-import AdminFiledCompCard from '../components/AdminFiledCompCard';
 
 const Img = styled('img')({
   margin: 'auto',
@@ -39,7 +37,7 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-export default function Dashboard() {
+export default function AdminFiledCompCard() {
 
   const [open, setOpen] = useState(true)
   const [backendData, setBackEndData] = useState([])
@@ -198,14 +196,34 @@ export default function Dashboard() {
   
   return (
     <>
-      <AdminNavbar />
-      <TopAdminButtons/>
-      <AdminTopCompCard/>
-      <AdminFiledCompCard/>
-    
-
       
+      {( filedComplaint.length === 0) ? (
+        <p> </p>
+      ) : (
+        <>
+        <Typography sx={{ maxWidth: 900,  p: 3,
+          color: '#888',
+          margin: 'auto',
+          fontSize: 25,
+          borderBottom: 'solid',
+          borderColor: '#888',
+          padding: 1,
+          paddingTop: 3,
+          maxWidth: 1000,
+          flexGrow: 1,
+       }}
+       align="center" > Complaints Filed // {filedComplaint.length} posted</Typography>
+
+        {filedComplaint.map((data, i) => (
+          <AdminCompCard fetchedData={data}/>
+        ))}
+        </>
+      )}
+
      
+
+   
+  
       
     </>
 

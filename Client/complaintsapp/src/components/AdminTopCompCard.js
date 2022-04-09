@@ -20,8 +20,6 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import Autocomplete from '@mui/material/Autocomplete';
 import AdminNavbar from '../components/AdminNavbar';
 import TopAdminButtons from '../components/TopAdminButtons';
-import AdminTopCompCard from '../components/AdminTopCompCard';
-import AdminAddAccount from '../components/AdminAddAccount';
 
 import { Dialog } from "@mui/material";
 import { DialogContent } from "@mui/material";
@@ -30,7 +28,6 @@ import FileUpload from '../components/FileUpload';
 import axios from 'axios';
 
 import CircularProgress from '@mui/material/CircularProgress';
-import AdminFiledCompCard from '../components/AdminFiledCompCard';
 
 const Img = styled('img')({
   margin: 'auto',
@@ -39,7 +36,7 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-export default function Dashboard() {
+export default function () {
 
   const [open, setOpen] = useState(true)
   const [backendData, setBackEndData] = useState([])
@@ -198,14 +195,173 @@ export default function Dashboard() {
   
   return (
     <>
-      <AdminNavbar />
-      <TopAdminButtons/>
-      <AdminTopCompCard/>
-      <AdminFiledCompCard/>
-    
+     
 
       
-     
+
+      <Card sx={{ maxWidth: 900,  p: 3,
+      margin: 'auto',
+      marginTop: 5,
+      maxWidth: 1000,
+      flexGrow: 1,
+       
+      backgroundColor: (theme) =>
+        theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
+    
+
+      <Box id="myForm" component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        
+        <TextField
+          multiline={true}
+          margin="normal"
+          required
+          fullWidth
+          id="title"
+          label="Write a complaint"
+          name="title"
+          autoComplete="title"
+          autoFocus
+          variant="standard"
+          size="medium"
+          onClick={expandForm}
+        />
+
+
+        {expanded ? <>
+          <br/> <br/> 
+        {(studentList.length === 0) ? ( <p>Fetching user list</p>) : (
+          <Autocomplete
+          disablePortal
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+          options={studentList}
+          getOptionLabel={(option) => option.name}
+          sx={{ width: 'max' }}
+          renderOption={(props, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+              {option.name} ({option.nsuid})
+            </Box>
+          )}
+          renderInput={(params) => <TextField {...params} label="Who is the complaint created by" />}
+          
+        />
+        )}
+        <br/> 
+        </>
+        :null}
+        
+        {expanded ? <>
+
+        {(studentList.length === 0) ? ( <p>Fetching user list</p>) : (
+          <Autocomplete
+          disablePortal
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+          options={studentList}
+          getOptionLabel={(option) => option.name}
+          sx={{ width: 'max' }}
+          renderOption={(props, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+              {option.name} ({option.nsuid})
+            </Box>
+          )}
+          renderInput={(params) => <TextField {...params} label="Who is the complaint against" />}
+          
+        />
+        )}
+        <br/> 
+        </>
+        :null}
+        
+
+        {expanded ? 
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Category*</InputLabel>
+            <Select
+              labelId="category"
+              id="category"
+              value={formdata}
+              label="category"
+              onChange={handleChange}
+            >
+              <MenuItem value={"bullying"}>Bullying</MenuItem>
+              <MenuItem value={"sanitation"}>Sanitation</MenuItem>
+              
+            </Select>
+        </FormControl>
+        :null}
+          
+        {expanded ?
+        <TextField
+          multiline={true}
+          margin="normal"
+          required
+          fullWidth
+          name="body"
+          label="body"
+          type="body"
+          id="body"
+          autoComplete="Body"
+          rows={5}
+        />
+        :null}
+
+        {expanded ?
+        <>
+        {(studentList.length === 0) ? ( <p>Fetching user list</p>) : (
+          <Autocomplete
+          disablePortal
+          value={value2}
+          onChange={(event, newValue) => {
+            setValue2(newValue);
+          }}
+          options={studentList}
+          getOptionLabel={(option) => option.name}
+          sx={{ width: 'max' }}
+          renderOption={(props, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+              {option.name} ({option.nsuid})
+            </Box>
+          )}
+          renderInput={(params) => <TextField {...params} label="Who will review the complaint" />}
+          
+        />
+        )}
+        </>
+        :null}
+
+        {expanded ?
+        <div>
+        <Input accept="image/*" label="Evidence" id="icon-button-file" type="file"/>
+        <AttachFileIcon/>
+        </div>
+        :null}
+        
+        {expanded ?
+      <Box sx={{display: "flex",
+      justifyContent: "flex-end",
+                alignItems: "flex-end"}}
+                >
+    <Button  variant="filled" onClick={unExpandForm} >
+        Cancel
+      </Button>
+      <Button  variant="outlined" type="submit" >
+        Submit
+      </Button>
+      </Box>
+      :null}
+        
+      </Box>
+      
+      
+    
+  </Card>
+      
+  
       
     </>
 
