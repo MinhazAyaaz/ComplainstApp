@@ -83,9 +83,10 @@ public class HomepageActivity extends AppCompatActivity{
                             Complaint tempComplaint = null;
                             try {
                                 tempComplaint = new Complaint(response.getJSONObject(i).getString("complaintid"),response.getJSONObject(i).getString("createdAt"),
-                                        response.getJSONObject(i).getString("status"), response.getJSONObject(i).getString("category"),
+                                        response.getJSONObject(i).getString("status"), response.getJSONObject(i).getString("title"),
                                         response.getJSONObject(i).getString("against"),
-                                        response.getJSONObject(i).getString("title"),response.getJSONObject(i).getString("reviewer"));
+                                        response.getJSONObject(i).getString("body"),response.getJSONObject(i).getString("reviewer")
+                                        ,response.getJSONObject(i).getString("category"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -123,9 +124,10 @@ public class HomepageActivity extends AppCompatActivity{
                                         Complaint tempComplaint = null;
                                         try {
                                             tempComplaint = new Complaint(response.getJSONObject(i).getString("complaintid"),response.getJSONObject(i).getString("createdAt"),
-                                                    response.getJSONObject(i).getString("status"), response.getJSONObject(i).getString("category"),
+                                                    response.getJSONObject(i).getString("status"), response.getJSONObject(i).getString("title"),
                                                     response.getJSONObject(i).getString("against"),
-                                                    response.getJSONObject(i).getString("title"),response.getJSONObject(i).getString("reviewer"));
+                                                    response.getJSONObject(i).getString("body"),response.getJSONObject(i).getString("reviewer")
+                                                    ,response.getJSONObject(i).getString("category"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -155,9 +157,10 @@ public class HomepageActivity extends AppCompatActivity{
                                         Complaint tempComplaint = null;
                                         try {
                                             tempComplaint = new Complaint(response.getJSONObject(i).getString("complaintid"),response.getJSONObject(i).getString("createdAt"),
-                                                    response.getJSONObject(i).getString("status"), response.getJSONObject(i).getString("category"),
+                                                    response.getJSONObject(i).getString("status"), response.getJSONObject(i).getString("title"),
                                                     response.getJSONObject(i).getString("against"),
-                                                    response.getJSONObject(i).getString("title"),response.getJSONObject(i).getString("reviewer"));
+                                                    response.getJSONObject(i).getString("body"),response.getJSONObject(i).getString("reviewer")
+                                                    ,response.getJSONObject(i).getString("category"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -174,18 +177,6 @@ public class HomepageActivity extends AppCompatActivity{
                                 }
                             });
                 }
-            }
-        });
-
-
-
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomepageActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
 

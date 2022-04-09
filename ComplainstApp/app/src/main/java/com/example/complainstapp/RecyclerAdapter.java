@@ -1,7 +1,9 @@
 package com.example.complainstapp;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.complaintViewHolder> {
 
     private ArrayList<Complaint> complaints;
+    private Context context;
 
     public RecyclerAdapter(ArrayList<Complaint> complaints) {
         this.complaints = complaints;
@@ -29,7 +32,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
     public complaintViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout,parent,false);
-
+        context = parent.getContext();
         return new complaintViewHolder(view);
     }
 
@@ -47,14 +50,38 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
                 TextView category;
                 TextView against;
                 TextView details;
+                TextView title;
+                TextView reviewer;
+                Button editButton;
+
                 id = dialogView.findViewById(R.id.complaintID);
                 category = dialogView.findViewById(R.id.categoryBody);
                 against = dialogView.findViewById(R.id.againstBody);
                 details = dialogView.findViewById(R.id.detailBody);
+                title = dialogView.findViewById(R.id.titleBody);
+                reviewer = dialogView.findViewById(R.id.reviewerBody);
+                editButton = dialogView.findViewById(R.id.editButton2);
+
                 id.setText(complaint.getId());
-                category.setText(complaint.getTitle());
+                category.setText(complaint.getCategory());
                 against.setText(complaint.getAgainst());
                 details.setText(complaint.getDescription());
+                title.setText(complaint.getTitle());
+                reviewer.setText(complaint.getReviewer());
+
+                editButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context, EditComplaint.class);
+                        intent.putExtra("id",complaint.getId());
+                        intent.putExtra("category",complaint.getCategory());
+                        intent.putExtra("title",complaint.getTitle());
+                        intent.putExtra("details",complaint.getDescription());
+                        intent.putExtra("against",complaint.getAgainst());
+                        intent.putExtra("reviewer",complaint.getReviewer());
+                        context.startActivity(intent);
+                    }
+                });
 
                 builder.setView(dialogView);
                 builder.setCancelable(true);

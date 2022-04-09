@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-49:12
-INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-49:12
-INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-49:12
-INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-49:12
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-51:12
+INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-51:12
+INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-51:12
+INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-51:12
 MERGED from [androidx.databinding:viewbinding:7.1.1] C:\Users\lance\.gradle\caches\transforms-3\ae2599e4a74987886dc4f76ffb5c4294\transformed\jetified-viewbinding-7.1.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.navigation:navigation-fragment:2.4.1] C:\Users\lance\.gradle\caches\transforms-3\507679a219d4adc881e123faa4117419\transformed\navigation-fragment-2.4.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.fragment:fragment-ktx:1.4.1] C:\Users\lance\.gradle\caches\transforms-3\f50c23cb919c3c320c987f824d0345b9\transformed\jetified-fragment-ktx-1.4.1\AndroidManifest.xml:17:1-24:12
@@ -65,20 +65,20 @@ MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\lance\.gradle\ca
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\db5ac1403fbaf44bc52e3997cbd9fc6c\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.print:print:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\da4a8fd8305fa830b475c667828d5e75\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\lance\.gradle\caches\transforms-3\2231a37a94c74f11a0ad2cd9824e9481\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:17:1-24:12
-INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-49:12
-INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-49:12
-INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-51:12
+INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-51:12
+INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-51:12
 	package
 		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:3:5-40
 		INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml
 		INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-49:12
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-51:12
 		INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-49:12
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:1-51:12
 		INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:2:11-69
@@ -89,13 +89,13 @@ MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\lance\.g
 	android:name
 		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:5:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:7:5-78
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:7:5-79
 MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\lance\.gradle\caches\transforms-3\151907348aa5fd7ec6a5414918bf4d4d\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:23:5-79
 MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\lance\.gradle\caches\transforms-3\151907348aa5fd7ec6a5414918bf4d4d\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:23:5-79
 	android:name
 		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:7:22-76
 application
-ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:9:5-47:19
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:9:5-49:19
 MERGED from [com.google.android.material:material:1.5.0] C:\Users\lance\.gradle\caches\transforms-3\7a14b651fa6d80f9bfa00f0dfe2adc04\transformed\material-1.5.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.5.0] C:\Users\lance\.gradle\caches\transforms-3\7a14b651fa6d80f9bfa00f0dfe2adc04\transformed\material-1.5.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.3] C:\Users\lance\.gradle\caches\transforms-3\5e59da9d10208552f786852ef1c0d340\transformed\constraintlayout-2.1.3\AndroidManifest.xml:9:5-20
@@ -125,57 +125,63 @@ MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\lance\.gradle\cach
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.7.0] C:\Users\lance\.gradle\caches\transforms-3\5baff365a97d2c6d520c7f687d9b63d4\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
 	android:supportsRtl
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:15:9-35
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:14:9-35
 	android:label
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:13:9-41
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:12:9-41
 	android:roundIcon
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:14:9-54
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:13:9-54
 	android:icon
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:12:9-43
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:11:9-43
 	android:allowBackup
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:11:9-35
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:10:9-35
 	android:theme
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:16:9-65
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:15:9-65
 	android:usesCleartextTraffic
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:10:9-44
-meta-data#com.google.android.geo.API_KEY
-ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:29:9-31:44
-	android:value
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:31:13-41
-	android:name
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:30:13-58
-activity#com.example.complainstapp.MainActivity
-ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:33:9-43:20
-	android:label
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:36:13-45
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:16:9-44
+activity#com.example.complainstapp.EditComplaint
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:17:9-19:40
 	android:exported
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:35:13-36
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:19:13-37
+	android:name
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:18:13-42
+meta-data#com.google.android.geo.API_KEY
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:31:9-33:44
+	android:value
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:33:13-41
+	android:name
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:32:13-58
+activity#com.example.complainstapp.MainActivity
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:35:9-45:20
+	android:label
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:38:13-45
+	android:exported
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:37:13-36
 	android:theme
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:37:13-72
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:39:13-72
 	android:name
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:34:13-41
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:36:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:38:13-42:29
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:40:13-44:29
 action#android.intent.action.MAIN
-ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:39:17-69
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:41:17-69
 	android:name
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:39:25-66
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:41:25-66
 category#android.intent.category.LAUNCHER
-ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:41:17-77
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:43:17-77
 	android:name
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:41:27-74
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:43:27-74
 activity#com.example.complainstapp.LoginActivity
-ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:44:9-51
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:46:9-51
 	android:name
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:44:19-48
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:46:19-48
 activity#com.example.complainstapp.HomepageActivity
-ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:45:9-54
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:47:9-54
 	android:name
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:45:19-51
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:47:19-51
 activity#com.example.complainstapp.CreateComplaint
-ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:46:9-53
+ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:48:9-53
 	android:name
-		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:46:19-50
+		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:48:19-50
 uses-sdk
 INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml

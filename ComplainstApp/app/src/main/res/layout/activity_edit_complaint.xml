@@ -35,27 +35,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.161" />
 
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="43dp"
-        android:layout_height="38dp"
-        android:background="#00FFFFFF"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.076"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.036"
-        app:srcCompat="@drawable/backicon"
-        app:tint="#121212" />
-
     <TextView
         android:id="@+id/pageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Complaint"
+        android:text="Edit Complaint"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:textColor="#1C87DC"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,15 +51,30 @@
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="296dp"
+        android:layout_width="130dp"
         android:layout_height="45dp"
         android:background="@drawable/round_bg"
-        android:text="Submit"
+        android:text="Save"
         android:textColor="#FFFFFF"
         app:backgroundTint="#1C87DC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
+        app:layout_constraintHorizontal_bias="0.217"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.948" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:background="@drawable/round_bg"
+        android:text="Cancel"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="#1C87DC"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.765"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.948" />

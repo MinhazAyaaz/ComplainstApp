@@ -9,8 +9,9 @@ public class Complaint {
     String against;
     String description;
     String reviewer;
+    String category;
 
-    public Complaint(String id, String date, String status, String title, String against, String description, String reviewer) {
+    public Complaint(String id, String date, String status, String title, String against, String description, String reviewer, String category) {
         this.id = id;
         this.date = date;
         this.status = status;
@@ -18,6 +19,7 @@ public class Complaint {
         this.against = against;
         this.description = description;
         this.reviewer = reviewer;
+        this.category = category;
     }
 
     public String getId() {
@@ -74,5 +76,13 @@ public class Complaint {
 
     public void setReviewer(String reviewer) {
         this.reviewer = reviewer;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

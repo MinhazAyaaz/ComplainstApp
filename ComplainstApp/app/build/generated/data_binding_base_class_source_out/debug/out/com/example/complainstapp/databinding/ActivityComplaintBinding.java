@@ -72,7 +72,7 @@ public final class ActivityComplaintBinding implements ViewBinding {
   public final AutoCompleteTextView reviewerField;
 
   @NonNull
-  public final Button submitButton;
+  public final Button saveButton;
 
   @NonNull
   public final EditText titleField;
@@ -92,7 +92,7 @@ public final class ActivityComplaintBinding implements ViewBinding {
       @NonNull TextView complaintTitle, @NonNull EditText detailsField,
       @NonNull ImageButton detailsSpeech, @NonNull TextView pageTitle,
       @NonNull ImageButton reviewSpeech, @NonNull AutoCompleteTextView reviewerField,
-      @NonNull Button submitButton, @NonNull EditText titleField, @NonNull ImageButton titleSpeech,
+      @NonNull Button saveButton, @NonNull EditText titleField, @NonNull ImageButton titleSpeech,
       @NonNull Button uploadButton) {
     this.rootView = rootView;
     this.againstField = againstField;
@@ -111,7 +111,7 @@ public final class ActivityComplaintBinding implements ViewBinding {
     this.pageTitle = pageTitle;
     this.reviewSpeech = reviewSpeech;
     this.reviewerField = reviewerField;
-    this.submitButton = submitButton;
+    this.saveButton = saveButton;
     this.titleField = titleField;
     this.titleSpeech = titleSpeech;
     this.uploadButton = uploadButton;
@@ -240,9 +240,9 @@ public final class ActivityComplaintBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.submitButton;
-      Button submitButton = ViewBindings.findChildViewById(rootView, id);
-      if (submitButton == null) {
+      id = R.id.saveButton;
+      Button saveButton = ViewBindings.findChildViewById(rootView, id);
+      if (saveButton == null) {
         break missingId;
       }
 
@@ -267,7 +267,7 @@ public final class ActivityComplaintBinding implements ViewBinding {
       return new ActivityComplaintBinding((ConstraintLayout) rootView, againstField, againstSpeech,
           backButton, categoryField, categorySpeech, complaintAgainst, complaintCategory,
           complaintDetail, complaintEvidence, complaintReviewer, complaintTitle, detailsField,
-          detailsSpeech, pageTitle, reviewSpeech, reviewerField, submitButton, titleField,
+          detailsSpeech, pageTitle, reviewSpeech, reviewerField, saveButton, titleField,
           titleSpeech, uploadButton);
     }
     String missingId = rootView.getResources().getResourceName(id);

@@ -1,6 +1,5 @@
 package com.example.complainstapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -51,7 +49,7 @@ public class CreateComplaint extends AppCompatActivity {
         details = findViewById(R.id.detailsField);
         against = findViewById(R.id.againstField);
         reviewer = findViewById(R.id.reviewerField);
-        submitButton = findViewById(R.id.submitButton);
+        submitButton = findViewById(R.id.saveButton);
 
         AndroidNetworking.get("http://192.168.0.109:5000/users")
                 .setTag("test1")

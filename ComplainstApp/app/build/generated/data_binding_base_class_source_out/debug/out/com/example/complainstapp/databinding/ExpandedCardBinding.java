@@ -65,6 +65,18 @@ public final class ExpandedCardBinding implements ViewBinding {
   public final LinearLayout horizontal;
 
   @NonNull
+  public final TextView reviewer;
+
+  @NonNull
+  public final TextView reviewerBody;
+
+  @NonNull
+  public final TextView title;
+
+  @NonNull
+  public final TextView titleBody;
+
+  @NonNull
   public final LinearLayout vertical;
 
   private ExpandedCardBinding(@NonNull ConstraintLayout rootView, @NonNull TextView ID,
@@ -73,7 +85,8 @@ public final class ExpandedCardBinding implements ViewBinding {
       @NonNull TextView complaintID, @NonNull MaterialButton deleteButton2,
       @NonNull TextView detail, @NonNull TextView detailBody, @NonNull MaterialButton editButton2,
       @NonNull TextView evidence, @NonNull TextView evidenceBody, @NonNull LinearLayout horizontal,
-      @NonNull LinearLayout vertical) {
+      @NonNull TextView reviewer, @NonNull TextView reviewerBody, @NonNull TextView title,
+      @NonNull TextView titleBody, @NonNull LinearLayout vertical) {
     this.rootView = rootView;
     this.ID = ID;
     this.against = against;
@@ -89,6 +102,10 @@ public final class ExpandedCardBinding implements ViewBinding {
     this.evidence = evidence;
     this.evidenceBody = evidenceBody;
     this.horizontal = horizontal;
+    this.reviewer = reviewer;
+    this.reviewerBody = reviewerBody;
+    this.title = title;
+    this.titleBody = titleBody;
     this.vertical = vertical;
   }
 
@@ -203,6 +220,30 @@ public final class ExpandedCardBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.reviewer;
+      TextView reviewer = ViewBindings.findChildViewById(rootView, id);
+      if (reviewer == null) {
+        break missingId;
+      }
+
+      id = R.id.reviewerBody;
+      TextView reviewerBody = ViewBindings.findChildViewById(rootView, id);
+      if (reviewerBody == null) {
+        break missingId;
+      }
+
+      id = R.id.title;
+      TextView title = ViewBindings.findChildViewById(rootView, id);
+      if (title == null) {
+        break missingId;
+      }
+
+      id = R.id.titleBody;
+      TextView titleBody = ViewBindings.findChildViewById(rootView, id);
+      if (titleBody == null) {
+        break missingId;
+      }
+
       id = R.id.vertical;
       LinearLayout vertical = ViewBindings.findChildViewById(rootView, id);
       if (vertical == null) {
@@ -211,7 +252,8 @@ public final class ExpandedCardBinding implements ViewBinding {
 
       return new ExpandedCardBinding((ConstraintLayout) rootView, ID, against, againstBody,
           category, categoryBody, closeButton, complaintID, deleteButton2, detail, detailBody,
-          editButton2, evidence, evidenceBody, horizontal, vertical);
+          editButton2, evidence, evidenceBody, horizontal, reviewer, reviewerBody, title, titleBody,
+          vertical);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
