@@ -26,7 +26,7 @@ import { Alert } from '@mui/material';
 import axios from 'axios';
 
 
-export default function CommentView( fetchedData ) {
+export default function Reply( fetchedData ) {
 
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
