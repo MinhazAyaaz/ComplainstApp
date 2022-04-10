@@ -18,6 +18,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CloseIcon from '@mui/icons-material/Close';
 import Menu from '@mui/material/Menu';
 import AdminCompCardExpanded from './AdminCompCardExpanded';
+import SwitchComp from "./SwitchComp";
 import { Button } from '@mui/material';
 
 import Dialogs from './Dialogs';
@@ -125,9 +126,7 @@ export default function AdminCompCard( fetchedData ) {
         action={
           <>
               
-              <Button  variant="outlined">
-            Close Complaint
-          </Button>
+            
               <IconButton
                 aria-label="more"
                 id="long-button"
@@ -138,6 +137,7 @@ export default function AdminCompCard( fetchedData ) {
               >
                 <MoreVertIcon />
               </IconButton>
+              <SwitchComp/>
               <Menu
                 id="long-menu"
                 MenuListProps={{

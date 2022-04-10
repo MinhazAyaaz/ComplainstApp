@@ -270,7 +270,7 @@ export default function AdminAddAccount() {
             NSU COMPLAINTS // SIGN UP 
           </Typography>
           <br/>
-          {(emailMessage ? (<Typography align="center" color="black"><br/>An email has been sent to {email} please click on the link to activate your account. </Typography>):(null))}
+          {(emailMessage ? (<Typography align="center" color="black" sx={{marginBottom:2}}><br/>An email has been sent to {email} please click on the link to activate your account. </Typography>):(null))}
 
           <FormControl fullWidth error={roleError}>
           <InputLabel id="demo-simple-select-label">Role*</InputLabel>

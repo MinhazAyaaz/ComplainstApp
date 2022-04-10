@@ -33,6 +33,7 @@ import AdminNavbar from './AdminNavbar';
 import { CardActionArea } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import AdminAddAccount from './AdminAddAccount';
+import AdminDisableAccountTable from './AdminDisableAccountTable';
 
 const Img = styled('img')({
   margin: 'auto',
@@ -45,6 +46,8 @@ const Img = styled('img')({
 
 export default function TopAdminButtons() {
   const [open, setOpen] = useState();
+  const [open2, setOpen2] = useState();
+ 
  
   
  
@@ -55,11 +58,26 @@ export default function TopAdminButtons() {
     <Dialog open={open && open === "first"} fullWidth="true" maxWidth="lg">
     
     <DialogContent >
-          
-          <AdminAddAccount/>
-          <IconButton onClick={() => setOpen(null)}>
+    <IconButton onClick={() => setOpen(null)}>
                 <CloseIcon />
               </IconButton>
+          
+          <AdminAddAccount/>
+        
+       
+        </DialogContent>
+      
+      
+    </Dialog>
+    <Dialog open={open2 && open2 === "first"} fullWidth="true" maxWidth="lg">
+    
+    <DialogContent >
+    <IconButton onClick={() => setOpen2(null)}>
+                <CloseIcon />
+              </IconButton>
+      
+          <AdminDisableAccountTable/>
+       
         </DialogContent>
       
       
@@ -89,7 +107,7 @@ export default function TopAdminButtons() {
        
         <CardContent>
           
-          <Typography sx={{textAlign:'center'}} variant="h5" color="common.white" >
+          <Typography onClick={() => setOpen2("first")} sx={{textAlign:'center'}} variant="h5" color="common.white" >
             Disable Account
           </Typography>
         </CardContent>

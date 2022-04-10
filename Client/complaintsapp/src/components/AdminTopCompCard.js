@@ -36,7 +36,7 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-export default function () {
+export default function AdminTopCompCard() {
 
   const [open, setOpen] = useState(true)
   const [backendData, setBackEndData] = useState([])
@@ -48,6 +48,8 @@ export default function () {
   const [studentList, setStudentList] = useState([]);
   const [value, setValue] = useState({name: "", nsuid: ""})
   const [value2, setValue2] = useState({name: "", nsuid: ""})
+  const [value3, setValue3] = useState({name: "", nsuid: ""})
+ 
   
   useEffect(()=>{
     
@@ -115,7 +117,7 @@ export default function () {
   }
 
   async function fetchUserList (){
-    await axios.get('/againstusers', {
+    await axios.get('/users', {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
       },
@@ -160,14 +162,16 @@ export default function () {
       category: formdata,
       body: data.get('body'),
       reviewer: value2.nsuid,
+      createdby:value3.nsuid
     });
     
-    axios.post('/createcomplaint', {
+    axios.post('/createcomplaintadmin', {
       title: data.get('title'),
       against: value.nsuid,
       category: formdata,
       body: data.get('body'),
       reviewer: value2.nsuid,
+      createdby: value3.nsuid
     }, {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
@@ -232,9 +236,9 @@ export default function () {
         {(studentList.length === 0) ? ( <p>Fetching user list</p>) : (
           <Autocomplete
           disablePortal
-          value={value}
+          value={value3}
           onChange={(event, newValue) => {
-            setValue(newValue);
+            setValue3(newValue);
           }}
           options={studentList}
           getOptionLabel={(option) => option.name}

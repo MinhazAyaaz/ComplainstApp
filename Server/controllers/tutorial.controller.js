@@ -135,6 +135,123 @@ exports.create = async (req, res) => {
   })
 };
 
+//Create complaint by admin on others behalf
+
+exports.create2 = async (req, res) => {
+  // Validate request
+  
+  if (!req.body.title) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+    
+  }
+
+  else if (!req.body.body) {
+    res.status(404).send({
+      message: "Body can not be empty!"
+    });
+    return;
+  }
+  else if (!req.body.reviewer) {
+    res.status(405).send({
+      message: "Reviewer can not be empty!"
+    });
+    return;
+  }
+  else if (req.body.against==null) {
+    res.status(406).send({
+      message: "Against can not be empty!"
+    });
+    return;
+  }
+  else if (!req.body.category) {
+    res.status(407).send({
+      message: "Category can not be empty!"
+    });
+    return;
+  }
+  
+
+
+
+  // Create a Tutorial
+  const tutorial = {
+    title: req.body.title,
+    against: req.body.against,
+    body: req.body.body,
+    reviewer: req.body.reviewer,
+    category: req.body.category,
+    createdby: req.body.createdby,
+    status: req.body.status ? req.body.status : false
+
+  };
+
+  let creator = await User.findOne({
+    where: {
+      nsuid: req.userId
+    }
+  });
+  let agaisnt = await User.findOne({
+    where: {
+      nsuid: req.body.against
+    }
+  });
+  let reviewer = await User.findOne({
+    where: {
+      nsuid: req.body.reviewer
+    }
+  });
+
+  // Save Tutorial in the database
+  Tutorial.create(tutorial)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          "Some error occurred while creating the complaint."
+      });
+    });
+
+  transporter.sendMail({
+    from: "nsucomplaints.noreply@gmail.com",
+    to: creator.email,
+    subject: "Your complaint has been lodged.",
+    html: `<p>A complaint has been filed by you: ${creator.name}, (${creator.nsuid})</p>
+    <h2> Complaint: ${req.body.title}</h2>
+    <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+    `,
+  })
+  transporter.sendMail({
+    from: "nsucomplaints.noreply@gmail.com",
+    to: agaisnt.email,
+    subject: "A complaint has been made agaisnt you.",
+    html: `<p>A complaint has been filed agaisnt you by: ${creator.name}, (${creator.nsuid})</p>
+    <h2> Complaint: ${req.body.title}</h2>
+    <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+    `,
+  })
+  transporter.sendMail({
+    from: "nsucomplaints.noreply@gmail.com",
+    to: reviewer.email,
+    subject: "You are asked to review a complaint",
+    html: `<p>You are asked to review a complaint by: ${creator.name}, (${creator.nsuid})</p>
+    <h2> Complaint: ${req.body.title}</h2>
+    <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+    `,
+  })
+};
+
+
+
+
+
+
+
+
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
   //res.json(req);

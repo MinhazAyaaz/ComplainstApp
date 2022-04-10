@@ -7,6 +7,7 @@ module.exports = app => {
   
     // Create a new Tutorial
     router.post("/createcomplaint",[authJwt.verifyToken], tutorials.create);
+    router.post("/createcomplaintadmin",[authJwt.verifyToken], tutorials.create2);
    
   
     // Retrieve all Tutorials
