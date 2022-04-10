@@ -1,9 +1,13 @@
 package com.example.complainstapp;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
 
@@ -12,6 +16,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -24,13 +29,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CreateComplaint extends AppCompatActivity {
 
+
+
     private ImageButton backButton;
     private Button submitButton;
+
     private String accessToken;
     private ArrayList<String> userArray;
+    private static final int REQUEST_CODE_SPEECH_INPUT = 1;
+
     private AutoCompleteTextView category;
     private TextView title;
     private TextView details;
@@ -107,13 +118,40 @@ public class CreateComplaint extends AppCompatActivity {
             }
         });
 
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
+
+
     }
 
+    public void speechToText(View view){
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Hi Speak Something");
+        try {
+            startActivityForResult(intent,1);
+        }catch(ActivityNotFoundException e){
+            Toast.makeText(this,e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode){
+            case 1:
+                if(requestCode==RESULT_OK && null!=data){
+
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+
+
+                }
+        }
+    }
 }
