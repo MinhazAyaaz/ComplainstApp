@@ -258,6 +258,7 @@ exports.login = (req, res) => {
       res.status(503).send({ message: "Error" });
     });
 };
+
 exports.findAll = (req, res) => {
     
   
@@ -312,6 +313,41 @@ exports.findAll = (req, res) => {
         });
       });
   };
+  exports.updatedeactiavtionstatus = (req, res) => {
+    User.findAll({
+     
+      where: {
+        nsuid: {
+          [Op.eq]: req.body.nsuid
+        }
+      }})
+      .then(data => {
+        User.update({status: "deactivated"}, {where: {nsuid:req.body.nsuid}})
+        .then(() => {
+          res.send({ message: "Account deactivation successfully!" });
+        });
+      })
+      .catch(err => {
+        res.status(509).send({
+          message:
+            err.message || "Some error in deactivation."
+        });
+      });
+
+    
+   /*  try {
+       User.update({status: "deactivated"}, {where: {nsuid:'0123456789'}})
+      .then(() => {
+        res.send({ message: "Account deactivation successfully!" });
+      });
+      
+      
+    } catch (e) {
+      res.send('error in deactivation');
+    } */
+  };
+  
+ 
  
   exports.findID = async (req, res) => {
     

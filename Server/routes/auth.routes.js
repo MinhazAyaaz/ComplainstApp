@@ -50,6 +50,11 @@ module.exports = function(app) {
     [authJwt.verifyToken] ,
     controller.findAll
   );
+  app.get(
+    "/disableaccount",[authJwt.verifyToken] ,
+    
+    controller.updatedeactiavtionstatus
+  );
 
   app.get(
     "/idStatus",
