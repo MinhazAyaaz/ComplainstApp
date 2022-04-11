@@ -4,6 +4,10 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,6 +45,8 @@ public class CreateComplaint extends AppCompatActivity {
     private String accessToken;
     private ArrayList<String> userArray;
     private static final int REQUEST_CODE_SPEECH_INPUT = 1;
+    private ActivityResultLauncher<Intent> launcher;
+    private String checkButton;
 
     private AutoCompleteTextView category;
     private TextView title;
@@ -48,19 +54,32 @@ public class CreateComplaint extends AppCompatActivity {
     private AutoCompleteTextView against;
     private AutoCompleteTextView reviewer;
 
+    private ImageButton CategorySTT;
+    private ImageButton AgainstSTT;
+    private ImageButton TitleSTT;
+    private ImageButton DetailsSTT;
+    private ImageButton ReviewerSTT;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint);
 
         accessToken = getIntent().getExtras().getString("token");
+
         backButton = findViewById(R.id.backButton);
         category = findViewById(R.id.categoryField);
         title = findViewById(R.id.titleField);
         details = findViewById(R.id.detailsField);
         against = findViewById(R.id.againstField);
         reviewer = findViewById(R.id.reviewerField);
+
         submitButton = findViewById(R.id.saveButton);
+        CategorySTT = findViewById(R.id.categorySpeech);
+        AgainstSTT = findViewById(R.id.againstSpeech);
+        TitleSTT = findViewById(R.id.titleSpeech);
+        DetailsSTT = findViewById(R.id.detailsSpeech);
+        ReviewerSTT = findViewById(R.id.reviewSpeech);
 
         AndroidNetworking.get("http://192.168.0.109:5000/users")
                 .setTag("test1")
@@ -125,33 +144,78 @@ public class CreateComplaint extends AppCompatActivity {
             }
         });
 
+        CategorySTT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                speechToText();
+                checkButton = "category";
+            }
+        });
+
+        TitleSTT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                speechToText();
+                checkButton = "title";
+            }
+        });
+
+        DetailsSTT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                speechToText();
+                checkButton = "details";
+            }
+        });
+
+        AgainstSTT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                speechToText();
+                checkButton = "against";
+            }
+        });
+
+        ReviewerSTT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                speechToText();
+                checkButton = "reviewer";
+            }
+        });
+
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == RESULT_OK && result.getData()!=null && checkButton=="category"){
+                    Intent data = result.getData();
+                    category.setText(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0));
+                }
+                else if(result.getResultCode() == RESULT_OK && result.getData()!=null && checkButton=="title"){
+                    Intent data = result.getData();
+                    title.setText(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0));
+                }
+                else if(result.getResultCode() == RESULT_OK && result.getData()!=null && checkButton=="details"){
+                    Intent data = result.getData();
+                    details.setText(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0));
+                }
+                else if(result.getResultCode() == RESULT_OK && result.getData()!=null && checkButton=="against"){
+                    Intent data = result.getData();
+                    against.setText(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0));
+                }
+                else if(result.getResultCode() == RESULT_OK && result.getData()!=null && checkButton=="reviewer"){
+                    Intent data = result.getData();
+                    reviewer.setText(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0));
+                }
+            }
+        });
 
     }
 
-    public void speechToText(View view){
+    private void speechToText() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Hi Speak Something");
-        try {
-            startActivityForResult(intent,1);
-        }catch(ActivityNotFoundException e){
-            Toast.makeText(this,e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode){
-            case 1:
-                if(requestCode==RESULT_OK && null!=data){
-
-                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-
-
-
-                }
-        }
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Start Speaking");
+        launcher.launch(intent);
     }
 }
