@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
       }
     });
   
-    return Tutorial;
+    return Comments;
 
   };
 

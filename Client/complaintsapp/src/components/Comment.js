@@ -69,15 +69,28 @@ export default function Comment( fetchedData ) {
     setExpanded(!expanded);
   };
 
-  const handleDelete = () => {
+  console.log(backendData.complaintid)
+  const handleSubmit = () => {
     
+    // eslint-disable-next-line no-console
+
+    console.log({
+      comment: value,
+      complaintid: backendData.complaintid,
+    });
     
-    axios.post('/deletecomplaint', {
-      id: backendData.complaintid
-    })
+    axios.post('/createComment', {
+      comment: value,
+      complaintid: backendData.complaintid,
+    }, {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+    }
+    )
     .then(function (response) {
       console.log(response);
-      window.location.reload()
+      
     })
     .catch(function (error) {
       console.log(error);
@@ -116,7 +129,7 @@ export default function Comment( fetchedData ) {
           onChange={handleChange}
           sx={{width: '100%'}}
         />
-        <Button variant="outlined" sx={{margin: 2,marginLeft: '89%', }}>
+        <Button onClick={handleSubmit} variant="outlined" sx={{margin: 2,marginLeft: '89%', }}>
             Post
           </Button></>
         }
