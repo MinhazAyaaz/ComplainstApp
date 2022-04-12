@@ -52,11 +52,18 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function CustomizedSwitches() {
+    const [checked, setChecked] = React.useState(false);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
   return (
+    
     <FormGroup>
       <Stack direction="row" spacing={1} alignItems="center">
         <Typography>Active</Typography>
-        <AntSwitch defaultChecked inputProps={{ "aria-label": "ant design" }} />
+        <AntSwitch checked={checked}
+    onChange={handleChange} inputProps={{ "aria-label": "ant design" }} />
         <Typography>Disabled</Typography>
       </Stack>
     </FormGroup>

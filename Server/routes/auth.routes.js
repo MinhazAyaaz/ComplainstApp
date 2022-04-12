@@ -50,7 +50,7 @@ module.exports = function(app) {
     [authJwt.verifyToken] ,
     controller.findAll
   );
-  app.get(
+  app.put(
     "/disableaccount",[authJwt.verifyToken] ,
     
     controller.updatedeactiavtionstatus
