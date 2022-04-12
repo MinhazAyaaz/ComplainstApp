@@ -295,7 +295,7 @@ exports.createComment = (req, res) => {
   };
 
   exports.fetchComments = (req, res) => {
-    
+    return res.status(200)
     // Save User to Database
     Comments.findAll({
       where: {
