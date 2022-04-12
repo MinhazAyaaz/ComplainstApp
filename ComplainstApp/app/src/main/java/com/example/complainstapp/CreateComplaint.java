@@ -1,6 +1,7 @@
 package com.example.complainstapp;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -47,6 +48,7 @@ public class CreateComplaint extends AppCompatActivity {
     private static final int REQUEST_CODE_SPEECH_INPUT = 1;
     private ActivityResultLauncher<Intent> launcher;
     private String checkButton;
+    private Context context;
 
     private AutoCompleteTextView category;
     private TextView title;
@@ -64,6 +66,9 @@ public class CreateComplaint extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint);
+        context = this;
+
+        userArray = new ArrayList<String>();
 
         accessToken = getIntent().getExtras().getString("token");
 
@@ -92,7 +97,7 @@ public class CreateComplaint extends AppCompatActivity {
                         Log.e("users",response.toString());
                         for(int i=0;i<response.length();i++) {
                             try {
-//                                userArray.add(response.getJSONObject(i).getString("name"));
+                                userArray.add(response.getJSONObject(i).getString("name"));
                                 Log.e("yes",response.getJSONObject(i).getString("name"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -126,7 +131,9 @@ public class CreateComplaint extends AppCompatActivity {
                         .getAsJSONObject(new JSONObjectRequestListener() {
                             @Override
                             public void onResponse(JSONObject response) {
+                                Toast.makeText(context,"Complaint has been created!",Toast.LENGTH_LONG).show();
                                 Log.e("Response",response.toString());
+                                finish();
                             }
                             @Override
                             public void onError(ANError error) {

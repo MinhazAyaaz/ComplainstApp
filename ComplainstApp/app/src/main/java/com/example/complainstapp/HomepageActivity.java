@@ -65,7 +65,6 @@ public class HomepageActivity extends AppCompatActivity{
         filterGroup = findViewById(R.id.filterGrouping);
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.dataView);
-        backButton = findViewById(R.id.imageButton3);
 
         accessToken = getIntent().getExtras().getString("token");
 
