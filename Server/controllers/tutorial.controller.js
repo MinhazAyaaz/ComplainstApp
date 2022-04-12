@@ -312,28 +312,47 @@ exports.findOne = (req, res) => {
 };
 
 // Update a Tutorial by the id in the request
-exports.update = (req, res) => {
-  const id = req.params.id;
-
-  Tutorial.update(req.body, {
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Tutorial was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
-        });
-      }
+exports.updatecompstatus = (req, res) => {
+  if(req.body.status)
+  {
+    Tutorial.update({
+      status: "false"
+     }, {
+      where: { complaintid: req.body.complaintid }
+     })
+     .then(data => {
+      
+        res.send({ message: "Complaint enabled successfully!" });
+     
     })
     .catch(err => {
-      res.status(500).send({
-        message: "Error updating Tutorial with id=" + id
+      res.status(529).send({
+        message:
+          err.message || "Some error in enabling."
       });
-    });
+    }); 
+
+  }
+  else
+  {
+    Tutorial.update({
+      status: "true"
+     }, {
+      where: { complaintid: req.body.complaintid }
+     })
+     .then(data => {
+      
+        res.send({ message: "Complaint disabled successfully!" });
+     
+    })
+    .catch(err => {
+      res.status(509).send({
+        message:
+          err.message || "Some error in disabling."
+      });
+    }); 
+  }
+  
 };
 
 // Delete a Tutorial with the specified id in the request
