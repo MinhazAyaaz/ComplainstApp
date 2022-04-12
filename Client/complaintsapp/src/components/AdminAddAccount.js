@@ -44,7 +44,9 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+
+
+export default function AdminAddAccount() {
   
   const [role, setRole] = React.useState('');
   const [role2, setRole2] = React.useState('');
@@ -156,7 +158,7 @@ export default function SignUp() {
     
 
     axios.post('/signup', {
-      role: role,
+      // roles: role,
       name: data.get('name'),
       nsuid: data.get('nsuid'),
       email: data.get('email'),
@@ -254,7 +256,7 @@ export default function SignUp() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 0,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -268,7 +270,7 @@ export default function SignUp() {
             NSU COMPLAINTS // SIGN UP 
           </Typography>
           <br/>
-          {(emailMessage ? (<Typography align="center" color="black"><br/>An email has been sent to {email} please click on the link to activate your account. </Typography>):(null))}
+          {(emailMessage ? (<Typography align="center" color="black" sx={{marginBottom:2}}><br/>An email has been sent to {email} please click on the link to activate your account. </Typography>):(null))}
 
           <FormControl fullWidth error={roleError}>
           <InputLabel id="demo-simple-select-label">Role*</InputLabel>
@@ -283,8 +285,8 @@ export default function SignUp() {
               >
                 <MenuItem value={'1'}>Student</MenuItem>
                 <MenuItem value={'2'}>Faculty</MenuItem>
-                <MenuItem value={'3'}>Admin Employee</MenuItem>
-                <MenuItem value={'4'}>Helping Staff</MenuItem>
+                <MenuItem value={'moderator'}>Admin Employee</MenuItem>
+                <MenuItem value={'3'}>Helping Staff</MenuItem>
               </Select>
               
                 
@@ -323,11 +325,7 @@ export default function SignUp() {
               helperText={formik.touched.nsuid && formik.errors.nsuid}
             />
 
-            
-
-            {(role == "4") ?
-
-              <TextField
+            <TextField
               margin="normal"
               required
               fullWidth
@@ -335,37 +333,15 @@ export default function SignUp() {
               label="Email Address"
               type="email"
               id="email"
-              
-              autoComplete="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={ formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-              />
-
-            : 
-            
-              <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="email"
-              label="Email Address"
-              
-              id="email"
               InputProps={{
                 endAdornment: <InputAdornment position="end">@northsouth.edu</InputAdornment>,
               }}
-              type="text" pattern="[a-zA-Z0-9-]"
               autoComplete="email"
               value={formik.values.email}
               onChange={formik.handleChange}
               error={ formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
             />
-            
-            
-            }
              <TextField
                 margin="normal"
                 required
@@ -407,7 +383,7 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright sx={{ mt: 3, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );

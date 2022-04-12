@@ -40,7 +40,7 @@ const ExpandMore = styled((props) => {
 }));
 
 
-export default function CompCard( fetchedData ) {
+export default function CompCardModerator( fetchedData ) {
 
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);

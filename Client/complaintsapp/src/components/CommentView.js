@@ -17,38 +17,25 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CloseIcon from '@mui/icons-material/Close';
 import Menu from '@mui/material/Menu';
-
-import Comment from '@mui/icons-material/Comment';
-
+import { TextField } from '@mui/material';
 import Dialogs from './Dialogs';
 import CompCardExpanded from './CompCardExpanded';
-
+import { Button } from '@mui/material';
 import { Alert } from '@mui/material';
 
 import axios from 'axios';
 
 
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(0deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
-
-
-export default function CompCard( fetchedData ) {
+export default function CommentView( fetchedData ) {
 
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
-  const [age, setAge] = React.useState('');
+  const [value, setValue] = React.useState('');
   const [backendData, setBackEndData] = React.useState([]);
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  
+  const [comments, setComments] = React.useState([]);
+
   const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -61,7 +48,6 @@ export default function CompCard( fetchedData ) {
   React.useEffect(()=>{
 
      setBackEndData({
-
        complaintid: fetchedData.fetchedData.complaintid,
        creationdate: fetchedData.fetchedData.creationdate,
        status: fetchedData.fetchedData.status,
@@ -72,37 +58,48 @@ export default function CompCard( fetchedData ) {
        reviewer: fetchedData.fetchedData.reviewer,
        createdby: fetchedData.fetchedData.createdby,
      })
-     
+     fetchComments()
     
   }, [])
 
-  
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const handleDelete = () => {
-    
-    
-    axios.post('/deletecomplaint', {
-      id: backendData.complaintid
+  async function fetchComments (){
+    //API Endpoint '/findAll' is for testing only
+    //
+    await axios.get('/fetchComments', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        complaintid: backendData.complaintid
+      }
     })
     .then(function (response) {
-      console.log(response);
-      window.location.reload()
+      setComments(response.data)
+      console.log(comments)
+      console.log(response)
     })
     .catch(function (error) {
       console.log(error);
-      alert(error);
+    })
+    .then(function () {
+      // always executed
     });
-    
-  };
+  }
 
 
   return (
+    <>
+    
     <Card sx={{ maxWidth: 900,  p: 3,
-      margin: 'auto',
+      
       marginTop: 1,
       padding: 3,
       maxWidth: 1000,
@@ -117,50 +114,22 @@ export default function CompCard( fetchedData ) {
           </Avatar>
         }
         title={
-          <Typography gutterBottom variant="h5" component="div">
-          {backendData.title}
-        </Typography>
-        }
-        subheader={"Created by: " +fetchedData.fetchedData.createdby}
-        action={
           <>
-              
-              <IconButton
-                aria-label="more"
-                id="long-button"
-                aria-controls={openMenu ? 'long-menu' : undefined}
-                aria-expanded={openMenu ? 'true' : undefined}
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="long-menu"
-                MenuListProps={{
-                  'aria-labelledby': 'long-button',
-                }}
-                anchorEl={anchorEl}
-                open={openMenu}
-                onClose={handleClose}
-                PaperProps={{
-                  style: {
-                    maxHeight: 48 * 4.5,
-                    width: '20ch',
-                  },
-                }}
-              >
-                
-                  <MenuItem onClick={handleClose}>
-                    Edit Complaint
-                  </MenuItem>
-                  <MenuItem onClick={handleDelete}>
-                    Delete Complaint
-                  </MenuItem>
-                
-              </Menu>
-            </>
+          <TextField
+          id="outlined-multiline-flexible"
+          label="Multiline"
+          multiline
+          maxRows={4}
+          value={value}
+          onChange={handleChange}
+          sx={{width: '100%'}}
+        />
+        <Button variant="outlined" sx={{margin: 2,marginLeft: '89%', }}>
+            Post
+          </Button></>
         }
+        
+        
       />
       
       <CardContent>
@@ -173,40 +142,21 @@ export default function CompCard( fetchedData ) {
         size="large"
         aria-label="show 17 new notifications"
       >
-
-        <Badge badgeContent={17} color="error" size="small" sx={{ marginRight:4}} >
-          <CommentIcon sx={{ color:'#1976d2',marginRight:1}}
+          <TextField
+          id="outlined-multiline-flexible"
+          label="Multiline"
+          multiline
+          maxRows={4}
+          value={value}
+          onChange={handleChange}
         />
-
-              </Badge>
-              <Badge badgeContent={17} color="error" >
-                <EditIcon sx={{ color:'#1976d2',marginRight:1 }}
-                 />
-
-              </Badge>
             </IconButton>
-            <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-      
-        </ExpandMore>
-
-        {( backendData.length === 0) ? (
-        <p> Wait </p>
-      ) : (
-          <CompCardExpanded data={backendData} />
-      )}
-
-        
-
-
 
            </CardActions>
 
     </Card>
+    </>
   );
+  
 }
 

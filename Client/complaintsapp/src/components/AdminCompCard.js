@@ -17,8 +17,11 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CloseIcon from '@mui/icons-material/Close';
 import Menu from '@mui/material/Menu';
-
-import Comment from '@mui/icons-material/Comment';
+import AdminCompCardExpanded from './AdminCompCardExpanded';
+import SwitchComp from "./SwitchComp";
+import { Button } from '@mui/material';
+import Switch from '@mui/material/Switch';
+import { Grid } from '@mui/material';
 
 import Dialogs from './Dialogs';
 import CompCardExpanded from './CompCardExpanded';
@@ -40,7 +43,7 @@ const ExpandMore = styled((props) => {
 }));
 
 
-export default function CompCard( fetchedData ) {
+export default function AdminCompCard( fetchedData ) {
 
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
@@ -48,6 +51,9 @@ export default function CompCard( fetchedData ) {
   const [backendData, setBackEndData] = React.useState([]);
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [checked, setChecked] = React.useState();
+
+ 
   
   const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -71,6 +77,7 @@ export default function CompCard( fetchedData ) {
        body: fetchedData.fetchedData.body,
        reviewer: fetchedData.fetchedData.reviewer,
        createdby: fetchedData.fetchedData.createdby,
+       status:fetchedData.fetchedData.status
      })
      
     
@@ -98,6 +105,23 @@ export default function CompCard( fetchedData ) {
     });
     
   };
+  const handleChange3 = (event) => {
+    axios.put('/updatecompstat', {
+      complaintid: backendData.complaintid,
+      status: backendData.status
+    })
+    .then(function (response) {
+      console.log(response);
+      window.location.reload()
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert(error);
+    });
+    setChecked(event.target.checked);
+  };
+
+  
 
 
   return (
@@ -109,6 +133,7 @@ export default function CompCard( fetchedData ) {
       flexGrow: 1,
       backgroundColor: (theme) =>
         theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
+           
 
       <CardHeader
         avatar={
@@ -124,7 +149,9 @@ export default function CompCard( fetchedData ) {
         subheader={"Created by: " +fetchedData.fetchedData.createdby}
         action={
           <>
+        
               
+            
               <IconButton
                 aria-label="more"
                 id="long-button"
@@ -135,6 +162,7 @@ export default function CompCard( fetchedData ) {
               >
                 <MoreVertIcon />
               </IconButton>
+              
               <Menu
                 id="long-menu"
                 MenuListProps={{
@@ -159,11 +187,13 @@ export default function CompCard( fetchedData ) {
                   </MenuItem>
                 
               </Menu>
+              
             </>
         }
       />
       
       <CardContent>
+      
         <Typography variant="body2" color="text.secondary">
         {backendData.body}
         </Typography>
@@ -185,19 +215,35 @@ export default function CompCard( fetchedData ) {
 
               </Badge>
             </IconButton>
+           
             <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
         >
+          
+
+<Grid component="label" container alignItems="center" spacing={1}>
+        <Grid item >Closed</Grid>
+        <Grid item>
+        <Switch
+   
+   checked={!fetchedData.fetchedData.status}
+   onChange={handleChange3}
+   inputProps={{ 'aria-label': 'controlled' }}
+ />
+        </Grid>
+        <Grid item>Active</Grid>
+      </Grid>
       
         </ExpandMore>
+      
 
         {( backendData.length === 0) ? (
         <p> Wait </p>
       ) : (
-          <CompCardExpanded data={backendData} />
+          <AdminCompCardExpanded data={backendData} />
       )}
 
         
@@ -209,4 +255,3 @@ export default function CompCard( fetchedData ) {
     </Card>
   );
 }
-

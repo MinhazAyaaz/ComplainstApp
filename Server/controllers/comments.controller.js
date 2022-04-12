@@ -2,6 +2,7 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
+const Comments = db.comments;
 const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -259,20 +260,77 @@ exports.login = (req, res) => {
     });
 };
 
-exports.findAll = (req, res) => {
+exports.createComment = (req, res) => {
     
+  // Save User to Database
+  Comments.create({
+    comment: req.body.comment,
+    user: req.userId,
+    complaintComplaintid: req.body.complaintid
+  })
+    .then(comment => {
+
+      try{
+        //generates confirmation email link
+        // emailToken = jwt.sign( {user: req.body.nsuid}, EMAIL_SECRET )
+        // const url = `http://localhost:5000/confirmation/${emailToken}`
   
-    User.findAll({attributes: ['name', 'nsuid']})
-      .then(data => {
-        res.send(data);
+        //   //confirmation email configuration
+        //   transporter.sendMail({
+        //     from: "nsucomplaints.noreply@gmail.com",
+        //     to: req.body.email,
+        //     subject: "Confirm Email",
+        //     html: `Please click this email to confirm your email: <a target="_blank" href="${url}">${url}</a>`,
+        // })
+        
+       }catch(e){
+        res.status(808).send()
+       }
+
+      
+    })
+    .catch(err => {
+      res.status(501).send({ message: err.message });
+    });
+  };
+
+  exports.fetchComments = (req, res) => {
+    
+    // Save User to Database
+    Comments.findAll({
+      where: {
+        complaintComplaintid: req.body.complaintid
+      }
+    })
+      .then(comment => {
+  
+        try{
+          //generates confirmation email link
+          // emailToken = jwt.sign( {user: req.body.nsuid}, EMAIL_SECRET )
+          // const url = `http://localhost:5000/confirmation/${emailToken}`
+    
+          //   //confirmation email configuration
+          //   transporter.sendMail({
+          //     from: "nsucomplaints.noreply@gmail.com",
+          //     to: req.body.email,
+          //     subject: "Confirm Email",
+          //     html: `Please click this email to confirm your email: <a target="_blank" href="${url}">${url}</a>`,
+          // })
+          
+         }catch(e){
+          res.status(808).send()
+         }
+  
+        
       })
       .catch(err => {
-        res.status(502).send({
-          message:
-            err.message || "Some error occurred while retrieving users."
-        });
+        res.status(501).send({ message: err.message });
       });
-  };
+    };
+
+
+
+
   exports.findUserToComplainAgainst = (req, res) => {
     
   
@@ -313,71 +371,6 @@ exports.findAll = (req, res) => {
         });
       });
   };
-  exports.updatedeactiavtionstatus = (req, res) => {
-    User.update({
-      status: "disabled"
-     }, {
-      where: { nsuid: req.body.nsuid }
-     })
-     .then(data => {
-      
-        res.send({ message: "Account deactivation successfully!" });
-     
-    })
-    .catch(err => {
-      res.status(509).send({
-        message:
-          err.message || "Some error in deactivation."
-      });
-    }); 
-
-  
- /*  try {
-     User.update({status: "deactivated"}, {where: {nsuid:'0123456789'}})
-    .then(() => {
-      res.send({ message: "Account deactivation successfully!" });
-    });
-    
-    
-  } catch (e) {
-    res.send('error in deactivation');
-  } */
-
-
-    //User.findAll({
-     
-     /*  where: {
-        nsuid: {
-          [Op.eq]: req.body.nsuid
-        }
-      }})
-      .then(data => {
-        User.update({status: "deactivated"}, {where: {nsuid:req.body.nsuid}})
-        .then(() => {
-          res.send({ message: "Account deactivation successfully!" });
-        });
-      })
-      .catch(err => {
-        res.status(509).send({
-          message:
-            err.message || "Some error in deactivation."
-        });
-      }); */
-
-    
-   /*  try {
-       User.update({status: "deactivated"}, {where: {nsuid:'0123456789'}})
-      .then(() => {
-        res.send({ message: "Account deactivation successfully!" });
-      });
-      
-      
-    } catch (e) {
-      res.send('error in deactivation');
-    } */
-  };
-  
- 
  
   exports.findID = async (req, res) => {
     

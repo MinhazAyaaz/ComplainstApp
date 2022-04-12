@@ -7,6 +7,7 @@ module.exports = app => {
   
     // Create a new Tutorial
     router.post("/createcomplaint",[authJwt.verifyToken], tutorials.create);
+    router.post("/createcomplaintadmin",[authJwt.verifyToken], tutorials.create2);
    
   
     // Retrieve all Tutorials
@@ -19,7 +20,7 @@ module.exports = app => {
     router.get("/:id", tutorials.findOne);
   
     // Update a Tutorial with id
-    router.put("/:id",tutorials.update);
+    router.put("/updatecompstat",tutorials.updatecompstatus);
   
     // Delete a Tutorial with id
     router.delete("/:id", tutorials.delete);

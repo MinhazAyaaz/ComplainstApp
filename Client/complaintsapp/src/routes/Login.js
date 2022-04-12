@@ -64,7 +64,7 @@ const handleGLogin = async (googleData) => {
 
 
 
-export default function SignIn() {
+export default function Login() {
   
   const [role, setRole] = React.useState('');
   const [nsuidError, setNsuidError] = React.useState(false);

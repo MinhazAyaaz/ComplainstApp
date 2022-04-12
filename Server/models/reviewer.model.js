@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define("users", {
+    const Reviewer = sequelize.define("reviewer", {
         nsuid: {
             type: Sequelize.STRING,
             primaryKey: true
@@ -24,10 +24,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       status: {
         type: Sequelize.STRING
-      },
-      role: {
-        type: Sequelize.STRING
       }
     });
-    return User;
+    return Reviewer;
   };

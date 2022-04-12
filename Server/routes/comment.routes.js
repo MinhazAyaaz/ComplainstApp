@@ -1,5 +1,5 @@
 const { verifySignUp } = require("../middleware");
-const controller = require("../controllers/auth.controller");
+const controller = require("../controllers/comments.controller");
 const { authJwt } = require("../middleware");
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -28,11 +28,18 @@ module.exports = function(app) {
     controller.GoogleSignup
   );
 
-  app.get(
-    "/users",
+  app.post(
+    "/createComment",
     [authJwt.verifyToken] ,
-    controller.findAll
+    controller.createComment
   );
+
+  app.get(
+    "/fetchComments",
+    [authJwt.verifyToken] ,
+    controller.fetchComments
+  );
+
   app.get(
     "/userswithstatus",
     [authJwt.verifyToken] ,
@@ -45,16 +52,7 @@ module.exports = function(app) {
     controller.findUserToComplainAgainst
   );
 
-  app.get(
-    "/findAll",
-    [authJwt.verifyToken] ,
-    controller.findAll
-  );
-  app.put(
-    "/disableaccount",[authJwt.verifyToken] ,
-    
-    controller.updatedeactiavtionstatus
-  );
+ 
 
   app.get(
     "/idStatus",
