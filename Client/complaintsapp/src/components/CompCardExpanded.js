@@ -63,8 +63,8 @@ export default function CompCardExpanded( fetchedData ) {
         Show More
       </Button>
 
-      <Dialog open={open && open === "first"} fullWidth="true" maxWidth="lg">
-      <Card>
+      <Dialog open={open && open === "first"} fullWidth="true" maxWidth="lg"  sx={{overflow: "scroll"}}>
+      <Card >
         <CardHeader
           avatar={
             <Avatar sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
@@ -120,7 +120,7 @@ export default function CompCardExpanded( fetchedData ) {
           }
         />
       </Card>
-        <DialogContent >
+        <DialogContent  >
           
           <DialogContentText>
            The Complaint details are as follows:
@@ -144,28 +144,29 @@ export default function CompCardExpanded( fetchedData ) {
            
                
             </MenuList>
-
-        </DialogContent>
-        
-        <DialogActions>
+            <DialogActions>
          
-          <Button onClick={() => setOpen(null)} variant="outlined">
-            Cancel
-          </Button>
-          <Button onClick={() => setOpen("second")} variant="outlined">
-            Edit Form
-          </Button>
-        </DialogActions>
-        
-        
-        {( backendData.length === 0) ? (
+         <Button onClick={() => setOpen(null)} variant="outlined">
+           Cancel
+         </Button>
+         <Button onClick={() => setOpen("second")} variant="outlined">
+           Edit Form
+         </Button>
+       </DialogActions>
+       {( backendData.length === 0) ? (
             <p> Wait </p>
           ) : (
             <>
-              <Comment fetchedData={backendData}/>
+              
               <CommentView fetchedData={backendData}/>
             </>
           )}
+        </DialogContent>
+        
+        
+        
+        
+        
       </Dialog>
 
       <Dialog open={open && open === "second"}>

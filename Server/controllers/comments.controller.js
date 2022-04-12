@@ -295,7 +295,7 @@ exports.createComment = (req, res) => {
   };
 
   exports.fetchComments = (req, res) => {
-     res.status(222)
+    //  res.status(222)
      
     // // Save User to Database
     // Comments.findAll({
@@ -327,9 +327,9 @@ exports.createComment = (req, res) => {
     //   .catch(err => {
     //     res.status(501).send({ message: err.message });
     //   });
-
-    const complaintid= req.userId;
-    Comments.findAll({where: { complaintComplaintid: 2}, order: [ ['updatedAt','DESC'] ]})
+    
+    let complaintid= req.query.complaintid;
+    Comments.findAll({where: { complaintComplaintid: complaintid}, order: [ ['updatedAt','DESC'] ]})
   
     .then(data => {
       res.send(data);

@@ -26,7 +26,7 @@ import { Alert } from '@mui/material';
 import axios from 'axios';
 
 
-export default function Comment( fetchedData ) {
+export default function Comment( ) {
 
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
@@ -46,17 +46,7 @@ export default function Comment( fetchedData ) {
 
   React.useEffect(()=>{
 
-     setBackEndData({
-       complaintid: fetchedData.fetchedData.complaintid,
-       creationdate: fetchedData.fetchedData.creationdate,
-       status: fetchedData.fetchedData.status,
-       title: fetchedData.fetchedData.title,
-       against: fetchedData.fetchedData.against,
-       category: fetchedData.fetchedData.category,
-       body: fetchedData.fetchedData.body,
-       reviewer: fetchedData.fetchedData.reviewer,
-       createdby: fetchedData.fetchedData.createdby,
-     })
+     
      
     
   }, [])
@@ -106,15 +96,15 @@ export default function Comment( fetchedData ) {
     <Card sx={{ maxWidth: 900,  p: 3,
       
       marginTop: 1,
-      padding: 3,
+      padding: 1,
       maxWidth: 1000,
-      flexGrow: 1,
+    
       backgroundColor: (theme) =>
         theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
 
       <CardHeader
         avatar={
-          <Avatar sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
+          <Avatar sx={{ width: 45, height: 45, backgroundColor: '#1976d2'}}>
             X
           </Avatar>
         }
@@ -137,27 +127,7 @@ export default function Comment( fetchedData ) {
         
       />
       
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-        {backendData.body}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-      <IconButton
-        size="large"
-        aria-label="show 17 new notifications"
-      >
-          <TextField
-          id="outlined-multiline-flexible"
-          label="Multiline"
-          multiline
-          maxRows={4}
-          value={value}
-          onChange={handleChange}
-        />
-            </IconButton>
-
-           </CardActions>
+      
 
     </Card>
     </>

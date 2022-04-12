@@ -22,9 +22,9 @@ import Dialogs from './Dialogs';
 import CompCardExpanded from './CompCardExpanded';
 import { Button } from '@mui/material';
 import { Alert } from '@mui/material';
-
+import { Box } from '@mui/system';
 import axios from 'axios';
-
+import Comment from './Comment';
 
 export default function CommentView( fetchedData ) {
 
@@ -45,7 +45,7 @@ export default function CommentView( fetchedData ) {
   };
 
 
-  React.useEffect(()=>{
+   React.useEffect(()=>{
 
      setBackEndData({
        complaintid: fetchedData.fetchedData.complaintid,
@@ -70,68 +70,153 @@ export default function CommentView( fetchedData ) {
     setExpanded(!expanded);
   };
 
-   async function fetchComments (){
+  async function fetchComments (){
     //API Endpoint '/findAll' is for testing only
     //
-     await axios.get('/fetchComment', {
+    console.log(fetchedData.fetchedData.complaintid)
+      await axios.get('/fetchComment', {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
       },
       params: {
-        complaintid: backendData.complaintid
+        complaintid: fetchedData.fetchedData.complaintid
       }
     })
     .then(function (response) {
       setComments(response.data)
       console.log(comments)
-      console.log(response)
+      console.log(response.data)
     })
     .catch(function (error) {
       console.log(error);
     })
     .then(function () {
       // always executed
+      
     });
-  }
+  };
+
+  const handleSubmit = () => {
+    
+    // eslint-disable-next-line no-console
+
+    console.log({
+      comment: value,
+      complaintid: backendData.complaintid,
+    });
+    
+    axios.post('/createComment', {
+      comment: value,
+      complaintid: backendData.complaintid,
+    }, {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+    }
+    )
+    .then(function (response) {
+      console.log(response);
+      
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert(error);
+    });
+    
+  };
 
 
   return (
     <>
-    
-    <Card sx={{ maxWidth: 900,  p: 3,
-      
-      marginTop: 1,
-      padding: 3,
-      maxWidth: 1000,
-      flexGrow: 1,
-      backgroundColor: (theme) =>
-        theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
-
-      <CardHeader
-        avatar={
-          <Avatar sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
-            X
-          </Avatar>
-        }
-        title={
-          <>
-          </>
-        }
-        
-        
-      />
-      
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-        {backendData.body} aa
+    {(comments.length === 0) ?
+    (<p>No comment</p>)
+    :
+    (
+      <Box >
+        <Typography>
+          Comments 
         </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-      
+      {comments.map((data, index) =>(
+        <>
+    
+      <Card sx={{   p: 3,
+        
+        marginTop: 0,
+        padding: 1,
+        
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
 
-           </CardActions>
+        <CardHeader
+          avatar={
+            <Avatar sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
+              X
+            </Avatar>
+          }
+          title={
+            <>
+            <Typography variant="body2" color="text.secondary">
+          {data.user}
+          </Typography>
+            </>
+          }
+          subheader={
+            <>
+              <Typography variant="body" type="h1" color="text.primary">
+          {data.comment}
+          </Typography>
+            </>
+          }
+          
+          
+        />
+        
+        
 
-    </Card>
+      </Card>
+    </>
+      ))}
+
+          <Card sx={{   p: 3,
+          
+          marginTop: 1,
+          padding: 1,
+          
+        
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
+
+          <CardHeader
+            avatar={
+              <Avatar sx={{ width: 45, height: 45, float: 'left', backgroundColor: '#1976d2'}}>
+                X
+              </Avatar>
+            }
+            title={
+              <>
+              <TextField
+              id="outlined-multiline-flexible"
+              label="Multiline"
+              multiline
+              maxRows={4}
+              value={value}
+              onChange={handleChange}
+              sx={{width: '100%'}}
+            />
+            <Button onClick={handleSubmit} variant="outlined" sx={{marginTop: 2, float: 'right', }}>
+                Post
+              </Button></>
+            }
+            
+            
+          />
+          
+          
+
+        </Card>
+      </Box>
+    )
+    }
     </>
   );
   
