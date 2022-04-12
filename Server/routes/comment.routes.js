@@ -35,7 +35,7 @@ module.exports = function(app) {
   );
 
   app.get(
-    "/fetchComments",
+    "/fetchComment",
     [authJwt.verifyToken] ,
     controller.fetchComments
   );

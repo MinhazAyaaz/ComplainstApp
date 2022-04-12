@@ -70,10 +70,10 @@ export default function CommentView( fetchedData ) {
     setExpanded(!expanded);
   };
 
-  async function fetchComments (){
+   function fetchComments (){
     //API Endpoint '/findAll' is for testing only
     //
-    await axios.get('/fetchComments', {
+     axios.get('/fetchComment', {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
       },
@@ -115,18 +115,7 @@ export default function CommentView( fetchedData ) {
         }
         title={
           <>
-          <TextField
-          id="outlined-multiline-flexible"
-          label="Multiline"
-          multiline
-          maxRows={4}
-          value={value}
-          onChange={handleChange}
-          sx={{width: '100%'}}
-        />
-        <Button variant="outlined" sx={{margin: 2,marginLeft: '89%', }}>
-            Post
-          </Button></>
+          </>
         }
         
         
@@ -134,23 +123,11 @@ export default function CommentView( fetchedData ) {
       
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-        {backendData.body}
+        {backendData.body} aa
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-      <IconButton
-        size="large"
-        aria-label="show 17 new notifications"
-      >
-          <TextField
-          id="outlined-multiline-flexible"
-          label="Multiline"
-          multiline
-          maxRows={4}
-          value={value}
-          onChange={handleChange}
-        />
-            </IconButton>
+      
 
            </CardActions>
 
