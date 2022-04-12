@@ -70,10 +70,10 @@ export default function CommentView( fetchedData ) {
     setExpanded(!expanded);
   };
 
-   function fetchComments (){
+   async function fetchComments (){
     //API Endpoint '/findAll' is for testing only
     //
-     axios.get('/fetchComment', {
+     await axios.get('/fetchComment', {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
       },

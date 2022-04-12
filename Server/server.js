@@ -27,6 +27,9 @@ const db = require("./models");
 
 require('./routes/auth.routes.js')(app);
 require('./routes/user.routes')(app);
+require("./routes/comment.routes")(app);
+require("./routes/tutorial.routes")(app);
+
 // // drop the table if it already exists
 // db.sequelize.sync({ force: true }).then(() => {
 //   console.log("Drop and re-sync db.");
@@ -43,8 +46,7 @@ app.get("/api", (req, res) => {
   res.json({"users": ["userOne", "userTwo", "userThree"]});
 });
 
-require("./routes/tutorial.routes")(app);
-require("./routes/comment.routes")(app);
+
 function initial() {
   Role.create({
     id: 1,

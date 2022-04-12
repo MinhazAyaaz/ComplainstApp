@@ -295,37 +295,52 @@ exports.createComment = (req, res) => {
   };
 
   exports.fetchComments = (req, res) => {
-    return res.status(200)
-    // Save User to Database
-    Comments.findAll({
-      where: {
-        complaintComplaintid: req.body.complaintid
-      }
-    })
-      .then(comment => {
+     res.status(222)
+     
+    // // Save User to Database
+    // Comments.findAll({
+    //   where: {
+    //     complaintComplaintid: req.query.complaintid
+    //   }
+    // })
+    //   .then(comment => {
   
-        try{
-          //generates confirmation email link
-          // emailToken = jwt.sign( {user: req.body.nsuid}, EMAIL_SECRET )
-          // const url = `http://localhost:5000/confirmation/${emailToken}`
+    //     try{
+    //       //generates confirmation email link
+    //       // emailToken = jwt.sign( {user: req.body.nsuid}, EMAIL_SECRET )
+    //       // const url = `http://localhost:5000/confirmation/${emailToken}`
     
-          //   //confirmation email configuration
-          //   transporter.sendMail({
-          //     from: "nsucomplaints.noreply@gmail.com",
-          //     to: req.body.email,
-          //     subject: "Confirm Email",
-          //     html: `Please click this email to confirm your email: <a target="_blank" href="${url}">${url}</a>`,
-          // })
+    //       //   //confirmation email configuration
+    //       //   transporter.sendMail({
+    //       //     from: "nsucomplaints.noreply@gmail.com",
+    //       //     to: req.body.email,
+    //       //     subject: "Confirm Email",
+    //       //     html: `Please click this email to confirm your email: <a target="_blank" href="${url}">${url}</a>`,
+    //       // })
           
-         }catch(e){
-          res.status(808).send()
-         }
+    //      }catch(e){
+    //       res.status(808).send()
+    //      }
   
         
-      })
-      .catch(err => {
-        res.status(501).send({ message: err.message });
+    //   })
+    //   .catch(err => {
+    //     res.status(501).send({ message: err.message });
+    //   });
+
+    const complaintid= req.userId;
+    Comments.findAll({where: { complaintComplaintid: 2}, order: [ ['updatedAt','DESC'] ]})
+  
+    .then(data => {
+      res.send(data);
+      
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          `Cannot get comment with id=${complaintid} and against =${against}. `
       });
+    });
     };
 
 

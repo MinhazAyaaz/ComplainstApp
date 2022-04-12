@@ -9,30 +9,14 @@ module.exports = function(app) {
     );
     next();
   });
-  app.post(
-    "/signup",
-    [
-      verifySignUp.checkDuplicateNsuidOrEmail,
-      verifySignUp.checkId,
-      verifySignUp.checkname,verifySignUp.checkemail,verifySignUp.checkpassword,verifySignUp.checkrole
-    ],
-    controller.signup
-  );
-
-  app.post("/login",   [
-   verifySignUp.checkId,
-  ],controller.login);
-
-  app.post(
-    "/Gsignup",
-    controller.GoogleSignup
-  );
+  
 
   app.post(
     "/createComment",
     [authJwt.verifyToken] ,
     controller.createComment
   );
+  
 
   app.get(
     "/fetchComment",
@@ -40,34 +24,5 @@ module.exports = function(app) {
     controller.fetchComments
   );
 
-  app.get(
-    "/userswithstatus",
-    [authJwt.verifyToken] ,
-    controller.findUserWithStatus
-  );
-
-  app.get(
-    "/againstusers",
-    [authJwt.verifyToken] ,
-    controller.findUserToComplainAgainst
-  );
-
  
-
-  app.get(
-    "/idStatus",
-    [authJwt.verifyToken] ,
-    controller.findID
-  );
-
-  app.get(
-    "/confirmation/:token",
-    controller.update
-  );
-
-  app.post(
-    "/uploadId",
-    [authJwt.verifyToken],
-    controller.uploadId
-  );
 };

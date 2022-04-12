@@ -17,13 +17,13 @@ module.exports = app => {
     router.get("/getcomplaint/filed", [authJwt.verifyToken],tutorials.findAll2);
   
     // Retrieve a single Tutorial with id
-    router.get("/:id", tutorials.findOne);
+    // router.get("/:id", tutorials.findOne);
   
     // Update a Tutorial with id
     router.put("/updatecompstat",tutorials.updatecompstatus);
   
     // Delete a Tutorial with id
-    router.delete("/:id", tutorials.delete);
+    // router.delete("/:id", tutorials.delete);
   
     // Delete all Tutorials
     router.delete("/deletecomplaint", tutorials.deleteAll);
