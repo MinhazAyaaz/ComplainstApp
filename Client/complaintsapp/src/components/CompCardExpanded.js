@@ -20,6 +20,7 @@ import Menu from '@mui/material/Menu';
 import DialogContentText from '@mui/material/DialogContentText';
 
 import Comment from "./Comment";
+import CommentView from "./CommentView";
 
 import ListItemText from '@mui/material/ListItemText';
 import EditForm from "./EditForm";
@@ -156,7 +157,15 @@ export default function CompCardExpanded( fetchedData ) {
           </Button>
         </DialogActions>
         
-        <Comment fetchedData={backendData}/>
+        
+        {( backendData.length === 0) ? (
+            <p> Wait </p>
+          ) : (
+            <>
+              <Comment fetchedData={backendData}/>
+              <CommentView fetchedData={backendData}/>
+            </>
+          )}
       </Dialog>
 
       <Dialog open={open && open === "second"}>

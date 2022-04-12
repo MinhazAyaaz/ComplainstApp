@@ -44,7 +44,7 @@ app.get("/api", (req, res) => {
 });
 
 require("./routes/tutorial.routes")(app);
-
+require("./routes/comment.routes")(app);
 function initial() {
   Role.create({
     id: 1,

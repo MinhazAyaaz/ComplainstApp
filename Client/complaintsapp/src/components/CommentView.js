@@ -34,7 +34,8 @@ export default function CommentView( fetchedData ) {
   const [backendData, setBackEndData] = React.useState([]);
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  
+  const [comments, setComments] = React.useState([]);
+
   const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -57,7 +58,7 @@ export default function CommentView( fetchedData ) {
        reviewer: fetchedData.fetchedData.reviewer,
        createdby: fetchedData.fetchedData.createdby,
      })
-     
+     fetchComments()
     
   }, [])
 
@@ -69,22 +70,29 @@ export default function CommentView( fetchedData ) {
     setExpanded(!expanded);
   };
 
-  const handleDelete = () => {
-    
-    
-    axios.post('/deletecomplaint', {
-      id: backendData.complaintid
+  async function fetchComments (){
+    //API Endpoint '/findAll' is for testing only
+    //
+    await axios.get('/fetchComments', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        complaintid: backendData.complaintid
+      }
     })
     .then(function (response) {
-      console.log(response);
-      window.location.reload()
+      setComments(response.data)
+      console.log(comments)
+      console.log(response)
     })
     .catch(function (error) {
       console.log(error);
-      alert(error);
+    })
+    .then(function () {
+      // always executed
     });
-    
-  };
+  }
 
 
   return (

@@ -28,11 +28,18 @@ module.exports = function(app) {
     controller.GoogleSignup
   );
 
-  app.get(
-    "/users",
+  app.post(
+    "/createComment",
     [authJwt.verifyToken] ,
-    controller.findAll
+    controller.createComment
   );
+
+  app.get(
+    "/fetchComments",
+    [authJwt.verifyToken] ,
+    controller.fetchComments
+  );
+
   app.get(
     "/userswithstatus",
     [authJwt.verifyToken] ,
@@ -45,11 +52,7 @@ module.exports = function(app) {
     controller.findUserToComplainAgainst
   );
 
-  app.get(
-    "/findAll",
-    [authJwt.verifyToken] ,
-    controller.findAll
-  );
+ 
 
   app.get(
     "/idStatus",

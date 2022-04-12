@@ -23,19 +23,24 @@ db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
 db.complaintVersions = require("./complaintVersions.model.js")(sequelize, Sequelize);
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
+db.comments = require("../models/comments.model.js")(sequelize, Sequelize);
 
 //Relationships
+//Many to Many relationship of role and user tables
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
   otherKey: "userId"
 });
-
 db.user.belongsToMany(db.role, {
   through: "user_roles",
   foreignKey: "userId",
   otherKey: "roleId"
 });
+
+//One to Many relationship of complaint to comment
+db.tutorials.hasMany(db.comments);
+db.comments.belongsTo(db.tutorials)
 
 db.ROLES = ["user", "admin", "moderator"];
 module.exports = db;
