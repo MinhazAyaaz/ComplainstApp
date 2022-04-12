@@ -21,6 +21,7 @@ import AdminCompCardExpanded from './AdminCompCardExpanded';
 import SwitchComp from "./SwitchComp";
 import { Button } from '@mui/material';
 import Switch from '@mui/material/Switch';
+import { Grid } from '@mui/material';
 
 import Dialogs from './Dialogs';
 import CompCardExpanded from './CompCardExpanded';
@@ -52,10 +53,7 @@ export default function AdminCompCard( fetchedData ) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [checked, setChecked] = React.useState();
 
-  const handleChange3 = (event) => {
-    setChecked(event.target.checked);
-  };
-
+ 
   
   const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -107,6 +105,22 @@ export default function AdminCompCard( fetchedData ) {
     });
     
   };
+  const handleChange3 = (event) => {
+    axios.put('/updatecompstat', {
+      complaintid: backendData.complaintid,
+      status: backendData.status
+    })
+    .then(function (response) {
+      console.log(response);
+      window.location.reload()
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert(error);
+    });
+    setChecked(event.target.checked);
+  };
+
   
 
 
@@ -208,12 +222,20 @@ export default function AdminCompCard( fetchedData ) {
           aria-expanded={expanded}
           aria-label="show more"
         >
-           <Switch
+          
+
+<Grid component="label" container alignItems="center" spacing={1}>
+        <Grid item >Closed</Grid>
+        <Grid item>
+        <Switch
    
    checked={!fetchedData.fetchedData.status}
    onChange={handleChange3}
    inputProps={{ 'aria-label': 'controlled' }}
  />
+        </Grid>
+        <Grid item>Active</Grid>
+      </Grid>
       
         </ExpandMore>
       
