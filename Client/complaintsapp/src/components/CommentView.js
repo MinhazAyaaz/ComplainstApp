@@ -25,6 +25,7 @@ import { Alert } from '@mui/material';
 import { Box } from '@mui/system';
 import axios from 'axios';
 import Comment from './Comment';
+import MessageIcon from '@mui/icons-material/Message';
 
 export default function CommentView( fetchedData ) {
 
@@ -134,7 +135,7 @@ export default function CommentView( fetchedData ) {
     (
       <Box >
         <Typography>
-          Comments 
+          Comments <MessageIcon fontS ize="small"/>({comments.length})
         </Typography>
       {comments.map((data, index) =>(
         <>
