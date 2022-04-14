@@ -129,7 +129,7 @@ const verifySignUp = {
   checkId: checkId,
   checkname:checkname,
   checkpassword:checkpassword,
-  checkemail: checkemail,
+  
   checkrole:checkrole
  
 };
