@@ -33,6 +33,13 @@ module.exports = function(app) {
     [authJwt.verifyToken] ,
     controller.findAll
   );
+
+  app.get(
+    "/reviewers",
+    [authJwt.verifyToken] ,
+    controller.findReviewers
+  );
+
   app.get(
     "/userswithstatus",
     [authJwt.verifyToken] ,

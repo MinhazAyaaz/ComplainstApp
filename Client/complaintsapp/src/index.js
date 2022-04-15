@@ -14,6 +14,7 @@ import App from './App';
 import FileUpload from './components/FileUpload';
 import SignUp from './routes/signup';
 import SignIn from './routes/SignIn';
+import Login from './routes/Login';
 import Profile from './routes/profile';
 import EditPage from './routes/EditPage';
 import Dashboard from './routes/dashboard';
@@ -27,7 +28,7 @@ ReactDOM.render(
       <Route path="/" element={<SignIn />}/>
       <Route path="/fileupload" element={<FileUpload />}/>
       <Route path="signup" element={<SignUp />}/>
-      <Route path="login" element={<SignIn />}/>
+      <Route path="login" element={<Login />}/>
       <Route path="dashboard" element={
         <PrivateRoute>
           <Dashboard />

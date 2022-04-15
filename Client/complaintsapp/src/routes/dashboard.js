@@ -11,6 +11,7 @@ import React, {useEffect, useState} from 'react';
 import { styled } from '@mui/material/styles';
 import CompCard from '../components/CompCard';
 import CompCardReceived from '../components/CompCardReceived';
+import AdminCompCard from '../components/AdminCompCard';
 
 import { FormControl } from '@mui/material';
 import { InputLabel } from '@mui/material';
@@ -40,17 +41,26 @@ export default function Dashboard() {
   const [backendData, setBackEndData] = useState([])
   const [filedComplaint, setFiledComplaint] = useState([])
   const [receivedComplaint, setReceivedComplaint] = useState([])
+  const [reviewComplaint, setReviewComplaint] = useState([])
   const [empty, dempty] = useState([])
   const [expanded, setExpanded] = React.useState(false);
   const [formdata, setFormdata] = React.useState('');
   const [studentList, setStudentList] = useState([]);
   const [value, setValue] = useState({name: "", nsuid: ""})
   const [value2, setValue2] = useState({name: "", nsuid: ""})
+  const [reviewer, setReviewer] = useState(false)
+  const [showFiledComaplint, setShowFiledComaplint] = useState(true)
+  const [showRecievedComplaint, setShowRecievedComplaint] = useState(false)
+  const [showReviewComaplaint, setShowReviewComaplaint] = useState(false)
+
   
   useEffect(()=>{
     checkIdStatus();
       fetchComplaint();
       fetchUserList();
+      if( sessionStorage.getItem("role") == "2" || sessionStorage.getItem("role") == "3"){
+        setReviewer(true)
+      }
   }, [])
 
   async function fetchComplaint (){
@@ -157,6 +167,7 @@ export default function Dashboard() {
     });
   }
 
+  //Complaint form rendering
   const expandForm = () =>{
     setExpanded(true);
   };
@@ -168,6 +179,30 @@ export default function Dashboard() {
     setExpanded(false);
   };
 
+  //toogles which complaints to show
+  const toggleFiledComplaint = () =>{
+    if(showFiledComaplint == false){
+      setShowFiledComaplint(true)
+      setShowRecievedComplaint(false)
+      setShowReviewComaplaint(false)
+    }
+  }
+  const toggleRecievedComplaint = () =>{
+    if(showRecievedComplaint == false){
+      setShowFiledComaplint(false)
+      setShowRecievedComplaint(true)
+      setShowReviewComaplaint(false)
+    }
+  }
+  const toggleReviewComplaint = () =>{
+    if(showReviewComaplaint ==  false){
+      setShowFiledComaplint(false)
+      setShowRecievedComplaint(false)
+      setShowReviewComaplaint(true)
+    }
+  }
+
+  //Complaint lodging logic 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -228,10 +263,7 @@ export default function Dashboard() {
       margin: 'auto',
       marginTop: 5,
       maxWidth: 1000,
-      flexGrow: 1,
-       
-      backgroundColor: (theme) =>
-        theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
+      flexGrow: 1,}}>
     
 
       <Box id="myForm" component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -359,6 +391,34 @@ export default function Dashboard() {
       
     
   </Card>
+
+<Box sx={{maxWidth: 900,  p: 3,
+      margin: 'auto',
+      marginTop: 1,
+      maxWidth: 1000,
+      justifyContent:'center',
+      flexGrow: 1}}>
+
+  
+  { reviewer ? (
+  <>
+    <Button sx={{fontSize: 20, paddingLeft: 10}} onClick={()=>{toggleFiledComplaint()}}>Complaints Filed ({filedComplaint.length})</Button>
+    <Button sx={{fontSize: 20, paddingLeft: 10}} onClick={()=>{toggleRecievedComplaint()}}>Complaints Received ({receivedComplaint.length})</Button>
+    <Button sx={{fontSize: 20, paddingLeft: 10}} onClick={()=>{toggleReviewComplaint()}}>Review Pending ({reviewComplaint.length})</Button>
+  
+  </>
+  ) : (
+  <>
+    <Button sx={{fontSize: 20, paddingLeft: 20}} onClick={()=>{toggleFiledComplaint()}}>Complaints Filed ({filedComplaint.length})</Button>
+    <Button sx={{fontSize: 20, paddingLeft: 20}} onClick={()=>{toggleRecievedComplaint()}}>Complaints Received ({receivedComplaint.length})</Button>
+  </>
+  )
+  
+  }
+
+  </Box> 
+
+    { showFiledComaplint ? <>
       
       {( filedComplaint.length === 0) ? (
         <p> </p>
@@ -381,9 +441,12 @@ export default function Dashboard() {
           <CompCard fetchedData={data}/>
         ))}
         </>
-      )}
-
+      )} 
       
+      </>
+      : null}
+      
+      { showRecievedComplaint ? <>
       {( receivedComplaint.length === 0) ? (
         <p></p>
       ) : (
@@ -405,6 +468,35 @@ export default function Dashboard() {
         ))}
       </>
       )}
+
+      </>
+      : null}
+
+      { showReviewComaplaint ? <>
+      {( reviewComplaint.length === 0) ? (
+        <p></p>
+      ) : (
+      <>
+        <Typography sx={{ maxWidth: 900,  p: 3,
+        color: '#888',
+        margin: 'auto',
+        fontSize: 25,
+        borderBottom: 'solid',
+        borderColor: '#888',
+        padding: 1,
+        paddingTop: 3,
+        maxWidth: 1000,
+        flexGrow: 1,
+       }}
+       align="center" > Complaints Received // {reviewComplaint.length} complaints</Typography>
+        {receivedComplaint.map((data, i) => (
+          <AdminCompCard fetchedData={data}/>
+        ))}
+      </>
+      )}
+
+      </>
+      : null}
       
     </>
 

@@ -35,11 +35,16 @@ const transporter = nodemailer.createTransport( {
 
 //HANDLES ALL SIGN UP FORM RELATED WORK
 exports.signup = (req, res) => {
+
+  //Email sanitation to ensure correct domain
   var email = req.body.email
-  if(req.body.role === "1"){
+  
+  //non-staff people are given @northsouth.edu domain
+  if(req.body.role === "1" || req.body.role === "2" || req.body.role === "3" ){
     email = email.split('@')[0]
     email = email + "@northsouth.edu"
   }
+
   // Save User to Database
   User.create({
     nsuid: req.body.nsuid,
@@ -62,7 +67,7 @@ exports.signup = (req, res) => {
           //confirmation email configuration
           transporter.sendMail({
             from: "nsucomplaints.noreply@gmail.com",
-            to: req.body.email,
+            to: email,
             subject: "Confirm Email",
             html: `Please click this email to confirm your email: <a target="_blank" href="${url}">${url}</a>`,
         })
@@ -231,7 +236,7 @@ exports.login = (req, res) => {
           id: user.id,
           nsuid: user.nsuid,
           email: user.email,
-          roles: authorities,
+          role: user.role,
           verified: user.verified,
           accessToken: token
         });

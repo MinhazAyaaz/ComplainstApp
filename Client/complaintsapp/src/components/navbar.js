@@ -35,6 +35,7 @@ export default function PrimarySearchAppBar() {
   // };
   function logout(){
     sessionStorage.removeItem("jwtkey")
+    sessionStorage.removeItem("role")
     window.location.reload()
     console.log("LOGOUT")
   }
