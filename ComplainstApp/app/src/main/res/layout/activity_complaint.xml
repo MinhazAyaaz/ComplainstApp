@@ -280,20 +280,45 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.384" />
 
-    <Button
-        android:id="@+id/uploadButton"
-        android:layout_width="200dp"
-        android:layout_height="45dp"
-        android:background="@drawable/round_bg"
-        android:text="UPLOAD FILE"
-        android:textColor="#FFFFFF"
-        app:backgroundTint="#222222"
+    <ImageButton
+        android:id="@+id/uploadImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:foregroundTint="#DF1010"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.303"
+        app:layout_constraintHorizontal_bias="0.363"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.679" />
+        app:layout_constraintVertical_bias="0.678"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <ImageButton
+        android:id="@+id/uploadFileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.169"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.678"
+        app:srcCompat="@android:drawable/ic_menu_upload" />
+
+    <ImageButton
+        android:id="@+id/uploadAudioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.554"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.678"
+        app:srcCompat="@android:drawable/ic_btn_speak_now" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

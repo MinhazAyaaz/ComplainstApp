@@ -70,7 +70,7 @@ public class CreateComplaint extends AppCompatActivity {
 
         userArray = new ArrayList<String>();
 
-        accessToken = getIntent().getExtras().getString("token");
+        //accessToken = getIntent().getExtras().getString("token");
 
         backButton = findViewById(R.id.backButton);
         category = findViewById(R.id.categoryField);

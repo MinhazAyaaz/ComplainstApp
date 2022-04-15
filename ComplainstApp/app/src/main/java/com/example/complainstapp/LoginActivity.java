@@ -86,37 +86,38 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                AndroidNetworking.post("http://192.168.0.109:5000/login")
-                        .addBodyParameter("nsuid", idLayout.getEditText().getText().toString())
-                        .addBodyParameter("password", passwordLayout.getEditText().getText().toString())
-                        .setTag("test")
-                        .setPriority(Priority.HIGH)
-                        .build()
-                        .getAsJSONObject(new JSONObjectRequestListener() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    accessToken = response.getString("accessToken");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
-                                intent.putExtra("token",accessToken);
-                                startActivity(intent);
-                            }
-                            @Override
-                            public void onError(ANError error) {
-                                if(error.getErrorCode()==401) {
-                                    Toast.makeText(LoginActivity.this, "Password is incorrect!", Toast.LENGTH_SHORT).show();
-                                }
-                                else if(error.getErrorCode()==512){
-                                    Toast.makeText(LoginActivity.this, "User is not verified!", Toast.LENGTH_SHORT).show();
-                                }
-                                else{
-                                    Toast.makeText(LoginActivity.this, "An error occurred.Try again!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+//                AndroidNetworking.post("http://192.168.0.109:5000/login")
+//                        .addBodyParameter("nsuid", idLayout.getEditText().getText().toString())
+//                        .addBodyParameter("password", passwordLayout.getEditText().getText().toString())
+//                        .setTag("test")
+//                        .setPriority(Priority.HIGH)
+//                        .build()
+//                        .getAsJSONObject(new JSONObjectRequestListener() {
+//                            @Override
+//                            public void onResponse(JSONObject response) {
+//                                try {
+//                                    accessToken = response.getString("accessToken");
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
+//                                intent.putExtra("token",accessToken);
+//                                startActivity(intent);
+//                            }
+//                            @Override
+//                            public void onError(ANError error) {
+//                                if(error.getErrorCode()==401) {
+//                                    Toast.makeText(LoginActivity.this, "Password is incorrect!", Toast.LENGTH_SHORT).show();
+//                                }
+//                                else if(error.getErrorCode()==512){
+//                                    Toast.makeText(LoginActivity.this, "User is not verified!", Toast.LENGTH_SHORT).show();
+//                                }
+//                                else{
+//                                    Log.e("Error", String.valueOf(error.getErrorCode()));
+//                                    Toast.makeText(LoginActivity.this, "An error occurred.Try again!", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
 
             }
         });
@@ -154,7 +155,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
             if (acct != null) {
                 String personName = acct.getDisplayName();
@@ -163,6 +163,8 @@ public class LoginActivity extends AppCompatActivity {
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
                 Uri personPhoto = acct.getPhotoUrl();
+
+                Log.e("Google Sign up",acct.toString());
 
                 Intent myIntent = new Intent(LoginActivity.this, HomepageActivity.class);
                 startActivity(myIntent);
