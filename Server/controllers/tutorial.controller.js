@@ -299,7 +299,7 @@ exports.findOne = (req, res) => {
       if (data) {
         res.send(data);
       } else {
-        res.status(404).send({
+        res.status(414).send({
           message: `Cannot find Tutorial with id=${id}.`
         });
       }

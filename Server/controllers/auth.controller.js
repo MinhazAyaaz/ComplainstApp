@@ -35,12 +35,20 @@ const transporter = nodemailer.createTransport( {
 
 //HANDLES ALL SIGN UP FORM RELATED WORK
 exports.signup = (req, res) => {
+
+  //Email sanitation to ensure correct domain
+  var email = req.body.email
   
-  
+  //non-staff people are given @northsouth.edu domain
+  if(req.body.role === "1" || req.body.role === "2" || req.body.role === "3" ){
+    email = email.split('@')[0]
+    email = email + "@northsouth.edu"
+  }
+
   // Save User to Database
   User.create({
     nsuid: req.body.nsuid,
-    email: req.body.email,
+    email: email,
     password: bcrypt.hashSync(req.body.password, 8),
     name:req.body.name,
     verified: req.body.verified ? req.body.verified : "false",
@@ -59,7 +67,7 @@ exports.signup = (req, res) => {
           //confirmation email configuration
           transporter.sendMail({
             from: "nsucomplaints.noreply@gmail.com",
-            to: req.body.email,
+            to: email,
             subject: "Confirm Email",
             html: `Please click this email to confirm your email: <a target="_blank" href="${url}">${url}</a>`,
         })
@@ -68,27 +76,7 @@ exports.signup = (req, res) => {
         res.status(808).send()
        }
 
-       //Assign role to the user while signing up
-      if (req.body.roles) {
-        Role.findAll({
-          where: {
-            name: {
-              [Op.or]: req.body.roles
-            }
-          }
-        }).then(roles => {
-          user.setRoles(roles).then(() => {
-            
-            res.send({ message: "User was registered successfully!" });
-          });
-        });
-      } else {
-        // user role = 1
-        // set as default role
-        user.setRoles([1]).then(() => {
-          res.send({ message: "User was registered successfully!" });
-        });
-      }
+      
     })
     .catch(err => {
       res.status(501).send({ message: err.message });
@@ -248,7 +236,7 @@ exports.login = (req, res) => {
           id: user.id,
           nsuid: user.nsuid,
           email: user.email,
-          roles: authorities,
+          role: user.role,
           verified: user.verified,
           accessToken: token
         });

@@ -14,7 +14,7 @@ module.exports = function(app) {
     [
       verifySignUp.checkDuplicateNsuidOrEmail,
       verifySignUp.checkId,
-      verifySignUp.checkname,verifySignUp.checkemail,verifySignUp.checkpassword,verifySignUp.checkrole
+      verifySignUp.checkname,verifySignUp.checkpassword,verifySignUp.checkrole
     ],
     controller.signup
   );
@@ -33,6 +33,13 @@ module.exports = function(app) {
     [authJwt.verifyToken] ,
     controller.findAll
   );
+
+  app.get(
+    "/reviewers",
+    [authJwt.verifyToken] ,
+    controller.findReviewers
+  );
+
   app.get(
     "/userswithstatus",
     [authJwt.verifyToken] ,
