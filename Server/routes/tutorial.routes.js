@@ -1,3 +1,5 @@
+const verifyComplaints = require("../middleware/verifyComplaints.js");
+
 module.exports = app => {
     const tutorials = require("../controllers/tutorial.controller.js");
     const users = require("../controllers/tutorial.controller.js");
@@ -6,9 +8,16 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Create a new Tutorial
-    router.post("/createcomplaint",[authJwt.verifyToken], tutorials.create);
-    router.post("/createcomplaintadmin",[authJwt.verifyToken], tutorials.create2);
+    router.post("/createcomplaint",
+    [authJwt.verifyToken], [verifyComplaints.checktitle,verifyComplaints.checkbody],
+    tutorials.create);
+    router.post("/createcomplaintadmin",
+    [authJwt.verifyToken], [verifyComplaints.checktitle,verifyComplaints.checkbody],
+    tutorials.create2);
    
+    //update complaints Labib
+    router.post("/editcomplaint",[authJwt.verifyToken], tutorials.update);
+    router.get("/getcomplaintVersions", [authJwt.verifyToken],tutorials.findVersions)
   
     // Retrieve all Tutorials
     router.get("/getcomplaint/received", [authJwt.verifyToken],tutorials.findAll);

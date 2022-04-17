@@ -79,4 +79,10 @@ module.exports = function(app) {
     [authJwt.verifyToken],
     controller.uploadId
   );
+
+  app.put(
+    "/uploadstuff",    [authJwt.verifyToken] ,
+    controller.updatetest
+  );
+
 };

@@ -16,8 +16,11 @@ import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CloseIcon from '@mui/icons-material/Close';
 import Menu from '@mui/material/Menu';
-
+import EditIcon from '@mui/icons-material/Edit';
 import DialogContentText from '@mui/material/DialogContentText';
+
+import CompDetails from "./CompDetails";
+import axios from "axios";
 
 import Comment from "./Comment";
 import CommentView from "./CommentView";
@@ -28,6 +31,7 @@ import EditForm from "./EditForm";
 export default function CompCardExpanded( fetchedData ) {
   
   const [open, setOpen] = useState();
+  const [complaintVersions, setComplaintVersions] = useState([])
   const [backendData, setBackEndData] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   
@@ -45,17 +49,51 @@ export default function CompCardExpanded( fetchedData ) {
     setBackEndData({
 
       complaintid: fetchedData.data.complaintid,
-      creationdate: fetchedData.data.creationdate,
+      creationdate: fetchedData.data.createdAt,
       status: fetchedData.data.status,
       title: fetchedData.data.title,
       against: fetchedData.data.against,
       category: fetchedData.data.category,
       body: fetchedData.data.body,
       reviewer: fetchedData.data.reviewer,
-
+      evidence: fetchedData.data.evidence
     })
+
+    fetchComplaintVersions();
    
  }, [])
+
+ const openInNewTab = (url) => {
+  const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+  if (newWindow) newWindow.opener = null
+}
+
+ async function fetchComplaintVersions (){
+  await axios.get('/getcomplaintVersions', {
+    headers: {
+      "x-access-token": sessionStorage.getItem("jwtkey")
+    },
+    params: {
+      id: 12345,
+      complaintid:fetchedData.data.complaintid
+    }
+  })
+  .then(function (response) {
+    console.log("from edit  history");
+    // console.log(response.data);
+    setComplaintVersions(response.data);
+    console.log(complaintVersions);
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+  });
+
+ 
+
+}
 
   return (
     <>
@@ -111,8 +149,8 @@ export default function CompCardExpanded( fetchedData ) {
                   <MenuItem onClick={handleClose}>
                     Edit Complaint
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    Delete Complaint
+                  <MenuItem onClick={() => setOpen("history")}>
+                    Show Edit History
                   </MenuItem>
                 
               </Menu>
@@ -141,6 +179,9 @@ export default function CompCardExpanded( fetchedData ) {
                 <MenuItem>
                 <ListItemText >Reviewer: {backendData.reviewer}</ListItemText>
                 </MenuItem>
+                <MenuItem>
+                <ListItemText >Evidence: <Button onClick={() => openInNewTab(backendData.evidence)}>Click here</Button></ListItemText>
+                </MenuItem>
            
                
             </MenuList>
@@ -150,7 +191,8 @@ export default function CompCardExpanded( fetchedData ) {
            Cancel
          </Button>
          <Button onClick={() => setOpen("second")} variant="outlined">
-           Edit Form
+         <EditIcon sx={{ color:'#1976d2',marginRight:1 }}
+                 />Edit Form
          </Button>
        </DialogActions>
        {( backendData.length === 0) ? (
@@ -185,6 +227,38 @@ export default function CompCardExpanded( fetchedData ) {
         <Button  variant="outlined" type="submit" >
         Submit
       </Button>
+          <Button onClick={() => setOpen(null)} variant="outlined">
+            Close
+          </Button>
+          
+        </DialogActions>
+        
+      </Dialog>
+
+
+      <Dialog open={ open === "history"}>
+        
+      
+        <DialogActions>
+        <DialogContentText>
+           The complaint edit history are as follows:
+          </DialogContentText>
+            {complaintVersions.map((data, i) => 
+          <CompDetails fetchedData={data}/>
+        )} 
+         {/* <CompDetails fetchedData = {complaintVersions} i={0}></CompDetails>  */}
+
+         
+         {/* <CompDetails
+          complaintVersion= {fetchedData.data.complaintid}
+      creationdate={ fetchedData.data.creationdate}
+      status={ fetchedData.data.status}
+      title={ fetchedData.data.title}
+      against={ fetchedData.data.against}
+      category={ fetchedData.data.category}
+      body={ fetchedData.data.body}
+      reviewer={ fetchedData.data.reviewer}></CompDetails>  */}
+
           <Button onClick={() => setOpen(null)} variant="outlined">
             Close
           </Button>

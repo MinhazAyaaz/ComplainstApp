@@ -20,7 +20,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
-db.complaintVersions = require("./complaintVersions.model.js")(sequelize, Sequelize);
+db.complaintHistory = require("./complaintHistory.model.js")(sequelize, Sequelize);
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.comments = require("../models/comments.model.js")(sequelize, Sequelize);
@@ -44,3 +44,10 @@ db.comments.belongsTo(db.tutorials)
 
 db.ROLES = ["user", "admin", "moderator"];
 module.exports = db;
+
+
+//One to many  relationship of complaint to history
+db.tutorials.hasMany(db.complaintHistory,{
+  onDelete: 'CASCADE',
+});
+db.complaintHistory.belongsTo(db.tutorials)

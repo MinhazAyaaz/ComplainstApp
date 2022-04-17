@@ -50,6 +50,8 @@ export default function CompCard( fetchedData ) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [color2, setColor] = React.useState({})
   const [comment, setComment] = React.useState();
+  const [edit, setEdit] = React.useState();
+  const [complaintVersions, setComplaintVersions] = React.useState([])
 
   const activeColor = { maxWidth: 900,  p: 3,
     margin: 'auto',
@@ -99,9 +101,11 @@ export default function CompCard( fetchedData ) {
        body: fetchedData.fetchedData.body,
        reviewer: fetchedData.fetchedData.reviewer,
        createdby: fetchedData.fetchedData.createdby,
+       evidence: fetchedData.fetchedData.evidence
      })
      
      fetchComments()
+     fetchComplaintVersions()
 
      if(fetchedData.fetchedData.status == '0'){
         setColor(activeColor)
@@ -160,6 +164,33 @@ export default function CompCard( fetchedData ) {
       
     });
   };
+
+  async function fetchComplaintVersions (){
+    await axios.get('/getcomplaintVersions', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345,
+        complaintid:fetchedData.fetchedData.complaintid
+      }
+    })
+    .then(function (response) {
+      console.log("from edit  history");
+      // console.log(response.data);
+      setEdit(response.data.length)
+      console.log(complaintVersions);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  
+   
+  
+  }
 
   return (
     <Card sx={color2}>
@@ -233,7 +264,7 @@ export default function CompCard( fetchedData ) {
         />
 
               </Badge>
-              <Badge badgeContent={17} color="error" >
+              <Badge badgeContent={edit} color="error" >
                 <EditIcon sx={{ color:'#1976d2',marginRight:1 }}
                  />
 

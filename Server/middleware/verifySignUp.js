@@ -63,8 +63,15 @@ checkId = (req, res, next) => {
 
 checkname = (req, res, next) => {
   
+  let nameid=req.body.name;
+  let namelength=nameid.length
+  
   if(req.body.name == null){
     res.sendStatus(419).send({message:"Name is required"})
+  }
+  else if((namelength>=30))
+  {
+    res.sendStatus(723).send({message:"Name size is too large"})
   }
   
   next();
@@ -76,11 +83,17 @@ const validateEmail = (email) => {
 };
 checkemail = (req, res, next) => {
   
-  
+  let emailid=req.body.email;
+  let emaillength=emailid.length;
+
   if(!(validateEmail(req.body.email)))
   {
     res.sendStatus(700).send({message:"Invalid email"})
 
+  }
+  else if((emaillength>255))
+  {
+    res.sendStatus(756).send({message:"Email is too large"})
   }
  
   

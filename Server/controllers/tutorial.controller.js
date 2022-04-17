@@ -1,5 +1,6 @@
 const db = require("../models");
 const Tutorial = db.tutorials;
+const ComplaintHistory = db.complaintHistory;
 const Op = db.Sequelize.Op;
 const User = db.user;
 const nodemailer = require('nodemailer');
@@ -74,8 +75,8 @@ exports.create = async (req, res) => {
     reviewer: req.body.reviewer,
     category: req.body.category,
     createdby: req.userId,
-    status: req.body.status ? req.body.status : false
-
+    status: req.body.status ? req.body.status : false,
+    evidence:req.body.evidence,
   };
 
   let creator = await User.findOne({
@@ -94,10 +95,30 @@ exports.create = async (req, res) => {
     }
   });
 
+  var id;
+ 
   // Save Tutorial in the database
   Tutorial.create(tutorial)
+  
     .then(data => {
-      res.send(data);
+      // res.send(data);
+      id = data.complaintid;
+      console.log(parseFloat(id).toFixed(2));
+      
+      const update = {
+        complaintVersion: parseFloat(id).toFixed(2),
+        title: req.body.title,
+        date:req.body.date,
+        against: req.body.against,
+        body: req.body.body,
+        reviewer: req.body.reviewer,
+        category: req.body.category,
+        createdby: req.userId,
+        status: req.body.status ? req.body.status : false,
+        complaintComplaintid: parseInt(id)
+    
+      };
+      ComplaintHistory.create(update)
     })
     .catch(err => {
       res.status(500).send({
@@ -416,3 +437,160 @@ exports.deleteAll = (req, res) => {
     });
 };
 
+// Labib update complaints
+exports.update = async (req, res) => {
+  // Validate request
+  
+  // if (!req.body.title) {
+  //   res.status(400).send({
+  //     message: "Content can not be empty!"
+  //   });
+  //   return;
+    
+  // }
+
+  // else if (!req.body.body) {
+  //   res.status(404).send({
+  //     message: "Body can not be empty!"
+  //   });
+  //   return;
+  // }
+  // else if (!req.body.reviewer) {
+  //   res.status(405).send({
+  //     message: "Reviewer can not be empty!"
+  //   });
+  //   return;
+  // }
+  // else if (req.body.against==null) {
+  //   res.status(406).send({
+  //     message: "Against can not be empty!"
+  //   });
+  //   return;
+  // }
+  // else if (!req.body.category) {
+  //   res.status(407).send({
+  //     message: "Category can not be empty!"
+  //   });
+  //   return;
+  // }
+  
+  // Create a Tutorial
+  
+  let compToEdit = await Tutorial.update(
+    {
+      title: req.body.title,
+    against: req.body.against,
+    body: req.body.body,
+    reviewer: req.body.reviewer,
+    category: req.body.category,
+    status: req.body.status ? req.body.status : false
+    },{
+    where: {
+      complaintid:req.body.complaintid,
+      createdby: req.userId
+    }
+  });
+  // });
+  // let agaisnt = await User.findOne({
+  //   where: {
+  //     nsuid: req.body.against
+  //   }
+  // });
+  // let reviewer = await User.findOne({
+  //   where: {
+  //     nsuid: req.body.reviewer
+  //   }
+  // });
+
+
+// Results will be an empty array and metadata will contain the number of affected rows.
+  let compHistory = await ComplaintHistory.findOne(
+{
+   
+    where: {
+      complaintComplaintid:req.body.complaintid,
+      createdby: req.userId
+    },
+    order: [ [ 'complaintVersion', 'DESC' ]]
+  });
+
+  var version = compHistory.complaintVersion;
+  console.log(compHistory);
+  version = parseFloat(version) +.01,
+  
+  console.log(version)
+  const update = {
+    complaintVersion: version,
+    title: req.body.title,
+    date:req.body.date,
+    against: req.body.against,
+    body: req.body.body,
+    reviewer: req.body.reviewer,
+    category: req.body.category,
+    createdby: req.userId,
+    status: req.body.status ? req.body.status : false,
+    complaintComplaintid:req.body.complaintid,
+  };
+
+  // Save Tutorial in the database
+  ComplaintHistory.create(update)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          "Some error occurred while creating the complaint."
+      });
+    });
+
+  // transporter.sendMail({
+  //   from: "nsucomplaints.noreply@gmail.com",
+  //   to: creator.email,
+  //   subject: "Your complaint has been lodged.",
+  //   html: `<p>A complaint has been filed by you: ${creator.name}, (${creator.nsuid})</p>
+  //   <h2> Complaint: ${req.body.title}</h2>
+  //   <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+  //   `,
+  // })
+  // transporter.sendMail({
+  //   from: "nsucomplaints.noreply@gmail.com",
+  //   to: agaisnt.email,
+  //   subject: "A complaint has been made agaisnt you.",
+  //   html: `<p>A complaint has been filed agaisnt you by: ${creator.name}, (${creator.nsuid})</p>
+  //   <h2> Complaint: ${req.body.title}</h2>
+  //   <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+  //   `,
+  // })
+  // transporter.sendMail({
+  //   from: "nsucomplaints.noreply@gmail.com",
+  //   to: reviewer.email,
+  //   subject: "You are asked to review a complaint",
+  //   html: `<p>You are asked to review a complaint by: ${creator.name}, (${creator.nsuid})</p>
+  //   <h2> Complaint: ${req.body.title}</h2>
+  //   <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+  //   `,
+  // })
+};
+
+// Labib get versions of complaints to display on front end, edit history basically
+exports.findVersions = (req, res) => {
+  //res.json(req);
+ //RECEIVED!!!!
+ const complaintid= req.userId;
+ ComplaintHistory.findAll({where: { against: complaintid, complaintComplaintid:req.query.complaintid}, order: [ ['updatedAt','DESC'] ]})
+  
+    .then(data => {
+      res.send(data); 
+      console.log("from backend");
+
+      console.log(data);
+      
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          `Cannot get comp with id=${complaintid} and against =${against}. `
+      });
+    });
+};

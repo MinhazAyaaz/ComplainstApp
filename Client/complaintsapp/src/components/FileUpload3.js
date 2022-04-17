@@ -10,7 +10,7 @@ import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 function FileUpload() {
     const [progress, setProgress] = useState(0);
-    const [urldata1, seturldata1] = React.useState('');
+    const [urldata, seturldata] = React.useState('');
     const formHandler = (e) => {
         e.preventDefault();
         const file = e.target[0].files[0];
@@ -31,9 +31,9 @@ function FileUpload() {
       
     };
     const handlechange2 =(e) => {
-      console.log(urldata1);
+      console.log(urldata);
       axios.put('/uploadstuff', {
-        idscan: urldata1
+        idscan: urldata
         
       },{headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
@@ -73,7 +73,7 @@ function FileUpload() {
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
               
-              seturldata1(""+downloadURL);
+              seturldata(""+downloadURL);
               console.log(downloadURL)
             });
             

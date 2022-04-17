@@ -437,3 +437,24 @@ exports.uploadId = (req, res) => {
 
   res.send(600)
   };
+
+  exports.updatetest = (req, res) => {
+    User.update({
+      idscan: req.body.idscan
+     }, {
+      where: { nsuid: req.userId  }
+     })
+     .then(data => {
+      
+      res.send({message:`sent succesfully to ${req.userId}`})  
+      
+     
+    })
+    .catch(err => {
+      res.status(509).send({
+        message:
+          err.message || "Some error in deactivation."
+      });
+    })
+   
+    };

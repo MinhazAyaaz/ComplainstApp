@@ -41,12 +41,13 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-export default function EditForm( fetchedData ) {
+export default function EditForm( fetchedData) {
 
  
   const [formdata, setFormdata] = React.useState('');
 
   const [backendData, setBackEndData] = React.useState([]);
+  
 
   React.useEffect(()=>{
     console.log(fetchedData)
@@ -57,7 +58,7 @@ export default function EditForm( fetchedData ) {
       status: fetchedData.data.status,
       title: fetchedData.data.title,
       against: fetchedData.data.against,
-      category: fetchedData.data.category,
+      // category: fetchedData.data.category,
       body: fetchedData.data.body,
       reviewer: fetchedData.data.reviewer,
 
@@ -69,12 +70,51 @@ export default function EditForm( fetchedData ) {
 
 
  
-
+//labib edit complaints
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
+
+   
+  console.log('yessss')
+  
+      console.log({
+        title: data.get('title'),
+        against: data.get('against'),
+        category: formdata,
+        body: data.get('body'),
+        reviewer: data.get('reviewer')
+      });
+      var sqlDatetime = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toJSON().slice(0, 19).replace('T', ' ');
+  console.log(sqlDatetime);
+      axios.post('/editcomplaint', {
+        complaintid:fetchedData.data.complaintid,
+        title: data.get('title'),
+        date:sqlDatetime,
+        against: fetchedData.data.against,
+        category: formdata,
+        body: data.get('body'),
+        reviewer: data.get('reviewer')
+      }, {
+        headers: {
+          "x-access-token": sessionStorage.getItem("jwtkey")
+        },
+      }
+      )
+      // .then(function (response) {
+      //   console.log(response);
+      //   // fetchComplaint();
+      //   // unExpandForm();
+      // })
+      // .catch(function (error) {
+      //   console.log(error);
+      //   alert(error);
+      // });
+      document.getElementById("myForm").reset();
+     
+    
+  
   };
 
   const handleChange = (event) => {
@@ -104,23 +144,27 @@ export default function EditForm( fetchedData ) {
           defaultValue={backendData.title}
         />
 
-        <TextField
+        {/* <TextField
           multiline={true}
           margin="normal"
           required
           fullWidth
-          name="agaisnt"
+          name="against"
           label="Who is it against?"
           type="against"
           id="against"
           autoComplete="against"
           defaultValue={backendData.against}
-        />
+        /> */}
       
-
+      <Typography variant="body1" label="Who is it against?" color="text.disabled" >
+      Against: {backendData.against} 
+     
+</Typography>
+<br></br>
 
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Category*</InputLabel>
+          <InputLabel id="categories">Category*</InputLabel>
             <Select
               labelId="category"
               id="category"
@@ -129,8 +173,12 @@ export default function EditForm( fetchedData ) {
               onChange={handleChange}
               defaultValue={formdata}
             >
-              <MenuItem value={"bullying"}>Bullying</MenuItem>
-              <MenuItem value={"sanitation"}>Sanitation</MenuItem>
+              <MenuItem value={"Course Registration"}>Course registration</MenuItem>
+              <MenuItem value={"Exam"}>Exam</MenuItem>
+              <MenuItem value={"Result Compilation"}>Result compilation</MenuItem>
+              <MenuItem value={"Student Welfare"}>Student welfare</MenuItem>
+              <MenuItem value={"Student Lecturers Relationship"}>Student lecturers relationship</MenuItem>
+              <MenuItem value={"Research Projects"}>Research projects</MenuItem>
               
             </Select>
         </FormControl>
@@ -176,7 +224,11 @@ export default function EditForm( fetchedData ) {
       justifyContent: "flex-end",
                 alignItems: "flex-end"}}
                 >
-   
+                
+      <Button  variant="outlined" type="submit"  >
+        Submit Edit
+      </Button>
+      
       </Box>
             
       </Box>

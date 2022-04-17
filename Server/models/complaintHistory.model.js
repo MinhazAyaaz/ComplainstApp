@@ -1,9 +1,20 @@
+//Defining the complain history table  
 module.exports = (sequelize, Sequelize) => {
-    const Tutorial = sequelize.define("complaints", {
-      complaintid: {
-        type: Sequelize.INTEGER,
+    const ComplaintHistory = sequelize.define("complaintHistory", {
+    
+      complaintVersion: {
+        type: Sequelize.DECIMAL(4, 2),
         primaryKey: true,
-        autoIncrement: true
+        // autoIncrement:true
+        
+      },
+      // complaintid: {
+      //   type: Sequelize.INTEGER
+
+      // },
+      date:{
+        type: Sequelize.DATE,
+        
       },
       title: {
         type: Sequelize.STRING
@@ -23,15 +34,13 @@ module.exports = (sequelize, Sequelize) => {
       category: {
         type: Sequelize.STRING
       },
-      evidence: {
-        type: Sequelize.STRING
-      },
+      
       status: {
         type: Sequelize.BOOLEAN
       }
     });
   
-    return Tutorial;
+    return ComplaintHistory;
 
   };
 
