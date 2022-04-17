@@ -33,7 +33,7 @@ export default function CommentView( fetchedData ) {
   const [expanded, setExpanded] = React.useState(false);
   const [value, setValue] = React.useState('');
   const [backendData, setBackEndData] = React.useState([]);
-  const [openDlg1Dialog, setDialog1Open] = React.useState(false);
+  const [empty, dempty] = React.useState([])
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [comments, setComments] = React.useState([]);
 
@@ -106,7 +106,7 @@ export default function CommentView( fetchedData ) {
       complaintid: backendData.complaintid,
     });
     
-    axios.post('/createComment', {
+   axios.post('/createComment', {
       comment: value,
       complaintid: backendData.complaintid,
     }, {
@@ -124,31 +124,28 @@ export default function CommentView( fetchedData ) {
       alert(error);
     });
     
+      setComments(empty);
+      setValue('');
+      fetchComments();
   };
 
 
   return (
     <>
+    { (sessionStorage.getItem("role") == "2" || sessionStorage.getItem("role") == "3") ?
     <Card sx={{   p: 3,
-          
-          marginTop: 1,
+          margin: 1,
           padding: 1,
-          
-        
           backgroundColor: (theme) =>
             theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
 
           <CardHeader
-            avatar={
-              <Avatar sx={{ width: 45, height: 45, float: 'left', backgroundColor: '#1976d2'}}>
-                X
-              </Avatar>
-            }
+            
             title={
               <>
               <TextField
               id="outlined-multiline-flexible"
-              label="Multiline"
+              label="Write a comment..."
               multiline
               maxRows={4}
               value={value}
@@ -159,18 +156,15 @@ export default function CommentView( fetchedData ) {
                 Post
               </Button></>
             }
-            
-            
           />
-          
-          
-
         </Card>
+        : null }
+
     {(comments.length === 0) ?
     (<p>No comment</p>)
     :
     (
-      <Box >
+      <Box sx={{maxHeight: 300}}>
         <Typography>
           Comments <MessageIcon fontS ize="small"/>({comments.length})
         </Typography>

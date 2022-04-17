@@ -49,7 +49,8 @@ export default function CompCard( fetchedData ) {
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [color2, setColor] = React.useState({})
- 
+  const [comment, setComment] = React.useState();
+
   const activeColor = { maxWidth: 900,  p: 3,
     margin: 'auto',
     marginTop: 1,
@@ -100,6 +101,8 @@ export default function CompCard( fetchedData ) {
        createdby: fetchedData.fetchedData.createdby,
      })
      
+     fetchComments()
+
      if(fetchedData.fetchedData.status == '0'){
         setColor(activeColor)
      }
@@ -132,6 +135,31 @@ export default function CompCard( fetchedData ) {
     
   };
 
+  async function fetchComments (){
+    //API Endpoint '/findAll' is for testing only
+    //
+    console.log(fetchedData.fetchedData.complaintid)
+      await axios.get('/fetchComment', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        complaintid: fetchedData.fetchedData.complaintid
+      }
+    })
+    .then(function (response) {
+      setComment(response.data.length)
+      console.log(comment)
+      console.log(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+      
+    });
+  };
 
   return (
     <Card sx={color2}>
@@ -200,7 +228,7 @@ export default function CompCard( fetchedData ) {
         aria-label="show 17 new notifications"
       >
 
-        <Badge badgeContent={17} color="error" size="small" sx={{ marginRight:4}} >
+        <Badge badgeContent={comment} color="error" size="small" sx={{ marginRight:4}} >
           <CommentIcon sx={{ color:'#1976d2',marginRight:1}}
         />
 

@@ -52,8 +52,9 @@ export default function AdminCompCard( fetchedData ) {
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [checked, setChecked] = React.useState();
+  const [comment, setComment] = React.useState();
   const [color2, setColor] = React.useState({})
- 
+  const [myColor, setmyColor] = React.useState('white');
   const activeColor = { maxWidth: 900,  p: 3,
     margin: 'auto',
     marginTop: 1,
@@ -103,11 +104,15 @@ export default function AdminCompCard( fetchedData ) {
        status:fetchedData.fetchedData.status
      })
      
+     fetchComments()
+     
+     setChecked(!fetchedData.fetchedData.status)
+
      if(fetchedData.fetchedData.status == '0'){
-        setColor(activeColor)
+       setmyColor('#02a6d3')
      }
      else{
-       setColor(inactiveColor)
+       setmyColor('#555')
      }
     
   }, [])
@@ -134,6 +139,33 @@ export default function AdminCompCard( fetchedData ) {
     });
     
   };
+
+  async function fetchComments (){
+    //API Endpoint '/findAll' is for testing only
+    //
+    console.log(fetchedData.fetchedData.complaintid)
+      await axios.get('/fetchComment', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        complaintid: fetchedData.fetchedData.complaintid
+      }
+    })
+    .then(function (response) {
+      setComment(response.data.length)
+      console.log(comment)
+      console.log(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+      
+    });
+  };
+
   const handleChange3 = (event) => {
     axios.put('/updatecompstat', {
       complaintid: backendData.complaintid,
@@ -141,20 +173,43 @@ export default function AdminCompCard( fetchedData ) {
     })
     .then(function (response) {
       console.log(response);
-      window.location.reload()
+      // window.location.reload()
+      if(color2 === activeColor){
+        setColor(inactiveColor)
+      }
+      else if(color2 === inactiveColor){
+        setColor(activeColor)
+      }
     })
     .catch(function (error) {
       console.log(error);
       alert(error);
     });
     setChecked(event.target.checked);
+    if(myColor == '#02a6d3'){
+      setmyColor('#555')
+    }
+    else if(myColor == '#555'){
+      setmyColor('#02a6d3')
+    }
+    
   };
 
 
   return (
 
     (color2 == null) ? null :
-    <Card sx={color2}>
+    <Card sx={{ maxWidth: 900,  p: 3,
+      margin: 'auto',
+      marginTop: 1,
+      padding: 3,
+      maxWidth: 1000,
+      flexGrow: 1,
+      borderBottom: 'solid',
+      borderWidth: 15,
+      borderRadius: 5,
+      borderColor: `${ myColor }`
+      }}>
            
 
       <CardHeader
@@ -226,7 +281,7 @@ export default function AdminCompCard( fetchedData ) {
         aria-label="show 17 new notifications"
       >
 
-        <Badge badgeContent={17} color="error" size="small" sx={{ marginRight:4}} >
+        <Badge badgeContent={comment} color="error" size="small" sx={{ marginRight:4}} >
           <CommentIcon sx={{ color:'#1976d2',marginRight:1}}
         />
 
@@ -251,7 +306,7 @@ export default function AdminCompCard( fetchedData ) {
         <Grid item>
         <Switch
    
-   checked={!fetchedData.fetchedData.status}
+   checked={checked}
    onChange={handleChange3}
    inputProps={{ 'aria-label': 'controlled' }}
  />

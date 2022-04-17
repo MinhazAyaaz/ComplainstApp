@@ -24,5 +24,11 @@ module.exports = function(app) {
     controller.fetchComments
   );
 
+  app.get(
+    "/fetchCommentCount",
+    [authJwt.verifyToken] ,
+    controller.fetchCommentCount
+  );
+
  
 };
