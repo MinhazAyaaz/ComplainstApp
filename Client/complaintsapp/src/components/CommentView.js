@@ -129,6 +129,43 @@ export default function CommentView( fetchedData ) {
 
   return (
     <>
+    <Card sx={{   p: 3,
+          
+          marginTop: 1,
+          padding: 1,
+          
+        
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
+
+          <CardHeader
+            avatar={
+              <Avatar sx={{ width: 45, height: 45, float: 'left', backgroundColor: '#1976d2'}}>
+                X
+              </Avatar>
+            }
+            title={
+              <>
+              <TextField
+              id="outlined-multiline-flexible"
+              label="Multiline"
+              multiline
+              maxRows={4}
+              value={value}
+              onChange={handleChange}
+              sx={{width: '100%'}}
+            />
+            <Button onClick={handleSubmit} variant="outlined" sx={{marginTop: 2, float: 'right', }}>
+                Post
+              </Button></>
+            }
+            
+            
+          />
+          
+          
+
+        </Card>
     {(comments.length === 0) ?
     (<p>No comment</p>)
     :
@@ -178,43 +215,7 @@ export default function CommentView( fetchedData ) {
     </>
       ))}
 
-          <Card sx={{   p: 3,
           
-          marginTop: 1,
-          padding: 1,
-          
-        
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
-
-          <CardHeader
-            avatar={
-              <Avatar sx={{ width: 45, height: 45, float: 'left', backgroundColor: '#1976d2'}}>
-                X
-              </Avatar>
-            }
-            title={
-              <>
-              <TextField
-              id="outlined-multiline-flexible"
-              label="Multiline"
-              multiline
-              maxRows={4}
-              value={value}
-              onChange={handleChange}
-              sx={{width: '100%'}}
-            />
-            <Button onClick={handleSubmit} variant="outlined" sx={{marginTop: 2, float: 'right', }}>
-                Post
-              </Button></>
-            }
-            
-            
-          />
-          
-          
-
-        </Card>
       </Box>
     )
     }

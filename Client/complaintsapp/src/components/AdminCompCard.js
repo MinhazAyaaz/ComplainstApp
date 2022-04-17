@@ -52,9 +52,32 @@ export default function AdminCompCard( fetchedData ) {
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [checked, setChecked] = React.useState();
-
+  const [color2, setColor] = React.useState({})
  
+  const activeColor = { maxWidth: 900,  p: 3,
+    margin: 'auto',
+    marginTop: 1,
+    padding: 3,
+    maxWidth: 1000,
+    flexGrow: 1,
+    borderBottom: 'solid',
+    borderWidth: 17,
+    borderRadius: 10,
+    borderColor: '#02a6d3'
+    }
   
+  const inactiveColor = { maxWidth: 900,  p: 3,
+    margin: 'auto',
+    marginTop: 1,
+    padding: 3,
+    maxWidth: 1000,
+    flexGrow: 1,
+    borderBottom: 'solid',
+    borderWidth: 17,
+    borderRadius: 10,
+    borderColor: '#555'
+    }
+    
   const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -66,7 +89,7 @@ export default function AdminCompCard( fetchedData ) {
 
   React.useEffect(()=>{
 
-     setBackEndData({
+    setBackEndData({
 
        complaintid: fetchedData.fetchedData.complaintid,
        creationdate: fetchedData.fetchedData.creationdate,
@@ -80,6 +103,12 @@ export default function AdminCompCard( fetchedData ) {
        status:fetchedData.fetchedData.status
      })
      
+     if(fetchedData.fetchedData.status == '0'){
+        setColor(activeColor)
+     }
+     else{
+       setColor(inactiveColor)
+     }
     
   }, [])
 
@@ -121,18 +150,11 @@ export default function AdminCompCard( fetchedData ) {
     setChecked(event.target.checked);
   };
 
-  
-
 
   return (
-    <Card sx={{ maxWidth: 900,  p: 3,
-      margin: 'auto',
-      marginTop: 1,
-      padding: 3,
-      maxWidth: 1000,
-      flexGrow: 1,
-      backgroundColor: (theme) =>
-        theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
+
+    (color2 == null) ? null :
+    <Card sx={color2}>
            
 
       <CardHeader

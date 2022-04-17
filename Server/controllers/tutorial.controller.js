@@ -290,6 +290,25 @@ exports.findAll2 = (req, res) => {
     });
 };
 
+// find all published Tutorial
+exports.findAll3 = (req, res) => {
+  //res.json(req);
+ //const against=req.userId.userId;
+ const complaintid= req.userId;
+  Tutorial.findAll({where: {reviewer: complaintid}, order: [ ['updatedAt','DESC'] ]})
+  
+    .then(data => {
+      res.send(data);
+      
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          `Cannot get comp with id=${complaintid} and against =${against}. `
+      });
+    });
+};
+
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;

@@ -16,6 +16,9 @@ module.exports = app => {
     // Retrieve all published Tutorials
     router.get("/getcomplaint/filed", [authJwt.verifyToken],tutorials.findAll2);
   
+    // Retrieve all published Tutorials
+    router.get("/getcomplaint/review", [authJwt.verifyToken],tutorials.findAll3);
+  
     // Retrieve a single Tutorial with id
     // router.get("/:id", tutorials.findOne);
   

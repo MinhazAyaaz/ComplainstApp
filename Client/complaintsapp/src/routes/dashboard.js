@@ -46,6 +46,8 @@ export default function Dashboard() {
   const [expanded, setExpanded] = React.useState(false);
   const [formdata, setFormdata] = React.useState('');
   const [studentList, setStudentList] = useState([]);
+  const [reviewerList, setReviewerList] = useState([]);
+
   const [value, setValue] = useState({name: "", nsuid: ""})
   const [value2, setValue2] = useState({name: "", nsuid: ""})
   const [reviewer, setReviewer] = useState(false)
@@ -58,6 +60,7 @@ export default function Dashboard() {
     checkIdStatus();
       fetchComplaint();
       fetchUserList();
+      fetchReviewerList();
       if( sessionStorage.getItem("role") == "2" || sessionStorage.getItem("role") == "3"){
         setReviewer(true)
       }
@@ -102,6 +105,25 @@ export default function Dashboard() {
       // always executed
     });
 
+    await axios.get('/getcomplaint/review', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setReviewComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+
     // await axios.get('/getcomplaint/received', {
     //   headers: {
     //     authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
@@ -135,6 +157,30 @@ export default function Dashboard() {
     })
     .then(function (response) {
       setStudentList(response.data)
+      console.log(studentList)
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
+
+  async function fetchReviewerList (){
+    //API Endpoint '/findAll' is for testing only
+    //
+    await axios.get('/reviewers', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      setReviewerList(response.data)
       console.log(studentList)
       console.log(response)
     })
@@ -343,14 +389,14 @@ export default function Dashboard() {
 
         {expanded ?
         <>
-        {(studentList.length === 0) ? ( <p>Fetching user list</p>) : (
+        {(reviewerList.length === 0) ? ( <p>Fetching reviewer list</p>) : (
           <Autocomplete
           disablePortal
           value={value2}
           onChange={(event, newValue) => {
             setValue2(newValue);
           }}
-          options={studentList}
+          options={reviewerList}
           getOptionLabel={(option) => option.name}
           sx={{ width: 'max' }}
           renderOption={(props, option) => (
@@ -489,8 +535,11 @@ export default function Dashboard() {
         flexGrow: 1,
        }}
        align="center" > Complaints Received // {reviewComplaint.length} complaints</Typography>
-        {receivedComplaint.map((data, i) => (
+        {reviewComplaint.map((data, i) => (
+          <>
           <AdminCompCard fetchedData={data}/>
+          
+          </>
         ))}
       </>
       )}
