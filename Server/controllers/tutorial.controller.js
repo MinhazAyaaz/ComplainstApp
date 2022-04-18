@@ -452,42 +452,7 @@ exports.deleteAll = (req, res) => {
 
 // Labib update complaints
 exports.update = async (req, res) => {
-  // Validate request
   
-  // if (!req.body.title) {
-  //   res.status(400).send({
-  //     message: "Content can not be empty!"
-  //   });
-  //   return;
-    
-  // }
-
-  // else if (!req.body.body) {
-  //   res.status(404).send({
-  //     message: "Body can not be empty!"
-  //   });
-  //   return;
-  // }
-  // else if (!req.body.reviewer) {
-  //   res.status(405).send({
-  //     message: "Reviewer can not be empty!"
-  //   });
-  //   return;
-  // }
-  // else if (req.body.against==null) {
-  //   res.status(406).send({
-  //     message: "Against can not be empty!"
-  //   });
-  //   return;
-  // }
-  // else if (!req.body.category) {
-  //   res.status(407).send({
-  //     message: "Category can not be empty!"
-  //   });
-  //   return;
-  // }
-  
-  // Create a Tutorial
   
   let compToEdit = await Tutorial.update(
     {
@@ -545,7 +510,7 @@ exports.update = async (req, res) => {
     category: req.body.category,
     createdby: req.userId,
     evidence:req.body.evidence,
-    //status: req.body.status ? req.body.status : false,
+    status: req.body.status,
     complaintComplaintid:req.body.complaintid,
   };
 
