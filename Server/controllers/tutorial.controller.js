@@ -40,7 +40,7 @@ exports.create = async (req, res) => {
   }
 
   else if (!req.body.body) {
-    res.status(404).send({
+    res.status(456).send({
       message: "Body can not be empty!"
     });
     return;
@@ -122,7 +122,7 @@ exports.create = async (req, res) => {
       ComplaintHistory.create(update)
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(513).send({
         message:
           "Some error occurred while creating the complaint."
       });
@@ -171,7 +171,7 @@ exports.create2 = async (req, res) => {
   }
 
   else if (!req.body.body) {
-    res.status(404).send({
+    res.status(456).send({
       message: "Body can not be empty!"
     });
     return;
@@ -233,7 +233,7 @@ exports.create2 = async (req, res) => {
       res.send(data);
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(596).send({
         message:
           "Some error occurred while creating the complaint."
       });
@@ -287,7 +287,7 @@ exports.findAll = (req, res) => {
       
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(593).send({
         message:
           `Cannot get comp with id=${complaintid} and against =${against}. `
       });
@@ -306,7 +306,7 @@ exports.findAll2 = (req, res) => {
       
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(593).send({
         message:
           `Cannot get comp with id=${complaintid} and against =${against}. `
       });
@@ -325,7 +325,7 @@ exports.findAll3 = (req, res) => {
       
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(593).send({
         message:
           `Cannot get comp with id=${complaintid} and against =${against}. `
       });
@@ -399,7 +399,7 @@ exports.updatecompstatus = (req, res) => {
      
     })
     .catch(err => {
-      res.status(509).send({
+      res.status(531).send({
         message:
           err.message || "Some error in disabling."
       });
@@ -555,7 +555,7 @@ exports.update = async (req, res) => {
       res.send(data);
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(527).send({
         message:
           "Some error occurred while creating the complaint."
       });

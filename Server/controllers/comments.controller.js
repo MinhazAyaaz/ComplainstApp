@@ -316,13 +316,13 @@ exports.createComment = async (req, res) => {
         // })
         
        }catch(e){
-        res.status(808).send()
+        res.status(888).send()
        }
 
       
     })
     .catch(err => {
-      res.status(501).send({ message: err.message });
+      res.status(511).send({ message: err.message });
     });
   };
 
@@ -354,7 +354,7 @@ exports.fetchCommentCount = (req, res) => {
       
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(599).send({
         message:
           `Cannot get comment with id=${complaintid} and against =${against}. `
       });

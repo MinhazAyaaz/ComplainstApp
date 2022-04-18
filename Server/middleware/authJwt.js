@@ -5,14 +5,14 @@ const User = db.user;
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
-    return res.status(403).send({
+    return res.status(435).send({
       message: "No token provided!"
     });
   }
   jwt.verify(token, config.secret, (err, decoded) => {
       
     if (err) {
-      return res.status(401).send({
+      return res.status(434).send({
         message: "Unauthorized!"
 
       });
@@ -34,7 +34,7 @@ isAdmin = (req, res, next) => {
           return;
         }
       }
-      res.status(403).send({
+      res.status(439).send({
         message: "Require Admin Role!"
       });
       return;
@@ -50,7 +50,7 @@ isModerator = (req, res, next) => {
           return;
         }
       }
-      res.status(403).send({
+      res.status(438).send({
         message: "Require Moderator Role!"
       });
     });
@@ -69,7 +69,7 @@ isModeratorOrAdmin = (req, res, next) => {
           return;
         }
       }
-      res.status(403).send({
+      res.status(433).send({
         message: "Require Moderator or Admin Role!"
       });
     });
