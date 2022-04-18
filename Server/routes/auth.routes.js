@@ -107,6 +107,10 @@ module.exports = function(app) {
     controller.updatetest
   );
   app.put(
+    "/updateStatus",    [authJwt.verifyToken] ,
+    controller.updateStatus
+  );
+  app.put(
     "/uploadprofilepic",    [authJwt.verifyToken] ,
     controller.setprofilepic
   );

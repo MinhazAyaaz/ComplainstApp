@@ -127,7 +127,8 @@ exports.GoogleSignup = async (req, res) => {
           nsuid: checkUser.nsuid,
           email: checkUser.email,
           verified: checkUser.verified,
-          accessToken: authToken
+          accessToken: authToken,
+          role: checkUser.role
         });
       ;
 
@@ -565,6 +566,28 @@ exports.uploadId = (req, res) => {
     })
    
     };
+
+    exports.updateStatus = (req, res) => {
+      User.update({
+        role: req.body.role
+       }, {
+        where: { nsuid: req.userId  }
+       })
+       .then(data => {
+        
+        res.send({message:`sent succesfully to ${req.userId}`})  
+        
+       
+      })
+      .catch(err => {
+        res.status(579).send({
+          message:
+            err.message || "Some error in deactivation."
+        });
+      })
+     
+      };
+
     exports.setprofilepic = (req, res) => {
       User.update({
         photo: req.body.photo
