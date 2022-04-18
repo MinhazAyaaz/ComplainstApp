@@ -34,11 +34,11 @@ module.exports = function(app) {
     controller.findAll
   );
 
-  app.get(
-    "/reviewers",
-    [authJwt.verifyToken] ,
-    controller.findReviewers
-  );
+  // app.get(
+  //   "/reviewers",
+  //   [authJwt.verifyToken] ,
+  //   controller.findReviewers
+  // );
 
   app.get(
     "/userswithstatus",

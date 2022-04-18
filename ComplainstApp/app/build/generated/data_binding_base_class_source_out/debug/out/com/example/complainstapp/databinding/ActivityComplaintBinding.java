@@ -81,7 +81,13 @@ public final class ActivityComplaintBinding implements ViewBinding {
   public final ImageButton titleSpeech;
 
   @NonNull
-  public final Button uploadButton;
+  public final ImageButton uploadAudioButton;
+
+  @NonNull
+  public final ImageButton uploadFileButton;
+
+  @NonNull
+  public final ImageButton uploadImageButton;
 
   private ActivityComplaintBinding(@NonNull ConstraintLayout rootView,
       @NonNull AutoCompleteTextView againstField, @NonNull ImageButton againstSpeech,
@@ -93,7 +99,8 @@ public final class ActivityComplaintBinding implements ViewBinding {
       @NonNull ImageButton detailsSpeech, @NonNull TextView pageTitle,
       @NonNull ImageButton reviewSpeech, @NonNull AutoCompleteTextView reviewerField,
       @NonNull Button saveButton, @NonNull EditText titleField, @NonNull ImageButton titleSpeech,
-      @NonNull Button uploadButton) {
+      @NonNull ImageButton uploadAudioButton, @NonNull ImageButton uploadFileButton,
+      @NonNull ImageButton uploadImageButton) {
     this.rootView = rootView;
     this.againstField = againstField;
     this.againstSpeech = againstSpeech;
@@ -114,7 +121,9 @@ public final class ActivityComplaintBinding implements ViewBinding {
     this.saveButton = saveButton;
     this.titleField = titleField;
     this.titleSpeech = titleSpeech;
-    this.uploadButton = uploadButton;
+    this.uploadAudioButton = uploadAudioButton;
+    this.uploadFileButton = uploadFileButton;
+    this.uploadImageButton = uploadImageButton;
   }
 
   @Override
@@ -258,9 +267,21 @@ public final class ActivityComplaintBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.uploadButton;
-      Button uploadButton = ViewBindings.findChildViewById(rootView, id);
-      if (uploadButton == null) {
+      id = R.id.uploadAudioButton;
+      ImageButton uploadAudioButton = ViewBindings.findChildViewById(rootView, id);
+      if (uploadAudioButton == null) {
+        break missingId;
+      }
+
+      id = R.id.uploadFileButton;
+      ImageButton uploadFileButton = ViewBindings.findChildViewById(rootView, id);
+      if (uploadFileButton == null) {
+        break missingId;
+      }
+
+      id = R.id.uploadImageButton;
+      ImageButton uploadImageButton = ViewBindings.findChildViewById(rootView, id);
+      if (uploadImageButton == null) {
         break missingId;
       }
 
@@ -268,7 +289,7 @@ public final class ActivityComplaintBinding implements ViewBinding {
           backButton, categoryField, categorySpeech, complaintAgainst, complaintCategory,
           complaintDetail, complaintEvidence, complaintReviewer, complaintTitle, detailsField,
           detailsSpeech, pageTitle, reviewSpeech, reviewerField, saveButton, titleField,
-          titleSpeech, uploadButton);
+          titleSpeech, uploadAudioButton, uploadFileButton, uploadImageButton);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,6 +33,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         backButton = findViewById(R.id.imageButton);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -86,38 +89,38 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-//                AndroidNetworking.post("http://192.168.0.109:5000/login")
-//                        .addBodyParameter("nsuid", idLayout.getEditText().getText().toString())
-//                        .addBodyParameter("password", passwordLayout.getEditText().getText().toString())
-//                        .setTag("test")
-//                        .setPriority(Priority.HIGH)
-//                        .build()
-//                        .getAsJSONObject(new JSONObjectRequestListener() {
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                try {
-//                                    accessToken = response.getString("accessToken");
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
-//                                intent.putExtra("token",accessToken);
-//                                startActivity(intent);
-//                            }
-//                            @Override
-//                            public void onError(ANError error) {
-//                                if(error.getErrorCode()==401) {
-//                                    Toast.makeText(LoginActivity.this, "Password is incorrect!", Toast.LENGTH_SHORT).show();
-//                                }
-//                                else if(error.getErrorCode()==512){
-//                                    Toast.makeText(LoginActivity.this, "User is not verified!", Toast.LENGTH_SHORT).show();
-//                                }
-//                                else{
-//                                    Log.e("Error", String.valueOf(error.getErrorCode()));
-//                                    Toast.makeText(LoginActivity.this, "An error occurred.Try again!", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        });
+                AndroidNetworking.post("http://192.168.0.109:5000/login")
+                        .addBodyParameter("nsuid", idLayout.getEditText().getText().toString())
+                        .addBodyParameter("password", passwordLayout.getEditText().getText().toString())
+                        .setTag("test")
+                        .setPriority(Priority.HIGH)
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    accessToken = response.getString("accessToken");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
+                                intent.putExtra("token",accessToken);
+                                startActivity(intent);
+                            }
+                            @Override
+                            public void onError(ANError error) {
+                                if(error.getErrorCode()==401) {
+                                    Toast.makeText(LoginActivity.this, "Password is incorrect!", Toast.LENGTH_SHORT).show();
+                                }
+                                else if(error.getErrorCode()==512){
+                                    Toast.makeText(LoginActivity.this, "User is not verified!", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Log.e("Error", String.valueOf(error.getErrorCode()));
+                                    Toast.makeText(LoginActivity.this, "An error occurred.Try again!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
             }
         });
@@ -164,11 +167,34 @@ public class LoginActivity extends AppCompatActivity {
                 String personId = acct.getId();
                 Uri personPhoto = acct.getPhotoUrl();
 
-                Log.e("Google Sign up",acct.toString());
+                Log.e("Token Id",acct.getIdToken());
+                Log.e("Acct Id",acct.getDisplayName().substring((acct.getDisplayName().lastIndexOf(" ") + 1)));
 
-                Intent myIntent = new Intent(LoginActivity.this, HomepageActivity.class);
-                startActivity(myIntent);
-                finish();
+                AndroidNetworking.post("http://192.168.0.109:5000/Gsignup")
+                        .addBodyParameter("token",acct.getIdToken())
+                        .addBodyParameter("nsuid",acct.getDisplayName().substring((acct.getDisplayName().lastIndexOf(" ") + 1)))
+                        .setTag("test1")
+                        .setPriority(Priority.HIGH)
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener(){
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    accessToken = response.getString("accessToken");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Intent myIntent = new Intent(LoginActivity.this, HomepageActivity.class);
+                                myIntent.putExtra("token",accessToken);
+                                startActivity(myIntent);
+                                finish();
+                            }
+                            @Override
+                            public void onError(ANError error) {
+                                Log.e("google error",error.toString());
+                            }
+                        });
+
             }else {
                 // Signed out, show unauthenticated UI.
                 Toast.makeText(this,"Account does not exist. Please sign up!",Toast.LENGTH_LONG).show();

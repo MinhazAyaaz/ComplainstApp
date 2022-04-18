@@ -35,11 +35,11 @@ require("./routes/tutorial.routes")(app);
 //   console.log("Drop and re-sync db.");
 // });
 const Role = db.role;
-db.sequelize.sync()
-// db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Db');
-//   initial();
-// }); 
+// db.sequelize.sync()
+db.sequelize.sync({force: true}).then(() => {
+  console.log('Drop and Resync Db');
+  initial();
+}); 
 
 // simple route
 app.get("/api", (req, res) => {

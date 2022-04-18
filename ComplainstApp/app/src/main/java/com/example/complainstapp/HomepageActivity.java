@@ -11,8 +11,14 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
@@ -49,12 +55,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomepageActivity extends AppCompatActivity{
 
     private Button createButton;
+    private Button logoutButton;
     private ImageButton backButton;
     private RadioGroup filterGroup;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private String accessToken;
     private final ArrayList<Complaint> complaintArrayList = new ArrayList<>();
+    GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +73,11 @@ public class HomepageActivity extends AppCompatActivity{
         filterGroup = findViewById(R.id.filterGrouping);
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.dataView);
+        logoutButton = findViewById(R.id.signOutButton);
 
         accessToken = getIntent().getExtras().getString("token");
+
+        //Log.e("Homepage Access Token",accessToken);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -188,6 +199,32 @@ public class HomepageActivity extends AppCompatActivity{
             }
         });
 
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signOut();
+            }
+        });
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+    }
+
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent = new Intent(HomepageActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
     }
 
     @Override

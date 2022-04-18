@@ -81,7 +81,7 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
   public final ImageButton titleSpeech;
 
   @NonNull
-  public final Button uploadButton;
+  public final Button uploadFileButton;
 
   private ActivityEditComplaintBinding(@NonNull ConstraintLayout rootView,
       @NonNull AutoCompleteTextView againstField, @NonNull ImageButton againstSpeech,
@@ -93,7 +93,7 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
       @NonNull ImageButton detailsSpeech, @NonNull TextView pageTitle,
       @NonNull ImageButton reviewSpeech, @NonNull AutoCompleteTextView reviewerField,
       @NonNull Button saveButton, @NonNull EditText titleField, @NonNull ImageButton titleSpeech,
-      @NonNull Button uploadButton) {
+      @NonNull Button uploadFileButton) {
     this.rootView = rootView;
     this.againstField = againstField;
     this.againstSpeech = againstSpeech;
@@ -114,7 +114,7 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
     this.saveButton = saveButton;
     this.titleField = titleField;
     this.titleSpeech = titleSpeech;
-    this.uploadButton = uploadButton;
+    this.uploadFileButton = uploadFileButton;
   }
 
   @Override
@@ -258,9 +258,9 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.uploadButton;
-      Button uploadButton = ViewBindings.findChildViewById(rootView, id);
-      if (uploadButton == null) {
+      id = R.id.uploadFileButton;
+      Button uploadFileButton = ViewBindings.findChildViewById(rootView, id);
+      if (uploadFileButton == null) {
         break missingId;
       }
 
@@ -268,7 +268,7 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
           againstSpeech, cancelButton, categoryField, categorySpeech, complaintAgainst,
           complaintCategory, complaintDetail, complaintEvidence, complaintReviewer, complaintTitle,
           detailsField, detailsSpeech, pageTitle, reviewSpeech, reviewerField, saveButton,
-          titleField, titleSpeech, uploadButton);
+          titleField, titleSpeech, uploadFileButton);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
