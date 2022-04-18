@@ -266,14 +266,14 @@ exports.createComment = async (req, res) => {
   let checkUser = await Tutorial.findOne({
     where: {
       reviewer: req.userId,
-      complaintid: req.body.complaintid
+      complaintid: req.body.complaintid,status:0
     }
   });
   
   let checkUser2 = await User.findOne({
     where: {
       nsuid: req.userId,
-      role: '2'
+      [Op.or]: [{role: '2'},{role:'3'}],status:0
     }
   });
 

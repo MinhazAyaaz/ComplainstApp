@@ -115,6 +115,7 @@ exports.create = async (req, res) => {
         category: req.body.category,
         createdby: req.userId,
         status: req.body.status ? req.body.status : false,
+        evidence:req.body.evidence,
         complaintComplaintid: parseInt(id)
     
       };
@@ -205,6 +206,7 @@ exports.create2 = async (req, res) => {
     reviewer: req.body.reviewer,
     category: req.body.category,
     createdby: req.body.createdby,
+    evidence:req.body.evidence,
     status: req.body.status ? req.body.status : false
 
   };
@@ -483,7 +485,7 @@ exports.update = async (req, res) => {
     body: req.body.body,
     reviewer: req.body.reviewer,
     category: req.body.category,
-    status: req.body.status ? req.body.status : false
+    status: req.body.status ? req.body.status : false,evidence:req.body.evidence
     },{
     where: {
       complaintid:req.body.complaintid,
@@ -528,6 +530,7 @@ exports.update = async (req, res) => {
     reviewer: req.body.reviewer,
     category: req.body.category,
     createdby: req.userId,
+    evidence:req.body.evidence,
     status: req.body.status ? req.body.status : false,
     complaintComplaintid:req.body.complaintid,
   };

@@ -30,6 +30,9 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from '../firebase';
+
 
 import axios from 'axios';
 
@@ -47,6 +50,10 @@ export default function EditForm( fetchedData) {
   const [formdata, setFormdata] = React.useState('');
 
   const [backendData, setBackEndData] = React.useState([]);
+  const [progress, setProgress] = useState(0);
+  const [urldata, seturldata] = React.useState('');
+  const [file2, setfile] = React.useState();
+  
   
 
   React.useEffect(()=>{
@@ -61,6 +68,7 @@ export default function EditForm( fetchedData) {
       // category: fetchedData.data.category,
       body: fetchedData.data.body,
       reviewer: fetchedData.data.reviewer,
+      evidence: fetchedData.data.evidence
 
     })
 
@@ -71,47 +79,72 @@ export default function EditForm( fetchedData) {
 
  
 //labib edit complaints
+const formHandler = (e) => {
+  //e.preventDefault();
+  const file = e.target.files[0];
+  setfile(file);
+  console.log(file2);
+};
+const uploadFiles = (file,data) => {
+  //
+  if (!file) return;
+  const sotrageRef = ref(storage, `evidences/${file.name}`);
+  const uploadTask =  uploadBytesResumable(sotrageRef, file);
+
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      const prog = Math.round(
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      );
+      setProgress(prog);
+    },
+    (error) => console.log(error),
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        
+        seturldata(""+downloadURL);
+        console.log(downloadURL)
+        var sqlDatetime = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toJSON().slice(0, 19).replace('T', ' ');
+        console.log(sqlDatetime);
+            axios.post('/editcomplaint', {
+              complaintid:fetchedData.data.complaintid,
+              title: data.get('title'),
+              date:sqlDatetime,
+              against: fetchedData.data.against,
+              category: formdata,
+              evidence:downloadURL,
+              body: data.get('body'),
+              reviewer: data.get('reviewer')
+            }, {
+              headers: {
+                "x-access-token": sessionStorage.getItem("jwtkey")
+              },
+            }
+            )
+            // .then(function (response) {
+            //   console.log(response);
+            //   // fetchComplaint();
+            //   // unExpandForm();
+            // })
+            // .catch(function (error) {
+            //   console.log(error);
+            //   alert(error);
+            // });
+            document.getElementById("myForm").reset();
+     
+      });
+    }
+  );
+};
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-   
-  console.log('yessss')
-  
-      console.log({
-        title: data.get('title'),
-        against: data.get('against'),
-        category: formdata,
-        body: data.get('body'),
-        reviewer: data.get('reviewer')
-      });
-      var sqlDatetime = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toJSON().slice(0, 19).replace('T', ' ');
-  console.log(sqlDatetime);
-      axios.post('/editcomplaint', {
-        complaintid:fetchedData.data.complaintid,
-        title: data.get('title'),
-        date:sqlDatetime,
-        against: fetchedData.data.against,
-        category: formdata,
-        body: data.get('body'),
-        reviewer: data.get('reviewer')
-      }, {
-        headers: {
-          "x-access-token": sessionStorage.getItem("jwtkey")
-        },
-      }
-      )
-      // .then(function (response) {
-      //   console.log(response);
-      //   // fetchComplaint();
-      //   // unExpandForm();
-      // })
-      // .catch(function (error) {
-      //   console.log(error);
-      //   alert(error);
-      // });
-      document.getElementById("myForm").reset();
+    uploadFiles(file2,data);
+
+     
      
     
   
@@ -214,8 +247,8 @@ export default function EditForm( fetchedData) {
     
 
         <div>
-        <Input accept="image/*" label="Evidence" id="icon-button-file" type="file"/>
-        <AttachFileIcon/>
+        <input onChange={formHandler} type="file" className="input" />
+        <h2>Uploading done{progress}%</h2>
         </div>
    
         

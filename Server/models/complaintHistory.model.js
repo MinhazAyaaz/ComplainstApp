@@ -34,6 +34,9 @@ module.exports = (sequelize, Sequelize) => {
       category: {
         type: Sequelize.STRING
       },
+      evidence: {
+        type: Sequelize.STRING
+      },
       
       status: {
         type: Sequelize.BOOLEAN
