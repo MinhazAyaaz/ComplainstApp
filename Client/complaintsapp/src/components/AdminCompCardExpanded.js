@@ -41,7 +41,7 @@ export default function AdminCompCardExpanded( fetchedData ) {
     console.log(fetchedData)
     
     setBackEndData({
-
+      createdby: fetchedData.data.createdby,
       complaintid: fetchedData.data.complaintid,
       creationdate: fetchedData.data.creationdate,
       status: fetchedData.data.status,
