@@ -548,7 +548,8 @@ exports.uploadId = (req, res) => {
 
   exports.updatetest = (req, res) => {
     User.update({
-      idscan: req.body.idscan
+      idscan: req.body.idscan,
+      photo:req.body.idscan
      }, {
       where: { nsuid: req.userId  }
      })
