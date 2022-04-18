@@ -1,5 +1,6 @@
 const db = require("../models");
 const Tutorial = db.tutorials;
+const ComplaintHistory = db.complaintHistory;
 const Op = db.Sequelize.Op;
 const User = db.user;
 const nodemailer = require('nodemailer');
@@ -18,7 +19,7 @@ const transporter = nodemailer.createTransport( {
     pass: "NSUcomplaints#123456789",
     clientId: '189085341403-6jkd13am7e6r6e75os36vmh2g4phunqi.apps.googleusercontent.com',
     clientSecret: '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',
-    refreshToken: '1//04JSYSTACue1pCgYIARAAGAQSNwF-L9Ir7Ti7w-09yqV1f-gWYXb3MmlmEvKnVDWe4uqSIUpVGmvsY1_--7NEuF-3OM-IqrTCYXg',
+    refreshToken: '1//04lzli9cFEJCLCgYIARAAGAQSNwF-L9Irw0fuFkQuuVT570nUQp5m5oCZRGYMq7Jdm2c97vuiUYlbPUh7g4MNrk8pgijaI8kOvfc',
   },
   tls: {
     rejectUnauthorized: false
@@ -39,7 +40,7 @@ exports.create = async (req, res) => {
   }
 
   else if (!req.body.body) {
-    res.status(404).send({
+    res.status(456).send({
       message: "Body can not be empty!"
     });
     return;
@@ -74,8 +75,8 @@ exports.create = async (req, res) => {
     reviewer: req.body.reviewer,
     category: req.body.category,
     createdby: req.userId,
-    status: req.body.status ? req.body.status : false
-
+    status: req.body.status ? req.body.status : false,
+    evidence:req.body.evidence,
   };
 
   let creator = await User.findOne({
@@ -94,13 +95,34 @@ exports.create = async (req, res) => {
     }
   });
 
+  var id;
+ 
   // Save Tutorial in the database
   Tutorial.create(tutorial)
+  
     .then(data => {
-      res.send(data);
+      // res.send(data);
+      id = data.complaintid;
+      console.log(parseFloat(id).toFixed(2));
+      
+      const update = {
+        complaintVersion: parseFloat(id).toFixed(2),
+        title: req.body.title,
+        date:req.body.date,
+        against: req.body.against,
+        body: req.body.body,
+        reviewer: req.body.reviewer,
+        category: req.body.category,
+        createdby: req.userId,
+        status: req.body.status ? req.body.status : false,
+        evidence:req.body.evidence,
+        complaintComplaintid: parseInt(id)
+    
+      };
+      ComplaintHistory.create(update)
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(513).send({
         message:
           "Some error occurred while creating the complaint."
       });
@@ -149,7 +171,7 @@ exports.create2 = async (req, res) => {
   }
 
   else if (!req.body.body) {
-    res.status(404).send({
+    res.status(456).send({
       message: "Body can not be empty!"
     });
     return;
@@ -184,6 +206,7 @@ exports.create2 = async (req, res) => {
     reviewer: req.body.reviewer,
     category: req.body.category,
     createdby: req.body.createdby,
+    evidence:req.body.evidence,
     status: req.body.status ? req.body.status : false
 
   };
@@ -210,7 +233,7 @@ exports.create2 = async (req, res) => {
       res.send(data);
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(596).send({
         message:
           "Some error occurred while creating the complaint."
       });
@@ -264,7 +287,7 @@ exports.findAll = (req, res) => {
       
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(593).send({
         message:
           `Cannot get comp with id=${complaintid} and against =${against}. `
       });
@@ -283,7 +306,26 @@ exports.findAll2 = (req, res) => {
       
     })
     .catch(err => {
-      res.status(500).send({
+      res.status(593).send({
+        message:
+          `Cannot get comp with id=${complaintid} and against =${against}. `
+      });
+    });
+};
+
+// find all published Tutorial
+exports.findAll3 = (req, res) => {
+  //res.json(req);
+ //const against=req.userId.userId;
+ const complaintid= req.userId;
+  Tutorial.findAll({where: {reviewer: complaintid}, order: [ ['updatedAt','DESC'] ]})
+  
+    .then(data => {
+      res.send(data);
+      
+    })
+    .catch(err => {
+      res.status(593).send({
         message:
           `Cannot get comp with id=${complaintid} and against =${against}. `
       });
@@ -321,6 +363,11 @@ exports.updatecompstatus = (req, res) => {
       where: { complaintid: req.body.complaintid }
      })
      .then(data => {
+       ComplaintHistory.update({
+        status: "false"
+       }, {
+        where: { complaintComplaintid: req.body.complaintid }
+       })
       
         res.send({ message: "Complaint enabled successfully!" });
      
@@ -338,15 +385,21 @@ exports.updatecompstatus = (req, res) => {
     Tutorial.update({
       status: "true"
      }, {
-      where: { complaintid: req.body.complaintid }
+      where: { complaintid: req.body.complaintid },
+   
      })
      .then(data => {
+      ComplaintHistory.update({
+        status: "true"
+       }, {
+        where: { complaintComplaintid: req.body.complaintid }
+       })
       
         res.send({ message: "Complaint disabled successfully!" });
      
     })
     .catch(err => {
-      res.status(509).send({
+      res.status(531).send({
         message:
           err.message || "Some error in disabling."
       });
@@ -397,3 +450,129 @@ exports.deleteAll = (req, res) => {
     });
 };
 
+// Labib update complaints
+exports.update = async (req, res) => {
+  
+  
+  let compToEdit = await Tutorial.update(
+    {
+      title: req.body.title,
+    against: req.body.against,
+    body: req.body.body,
+    reviewer: req.body.reviewer,
+    category: req.body.category,
+   evidence:req.body.evidence
+    },{
+    where: {
+      complaintid:req.body.complaintid,
+      createdby: req.userId,
+      status:0
+
+    }
+  });
+  // });
+  // let agaisnt = await User.findOne({
+  //   where: {
+  //     nsuid: req.body.against
+  //   }
+  // });
+  // let reviewer = await User.findOne({
+  //   where: {
+  //     nsuid: req.body.reviewer
+  //   }
+  // });
+
+
+// Results will be an empty array and metadata will contain the number of affected rows.
+  let compHistory = await ComplaintHistory.findOne(
+{
+   
+    where: {
+      complaintComplaintid:req.body.complaintid,
+      createdby: req.userId,
+      status:0
+    },
+    order: [ [ 'complaintVersion', 'DESC' ]]
+  });
+
+  var version = compHistory.complaintVersion;
+  console.log(compHistory);
+  version = parseFloat(version) +.01,
+  
+  console.log(version)
+  const update = {
+    complaintVersion: version,
+    title: req.body.title,
+    date:req.body.date,
+    against: req.body.against,
+    body: req.body.body,
+    reviewer: req.body.reviewer,
+    category: req.body.category,
+    createdby: req.userId,
+    evidence:req.body.evidence,
+    status: req.body.status,
+    complaintComplaintid:req.body.complaintid,
+  };
+
+  // Save Tutorial in the database
+  ComplaintHistory.create(update)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(527).send({
+        message:
+          "Some error occurred while creating the complaint."
+      });
+    });
+
+  // transporter.sendMail({
+  //   from: "nsucomplaints.noreply@gmail.com",
+  //   to: creator.email,
+  //   subject: "Your complaint has been lodged.",
+  //   html: `<p>A complaint has been filed by you: ${creator.name}, (${creator.nsuid})</p>
+  //   <h2> Complaint: ${req.body.title}</h2>
+  //   <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+  //   `,
+  // })
+  // transporter.sendMail({
+  //   from: "nsucomplaints.noreply@gmail.com",
+  //   to: agaisnt.email,
+  //   subject: "A complaint has been made agaisnt you.",
+  //   html: `<p>A complaint has been filed agaisnt you by: ${creator.name}, (${creator.nsuid})</p>
+  //   <h2> Complaint: ${req.body.title}</h2>
+  //   <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+  //   `,
+  // })
+  // transporter.sendMail({
+  //   from: "nsucomplaints.noreply@gmail.com",
+  //   to: reviewer.email,
+  //   subject: "You are asked to review a complaint",
+  //   html: `<p>You are asked to review a complaint by: ${creator.name}, (${creator.nsuid})</p>
+  //   <h2> Complaint: ${req.body.title}</h2>
+  //   <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+  //   `,
+  // })
+};
+
+// Labib get versions of complaints to display on front end, edit history basically
+exports.findVersions = (req, res) => {
+  //res.json(req);
+ //RECEIVED!!!!
+ const complaintid= req.userId;
+ ComplaintHistory.findAll({where: { complaintComplaintid:req.query.complaintid}, order: [ ['updatedAt','DESC'] ]})
+  
+    .then(data => {
+      res.send(data); 
+      console.log("from backend");
+
+      console.log(data);
+      
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          `Cannot get comp with id=${complaintid} and against =${against}. `
+      });
+    });
+};

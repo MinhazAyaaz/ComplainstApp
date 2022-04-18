@@ -18,7 +18,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Menu from '@mui/material/Menu';
 
 import DialogContentText from '@mui/material/DialogContentText';
-
+import CommentView from "./CommentView";
 
 import ListItemText from '@mui/material/ListItemText';
 import EditForm from "./EditForm";
@@ -143,40 +143,26 @@ export default function AdminCompCardExpanded( fetchedData ) {
                
             </MenuList>
 
+            {( backendData.length === 0) ? (
+            <p> Wait </p>
+          ) : (
+            <>
+              
+              <CommentView fetchedData={backendData}/>
+            </>
+          )}
         </DialogContent>
         <DialogActions>
          
           <Button onClick={() => setOpen(null)} variant="outlined">
-            Cancel
+            Close
           </Button>
-          <Button onClick={() => setOpen("second")} variant="outlined">
-            Edit Form
-          </Button>
+        
         </DialogActions>
         
       </Dialog>
 
-      <Dialog open={open && open === "second"}>
-        
-        <DialogContent>
-        <Typography  variant="body1">Edit Previous Complaint</Typography>
-          
-          {( backendData.length === 0) ? (
-            <p> Wait </p>
-          ) : (
-            <EditForm data={backendData}/>
-          )}
-          
-        </DialogContent>
-        <DialogActions>
-        <Button  variant="outlined" type="submit" >
-        Submit
-      </Button>
-          <Button onClick={() => setOpen(null)} variant="outlined">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+      
     </>
   );
 }

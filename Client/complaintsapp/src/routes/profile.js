@@ -8,19 +8,90 @@ import Typography from '@mui/material/Typography';
 import PrimarySearchAppBar from '../components/navbar';
 import Profilecard from '../components/Profilecard';
 import MiniCompCard from '../components/MiniCompCard';
+import { Card } from '@mui/material';
+import { Grid } from '@mui/material';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from '../firebase';
+import { Button } from '@mui/material';
+
+import { MenuList, MenuItem, ListItemText } from '@mui/material';
 
 import axios from 'axios';
 
 export default function Profile() {
+
+  const [user, setUser] = useState({})
+  const [progress, setProgress] = useState(0);
+  const [urldata, seturldata] = React.useState('');
+  const [file2, setfile] = React.useState();
+  
 
   useEffect(()=>{
     
     fetchUserInfo();
     
   }, [])
+  const formHandler = (e) => {
+    //e.preventDefault();
+    const file = e.target.files[0];
+    setfile(file);
+    console.log(file2);
+  };
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
+  }
+  
+  const uploadFiles = (file,data) => {
+    //
+    if (!file) return;
+    const sotrageRef = ref(storage, `profilepicture/${file.name}`);
+    const uploadTask =  uploadBytesResumable(sotrageRef, file);
+  
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(prog);
+      },
+      (error) => console.log(error),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          
+          seturldata(""+downloadURL);
+          console.log(downloadURL)
+          
+              axios.put('/uploadprofilepic', {
+              
+                photo:downloadURL
+  
+              }, {
+                headers: {
+                  "x-access-token": sessionStorage.getItem("jwtkey")
+                },
+              }
+              )
+              
+              document.getElementById("myForm").reset();
+       
+        });
+      }
+    );
+  };
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    uploadFiles(file2,data);
+ 
+  
+  };
 
   async function fetchUserInfo (){
-    await axios.get('/getcomplaint/filed', {
+    await axios.get('/user', {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
       },
@@ -30,6 +101,7 @@ export default function Profile() {
     })
     .then(function (response) {
       console.log(response.data);
+      setUser(response.data)
       // setFiledComplaint(response.data)
     })
     .catch(function (error) {
@@ -38,7 +110,6 @@ export default function Profile() {
     .then(function () {
       // always executed
     });
-
   }
 
   return (
@@ -46,7 +117,7 @@ export default function Profile() {
     <React.Fragment>
         <PrimarySearchAppBar/>
 
-
+    
       <Box
           sx={{
             marginTop: 8,
@@ -55,23 +126,79 @@ export default function Profile() {
             alignItems: 'center',
           }}
         >
-            <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-          <IconButton
-          >
-            <Avatar sx={{ width: 55, height: 55, alignItems: 'center',backgroundColor: '#1976d2'}}>M</Avatar>
-          </IconButton>
 
-            </Box>
+<Grid container spacing={2} sx={{maxWidth: 900}}>
+      <Grid item xs={5} >
+        <Card>
+            <img className="profileId" src={user.idscan}/>
+          </Card>
+      </Grid>
+      <Grid item xs={7} >
+        <Card sx={{margin: 3, padding: 3}}>
+        <Typography component="h1" variant="h5"alignItems={'center'} >
+            Account Information
+          </Typography>
+        <MenuList>
+                
+                <MenuItem>
+                <ListItemText >Name: {user.name} </ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText >ID: {user.nsuid}</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText > Email: {user.email} </ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText > Role: {user.role} </ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText > Account: {user.status} </ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText > Joined: {user.createdAt} </ListItemText>
+                </MenuItem>
+                <MenuItem>
+                </MenuItem>
+           
+               
+            </MenuList>
+          </Card>
           <Typography component="h1" variant="h5"alignItems={'center'} >
-            Emon Sarker
+            Upload profile Picture
           </Typography>
-            <Profilecard/>
-          <Typography component="h3" variant="h7"alignItems={'center'} marginTop={5}>
-            Complaints Filed
-          </Typography>
-            <MiniCompCard/>
-            <MiniCompCard/>
+          <Box id="myForm" component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        
+      
 
+      
+        <div>
+        <input onChange={formHandler} type="file" className="input" />
+        <h2>Uploading done{progress}%</h2>
+        </div>
+      
+        
+     
+      <Box sx={{display: "flex",
+      justifyContent: "flex-end",
+                alignItems: "flex-end"}}
+                >
+    
+      <Button  variant="outlined" type="submit" >
+        Submit
+      </Button>
+      </Box>
+     
+      <Card>
+            <img className="profilepic" src={user.photo}/>
+          </Card>
+        
+      </Box>
+      </Grid>
+    </Grid>
+
+          
+        
 
         </Box>
 

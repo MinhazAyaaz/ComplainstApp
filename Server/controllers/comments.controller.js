@@ -2,6 +2,7 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
+const Tutorial = db.tutorials;
 const Comments = db.comments;
 const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
@@ -260,8 +261,39 @@ exports.login = (req, res) => {
     });
 };
 
-exports.createComment = (req, res) => {
+exports.createComment = async (req, res) => {
     
+  let checkUser = await Tutorial.findOne({
+    where: {
+      reviewer: req.userId,
+      complaintid: req.body.complaintid,status:0
+    }
+  });
+  
+  let checkUser2 = await User.findOne({
+    where: {
+      nsuid: req.userId,
+      [Op.or]: [{role: '2'},{role:'3'}],status:0
+    }
+  });
+
+  if(checkUser == null){
+    return res.status(431)
+  }
+  if(checkUser2 == null){
+    return res.status(432)
+  }
+  if (!req.body.comment) {
+    return res.status(781)
+  }
+  let commentid=req.body.comment;
+    let commentlength=commentid.length;
+    
+    if((commentlength>1000))
+    {
+      return res.sendStatus(782)
+    } 
+
   // Save User to Database
   Comments.create({
     comment: req.body.comment,
@@ -284,49 +316,17 @@ exports.createComment = (req, res) => {
         // })
         
        }catch(e){
-        res.status(808).send()
+        res.status(888).send()
        }
 
       
     })
     .catch(err => {
-      res.status(501).send({ message: err.message });
+      res.status(511).send({ message: err.message });
     });
   };
 
-  exports.fetchComments = (req, res) => {
-    //  res.status(222)
-     
-    // // Save User to Database
-    // Comments.findAll({
-    //   where: {
-    //     complaintComplaintid: req.query.complaintid
-    //   }
-    // })
-    //   .then(comment => {
-  
-    //     try{
-    //       //generates confirmation email link
-    //       // emailToken = jwt.sign( {user: req.body.nsuid}, EMAIL_SECRET )
-    //       // const url = `http://localhost:5000/confirmation/${emailToken}`
-    
-    //       //   //confirmation email configuration
-    //       //   transporter.sendMail({
-    //       //     from: "nsucomplaints.noreply@gmail.com",
-    //       //     to: req.body.email,
-    //       //     subject: "Confirm Email",
-    //       //     html: `Please click this email to confirm your email: <a target="_blank" href="${url}">${url}</a>`,
-    //       // })
-          
-    //      }catch(e){
-    //       res.status(808).send()
-    //      }
-  
-        
-    //   })
-    //   .catch(err => {
-    //     res.status(501).send({ message: err.message });
-    //   });
+ exports.fetchComments = (req, res) => {
     
     let complaintid= req.query.complaintid;
     Comments.findAll({where: { complaintComplaintid: complaintid}, order: [ ['updatedAt','DESC'] ]})
@@ -341,8 +341,25 @@ exports.createComment = (req, res) => {
           `Cannot get comment with id=${complaintid} and against =${against}. `
       });
     });
-    };
+};
 
+exports.fetchCommentCount = (req, res) => {
+    
+    
+    let complaintid= req.query.complaintid;
+    Comments.findAll({where: { complaintComplaintid: complaintid}, order: [ ['updatedAt','DESC'] ]})
+  
+    .then(data => {
+      res.send(data);
+      
+    })
+    .catch(err => {
+      res.status(599).send({
+        message:
+          `Cannot get comment with id=${complaintid} and against =${against}. `
+      });
+    });
+};
 
 
 

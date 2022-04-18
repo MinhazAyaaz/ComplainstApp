@@ -1,4 +1,5 @@
 const { verifySignUp } = require("../middleware");
+
 const controller = require("../controllers/comments.controller");
 const { authJwt } = require("../middleware");
 module.exports = function(app) {
@@ -22,6 +23,12 @@ module.exports = function(app) {
     "/fetchComment",
     [authJwt.verifyToken] ,
     controller.fetchComments
+  );
+
+  app.get(
+    "/fetchCommentCount",
+    [authJwt.verifyToken] ,
+    controller.fetchCommentCount
   );
 
  

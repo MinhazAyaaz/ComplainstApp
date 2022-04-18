@@ -36,7 +36,7 @@ require("./routes/tutorial.routes")(app);
 // });
 const Role = db.role;
 // db.sequelize.sync()
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync({alter: true}).then(() => {
   console.log('Drop and Resync Db');
   initial();
 }); 

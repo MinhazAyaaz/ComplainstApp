@@ -30,6 +30,11 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { Input } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from '../firebase';
+
+import Autocomplete from '@mui/material/Autocomplete';
+
 
 import axios from 'axios';
 
@@ -41,12 +46,19 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-export default function EditForm( fetchedData ) {
+export default function EditForm( fetchedData) {
 
  
   const [formdata, setFormdata] = React.useState('');
 
   const [backendData, setBackEndData] = React.useState([]);
+  const [progress, setProgress] = useState(0);
+  const [urldata, seturldata] = React.useState('');
+  const [file2, setfile] = React.useState();
+  const [reviewerList, setReviewerList] = React.useState([]);
+  const [value2, setValue2] = useState({name: "", nsuid: ""})
+
+  
 
   React.useEffect(()=>{
     console.log(fetchedData)
@@ -60,21 +72,168 @@ export default function EditForm( fetchedData ) {
       category: fetchedData.data.category,
       body: fetchedData.data.body,
       reviewer: fetchedData.data.reviewer,
+      evidence: fetchedData.data.evidence
 
     })
 
+    fetchReviewerList()
     setFormdata(fetchedData.data.category)
+    seturldata(fetchedData.data.evidence)
    
  }, [])
 
-
+ async function fetchReviewerList (){
+  //API Endpoint '/findAll' is for testing only
+  //
+  await axios.get('/reviewers', {
+    headers: {
+      "x-access-token": sessionStorage.getItem("jwtkey")
+    },
+    params: {
+      id: 12345
+    }
+  })
+  .then(function (response) {
+    setReviewerList(response.data)
+    console.log(reviewerList)
+    console.log(response)
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+  });
+}
  
+//labib edit complaints
+const formHandler = (e) => {
+  //e.preventDefault();
+  const file = e.target.files[0];
+  setfile(file);
+  console.log(file2);
+};
+const uploadFiles = (file) => {
+  //
+  if (!file) return;
+  const sotrageRef = ref(storage, `evidences/${file.name}`);
+  const uploadTask =  uploadBytesResumable(sotrageRef, file);
 
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      const prog = Math.round(
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      );
+      setProgress(prog);
+    },
+    (error) => console.log(error),
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        
+        seturldata(""+downloadURL);
+        console.log(downloadURL)
+       
+     
+      });
+    }
+  );
+};
+const handleSubmit2 = (event) => {
+  event.preventDefault();
+  
+
+  uploadFiles(file2);
+
+  /* var sqlDatetime = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toJSON().slice(0, 19).replace('T', ' ');
+
+  console.log({
+    complaintid:fetchedData.data.complaintid,
+    title: data.get('title'),
+    date: sqlDatetime,
+    against: fetchedData.data.against,
+    category: formdata,
+    body: data.get('body'),
+    reviewer: value2.nsuid,
+    evidence: urldata,
+    status:fetchedData.data.status
+  })
+  axios.post('/editcomplaint', {
+    complaintid:fetchedData.data.complaintid,
+    title: data.get('title'),
+    date: sqlDatetime,
+    against: fetchedData.data.against,
+    category: formdata,
+    body: data.get('body'),
+    reviewer: value2.nsuid,
+    evidence: urldata,
+    status:fetchedData.data.status
+  }, {
+    headers: {
+      "x-access-token": sessionStorage.getItem("jwtkey")
+    },
+  }
+  )
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+    alert(error);
+  });
+    */
+   
+  
+
+};
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
+
+    // uploadFiles(file2,data);
+    console.log(urldata)
+
+    var sqlDatetime = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toJSON().slice(0, 19).replace('T', ' ');
+
+    console.log({
+      complaintid:fetchedData.data.complaintid,
+      title: data.get('title'),
+      date: sqlDatetime,
+      against: fetchedData.data.against,
+      category: formdata,
+      body: data.get('body'),
+      reviewer: value2.nsuid,
+      evidence: urldata,
+      status:fetchedData.data.status
+    })
+    axios.post('/editcomplaint', {
+      complaintid:fetchedData.data.complaintid,
+      title: data.get('title'),
+      date: sqlDatetime,
+      against: fetchedData.data.against,
+      category: formdata,
+      body: data.get('body'),
+      reviewer: value2.nsuid,
+      evidence: urldata,
+      status:fetchedData.data.status
+    }, {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+    }
+    )
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert(error);
+    });
+     
+     
+    
+  
   };
 
   const handleChange = (event) => {
@@ -87,7 +246,7 @@ export default function EditForm( fetchedData ) {
      
     
 
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1, minWidth: 500 }}>
         
         <TextField
           multiline={true}
@@ -104,23 +263,27 @@ export default function EditForm( fetchedData ) {
           defaultValue={backendData.title}
         />
 
-        <TextField
+        {/* <TextField
           multiline={true}
           margin="normal"
           required
           fullWidth
-          name="agaisnt"
+          name="against"
           label="Who is it against?"
           type="against"
           id="against"
           autoComplete="against"
           defaultValue={backendData.against}
-        />
+        /> */}
       
-
+      <Typography variant="body1" label="Who is it against?" color="text.disabled" >
+      Against: {backendData.against} 
+     
+</Typography>
+<br></br>
 
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Category*</InputLabel>
+          <InputLabel id="categories">Category*</InputLabel>
             <Select
               labelId="category"
               id="category"
@@ -129,8 +292,12 @@ export default function EditForm( fetchedData ) {
               onChange={handleChange}
               defaultValue={formdata}
             >
-              <MenuItem value={"bullying"}>Bullying</MenuItem>
-              <MenuItem value={"sanitation"}>Sanitation</MenuItem>
+              <MenuItem value={"Course Registration"}>Course registration</MenuItem>
+              <MenuItem value={"Exam"}>Exam</MenuItem>
+              <MenuItem value={"Result Compilation"}>Result compilation</MenuItem>
+              <MenuItem value={"Student Welfare"}>Student welfare</MenuItem>
+              <MenuItem value={"Student Lecturers Relationship"}>Student lecturers relationship</MenuItem>
+              <MenuItem value={"Research Projects"}>Research projects</MenuItem>
               
             </Select>
         </FormControl>
@@ -151,24 +318,38 @@ export default function EditForm( fetchedData ) {
           defaultValue={backendData.body}
         />
   
-        <TextField
-          multiline={true}
-          margin="normal"
-          required
-          fullWidth
-          name="reviewer"
-          label="Who will review it?"
-          type="reviewer"
-          id="reviewer"
-          autoComplete="reviewer"
-          defaultValue={backendData.reviewer}
+        {(reviewerList.length === 0) ? ( <p>Fetching reviewer list</p>) : (
+          <Autocomplete
+          disablePortal
+          value={value2}
+          onChange={(event, newValue) => {
+            setValue2(newValue);
+          }}
+          options={reviewerList}
+          getOptionLabel={(option) => option.name}
+          
+          renderOption={(props, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+              {option.name} ({option.nsuid})
+            </Box>
+          )}
+          renderInput={(params) => <TextField {...params} label="Who will review the complaint" />}
+          
         />
+        )}
+
+        <br/>
     
 
         <div>
-        <Input accept="image/*" label="Evidence" id="icon-button-file" type="file"/>
-        <AttachFileIcon/>
+        
+        <input onChange={formHandler} type="file" className="input" />
+        <h2>Uploading done{progress}%</h2>
+        <button  onClick={handleSubmit2}>Upload</button>
+     
+       
         </div>
+      
    
         
  
@@ -176,7 +357,11 @@ export default function EditForm( fetchedData ) {
       justifyContent: "flex-end",
                 alignItems: "flex-end"}}
                 >
-   
+                
+      <Button  variant="outlined" type="submit"  >
+        Submit Edit
+      </Button>
+      
       </Box>
             
       </Box>
@@ -184,9 +369,3 @@ export default function EditForm( fetchedData ) {
    
   );
 }
-  
-      
-      
-    
- 
-

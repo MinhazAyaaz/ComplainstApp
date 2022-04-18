@@ -50,6 +50,7 @@ const handleGLogin = async (googleData) => {
     console.log(response);
     console.log(response);
       sessionStorage.setItem("jwtkey", response.data.accessToken)
+      sessionStorage.setItem("role", response.data.role)
       console.log(sessionStorage.getItem("jwtkey"))
       window.location.href = '/dashboard';
   })

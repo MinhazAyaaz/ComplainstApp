@@ -26,7 +26,7 @@ import { Alert } from '@mui/material';
 import axios from 'axios';
 
 
-export default function Comment( ) {
+export default function Comment( data ) {
 
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
@@ -34,7 +34,8 @@ export default function Comment( ) {
   const [backendData, setBackEndData] = React.useState([]);
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  
+  const [user, setUser] = React.useState({})
+
   const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -46,10 +47,38 @@ export default function Comment( ) {
 
   React.useEffect(()=>{
 
-     
+    setBackEndData({
+      user: data.data.user,
+      comment: data.data.comment
+      
+    })
+
+    fetchUserInfo()
      
     
   }, [])
+
+  async function fetchUserInfo (){
+    await axios.get('/otherUser', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: data.data.user
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setUser(response.data)
+      // setFiledComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -93,43 +122,41 @@ export default function Comment( ) {
   return (
     <>
     
-    <Card sx={{ maxWidth: 900,  p: 3,
-      
-      marginTop: 1,
-      padding: 1,
-      maxWidth: 1000,
-    
-      backgroundColor: (theme) =>
-        theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
+    <Card sx={{   p: 3,
+        
+        marginTop: 0,
+        padding: 1,
+        
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
 
-      <CardHeader
-        avatar={
-          <Avatar sx={{ width: 45, height: 45, backgroundColor: '#1976d2'}}>
-            X
-          </Avatar>
-        }
-        title={
-          <>
-          <TextField
-          id="outlined-multiline-flexible"
-          label="Multiline"
-          multiline
-          maxRows={4}
-          value={value}
-          onChange={handleChange}
-          sx={{width: '100%'}}
+        <CardHeader
+          avatar={
+            <Avatar src={user.photo} sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
+              
+            </Avatar>
+          }
+          title={
+            <>
+            <Typography variant="body2" color="text.secondary">
+          {user.name+" ("+user.nsuid+")"}
+          </Typography>
+            </>
+          }
+          subheader={
+            <>
+              <Typography variant="body" type="h1" color="text.primary">
+          {backendData.comment}
+          </Typography>
+            </>
+          }
+          
+          
         />
-        <Button onClick={handleSubmit} variant="outlined" sx={{margin: 2,marginLeft: '89%', }}>
-            Post
-          </Button></>
-        }
         
         
-      />
-      
-      
 
-    </Card>
+      </Card>
     </>
   );
   

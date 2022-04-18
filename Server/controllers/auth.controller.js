@@ -25,7 +25,7 @@ const transporter = nodemailer.createTransport( {
     pass: "NSUcomplaints#123456789",
     clientId: '189085341403-6jkd13am7e6r6e75os36vmh2g4phunqi.apps.googleusercontent.com',
     clientSecret: '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',
-    refreshToken: '1//04JSYSTACue1pCgYIARAAGAQSNwF-L9Ir7Ti7w-09yqV1f-gWYXb3MmlmEvKnVDWe4uqSIUpVGmvsY1_--7NEuF-3OM-IqrTCYXg',
+    refreshToken: '1//04lzli9cFEJCLCgYIARAAGAQSNwF-L9Irw0fuFkQuuVT570nUQp5m5oCZRGYMq7Jdm2c97vuiUYlbPUh7g4MNrk8pgijaI8kOvfc',
   },
   tls: {
     rejectUnauthorized: false
@@ -127,7 +127,8 @@ exports.GoogleSignup = async (req, res) => {
           nsuid: checkUser.nsuid,
           email: checkUser.email,
           verified: checkUser.verified,
-          accessToken: authToken
+          accessToken: authToken,
+          role: checkUser.role
         });
       ;
 
@@ -193,6 +194,61 @@ exports.GoogleSignup = async (req, res) => {
     });
 };
 
+exports.GoogleSignupMobile = async (req, res) => {
+  
+  const { token } = req.body;
+
+  //Fetched idToken is used to verify the user using Google's API
+  //hd: northsouth.edu is used to restrict domain to northsouth university
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience:'689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com',
+    hd: "northsouth.edu"
+  });
+
+  
+  let family_name = ticket.payload.family_name; //nsu id
+  let given_name = ticket.payload.given_name; //user name
+  let email = ticket.payload.email;
+  let picture = ticket.payload.picture;
+  // return res.send({
+  //   id: family_name,
+  //   name: given_name,
+  //   email: email,
+  //   picture: picture
+  // })
+  // const { family_name, given_name, email, picture } = ticket.getPayload();
+  
+
+  //Check if Google account user already exists in database
+  let checkUser = await User.findOne({
+    where: {
+      nsuid: family_name
+    }
+  });
+  if(checkUser){
+    //if they exist, just return a verification token
+    var authToken = jwt.sign({ id: family_name }, config.secret, {
+      expiresIn: 86400 // 24 hours
+    });
+        res.status(200).send({
+          id: checkUser.id,
+          nsuid: checkUser.nsuid,
+          email: checkUser.email,
+          verified: checkUser.verified,
+          accessToken: authToken
+        });
+      ;
+
+    return res.send(999);
+  }
+  else{
+    res.send({ message: "User was registered successfully!" });
+  }
+
+  
+};
+
 //HANDLES LOGIN FORM FUCNTIONS 
 exports.login = (req, res) => {
 
@@ -247,6 +303,44 @@ exports.login = (req, res) => {
     });
 };
 
+exports.findUser = (req, res) => {
+    
+  
+  User.findOne({
+    where: {
+      nsuid: req.userId
+    }
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(502).send({
+        message:
+          err.message || "Some error occurred while retrieving users."
+      });
+    });
+};
+
+exports.findOtherUser = (req, res) => {
+    
+  
+  User.findOne({
+    where: {
+      nsuid: req.query.id
+    }
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(502).send({
+        message:
+          err.message || "Some error occurred while retrieving users."
+      });
+    });
+};
+
 exports.findAll = (req, res) => {
     
   
@@ -261,26 +355,47 @@ exports.findAll = (req, res) => {
         });
       });
   };
-  exports.findUserToComplainAgainst = (req, res) => {
-    
   
-    User.findAll({
-      attributes: ['name', 'nsuid'],
-      where: {
-        nsuid: {
-          [Op.ne]: req.userId
-        }
-      }})
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(509).send({
-          message:
-            err.message || "Some error occurred while retrieving reviewers."
-        });
+exports.findUserToComplainAgainst = (req, res) => {
+  
+
+  User.findAll({
+    attributes: ['name', 'nsuid'],
+    where: {
+      nsuid: {
+        [Op.ne]: req.userId
+      }
+    }})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(509).send({
+        message:
+          err.message || "Some error occurred while retrieving reviewers."
       });
-  };
+    });
+};
+
+exports.findReviewers = (req, res) => {
+  
+
+  User.findAll({
+    attributes: ['name', 'nsuid'],
+    where: {
+      [Op.or]: [{role: '2'},{role:'3'}]
+    }})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(534).send({
+        message:
+          err.message || "Some error occurred while retrieving reviewers."
+      });
+    });
+};
+
   exports.findUserWithStatus = (req, res) => {
     
   
@@ -295,7 +410,7 @@ exports.findAll = (req, res) => {
         res.send(data);
       })
       .catch(err => {
-        res.status(509).send({
+        res.status(537).send({
           message:
             err.message || "Some error occurred while retrieving reviewers."
         });
@@ -313,7 +428,7 @@ exports.findAll = (req, res) => {
      
     })
     .catch(err => {
-      res.status(509).send({
+      res.status(578).send({
         message:
           err.message || "Some error in deactivation."
       });
@@ -381,6 +496,20 @@ exports.findAll = (req, res) => {
       res.send({findID : true})
   };
 
+  exports.findRole = async (req, res) => {
+    
+  
+    let checkUser = await User.findOne({
+      where: {
+        nsuid: req.userId
+      }
+    });
+    if(checkUser.role == null)
+      res.send({findRole : false})
+    else
+      res.send({findRole : true})
+  };
+
 exports.update = (req, res) => {
   try {
     jwt.verify(req.params.token, EMAIL_SECRET, (err, user)=>{
@@ -416,3 +545,67 @@ exports.uploadId = (req, res) => {
 
   res.send(600)
   };
+
+  exports.updatetest = (req, res) => {
+    User.update({
+      idscan: req.body.idscan,
+      photo:req.body.idscan
+     }, {
+      where: { nsuid: req.userId  }
+     })
+     .then(data => {
+      
+      res.send({message:`sent succesfully to ${req.userId}`})  
+      
+     
+    })
+    .catch(err => {
+      res.status(579).send({
+        message:
+          err.message || "Some error in deactivation."
+      });
+    })
+   
+    };
+
+    exports.updateStatus = (req, res) => {
+      User.update({
+        role: req.body.role
+       }, {
+        where: { nsuid: req.userId  }
+       })
+       .then(data => {
+        
+        res.send({message:`sent succesfully to ${req.userId}`})  
+        
+       
+      })
+      .catch(err => {
+        res.status(579).send({
+          message:
+            err.message || "Some error in deactivation."
+        });
+      })
+     
+      };
+
+    exports.setprofilepic = (req, res) => {
+      User.update({
+        photo: req.body.photo
+       }, {
+        where: { nsuid: req.userId  }
+       })
+       .then(data => {
+        
+        res.send({message:`sent succesfully to ${req.userId}`})  
+        
+       
+      })
+      .catch(err => {
+        res.status(567).send({
+          message:
+            err.message || "Some error in prof pic upload."
+        });
+      })
+     
+      };

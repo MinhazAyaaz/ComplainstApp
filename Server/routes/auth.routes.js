@@ -27,6 +27,10 @@ module.exports = function(app) {
     "/Gsignup",
     controller.GoogleSignup
   );
+  app.post(
+    "/GsignupMobile",
+    controller.GoogleSignup
+  );
 
   app.get(
     "/users",
@@ -34,11 +38,23 @@ module.exports = function(app) {
     controller.findAll
   );
 
-  // app.get(
-  //   "/reviewers",
-  //   [authJwt.verifyToken] ,
-  //   controller.findReviewers
-  // );
+  app.get(
+    "/user",
+    [authJwt.verifyToken] ,
+    controller.findUser
+  );
+
+  app.get(
+    "/otherUser",
+    [authJwt.verifyToken] ,
+    controller.findOtherUser
+  );
+
+  app.get(
+    "/reviewers",
+    [authJwt.verifyToken] ,
+    controller.findReviewers
+  );
 
   app.get(
     "/userswithstatus",
@@ -70,6 +86,12 @@ module.exports = function(app) {
   );
 
   app.get(
+    "/roleStatus",
+    [authJwt.verifyToken] ,
+    controller.findRole
+  );
+
+  app.get(
     "/confirmation/:token",
     controller.update
   );
@@ -79,4 +101,19 @@ module.exports = function(app) {
     [authJwt.verifyToken],
     controller.uploadId
   );
+
+  app.put(
+    "/uploadstuff",    [authJwt.verifyToken] ,
+    controller.updatetest
+  );
+  app.put(
+    "/updateStatus",    [authJwt.verifyToken] ,
+    controller.updateStatus
+  );
+  app.put(
+    "/uploadprofilepic",    [authJwt.verifyToken] ,
+    controller.setprofilepic
+  );
+
+
 };

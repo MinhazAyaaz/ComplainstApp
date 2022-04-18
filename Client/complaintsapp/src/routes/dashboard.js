@@ -23,6 +23,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { Dialog } from "@mui/material";
 import { DialogContent } from "@mui/material";
 import FileUpload from '../components/FileUpload';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from '../firebase';
 
 import axios from 'axios';
 
@@ -38,6 +40,9 @@ const Img = styled('img')({
 export default function Dashboard() {
 
   const [open, setOpen] = useState(true)
+  const [open2, setOpen2] = useState(true)
+  const [role, setRole] = React.useState('');
+
   const [backendData, setBackEndData] = useState([])
   const [filedComplaint, setFiledComplaint] = useState([])
   const [receivedComplaint, setReceivedComplaint] = useState([])
@@ -46,6 +51,8 @@ export default function Dashboard() {
   const [expanded, setExpanded] = React.useState(false);
   const [formdata, setFormdata] = React.useState('');
   const [studentList, setStudentList] = useState([]);
+  const [reviewerList, setReviewerList] = useState([]);
+
   const [value, setValue] = useState({name: "", nsuid: ""})
   const [value2, setValue2] = useState({name: "", nsuid: ""})
   const [reviewer, setReviewer] = useState(false)
@@ -53,11 +60,16 @@ export default function Dashboard() {
   const [showRecievedComplaint, setShowRecievedComplaint] = useState(false)
   const [showReviewComaplaint, setShowReviewComaplaint] = useState(false)
 
+  const [progress, setProgress] = useState(0);
+  const [urldata, seturldata] = React.useState('');
+  const [file2, setfile] = React.useState();
   
   useEffect(()=>{
-    checkIdStatus();
+      checkIdStatus();
+      checkRoleStatus();
       fetchComplaint();
       fetchUserList();
+      fetchReviewerList();
       if( sessionStorage.getItem("role") == "2" || sessionStorage.getItem("role") == "3"){
         setReviewer(true)
       }
@@ -95,6 +107,25 @@ export default function Dashboard() {
     .then(function (response) {
       console.log(response.data);
       setReceivedComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+
+    await axios.get('/getcomplaint/review', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setReviewComplaint(response.data)
     })
     .catch(function (error) {
       console.log(error);
@@ -147,6 +178,30 @@ export default function Dashboard() {
     });
   }
 
+  async function fetchReviewerList (){
+    //API Endpoint '/findAll' is for testing only
+    //
+    await axios.get('/reviewers', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      setReviewerList(response.data)
+      console.log(studentList)
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
+
   async function checkIdStatus (){
     await axios.get('/idStatus', {
       headers: {
@@ -168,6 +223,51 @@ export default function Dashboard() {
     });
   }
 
+  async function checkRoleStatus (){
+    await axios.get('/roleStatus', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      setOpen2(!response.data.findRole)
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
+
+  function updateRoleStatus(){
+    
+    axios.put('/updateStatus', {
+      role: role
+      
+    },{headers: {
+      "x-access-token": sessionStorage.getItem("jwtkey")
+    },
+    params: {
+      id: 12345
+    }}
+    )
+    .then(function (response) {
+      console.log(response);
+      sessionStorage.setItem("role", role)
+      window.location.reload()
+     
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert(error);
+    });
+  }
+
   //Complaint form rendering
   const expandForm = () =>{
     setExpanded(true);
@@ -179,6 +279,13 @@ export default function Dashboard() {
   const clearForm = () =>{
     setExpanded(false);
   };
+
+  const formHandler = (e) => {
+    //e.preventDefault();
+    const file = e.target.files[0];
+    setfile(file);
+    console.log(file2);
+};
 
   //toogles which complaints to show
   const toggleFiledComplaint = () =>{
@@ -209,6 +316,8 @@ export default function Dashboard() {
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
 
+    uploadFiles(file2,data);
+    
     console.log({
       title: data.get('title'),
       against: value.nsuid,
@@ -217,27 +326,30 @@ export default function Dashboard() {
       reviewer: value2.nsuid,
     });
     
-    axios.post('/createcomplaint', {
-      title: data.get('title'),
-      against: value.nsuid,
-      category: formdata,
-      body: data.get('body'),
-      reviewer: value2.nsuid,
-    }, {
-      headers: {
-        "x-access-token": sessionStorage.getItem("jwtkey")
-      },
-    }
-    )
-    .then(function (response) {
-      console.log(response);
-      fetchComplaint();
-      unExpandForm();
-    })
-    .catch(function (error) {
-      console.log(error);
-      alert(error);
-    });
+    // var sqlDatetime = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toJSON().slice(0, 19).replace('T', ' ');
+
+    // axios.post('/createcomplaint', {
+    //   title: data.get('title'),
+    //   date: sqlDatetime,
+    //   against: value.nsuid,
+    //   category: formdata,
+    //   body: data.get('body'),
+    //   reviewer: value2.nsuid,
+    // }, {
+    //   headers: {
+    //     "x-access-token": sessionStorage.getItem("jwtkey")
+    //   },
+    // }
+    // )
+    // .then(function (response) {
+    //   console.log(response);
+    //   fetchComplaint();
+    //   unExpandForm();
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    //   alert(error);
+    // });
     document.getElementById("myForm").reset();
     setFiledComplaint(empty)
     fetchComplaint();
@@ -247,6 +359,68 @@ export default function Dashboard() {
     setFormdata(event.target.value);
   };
 
+  const handleRole = (event) => {
+    setRole(event.target.value);
+  };
+
+  const uploadFiles = (file,data) => {
+    //
+    if (!file) return;
+    const sotrageRef = ref(storage, `evidences/${file.name}`);
+    const uploadTask =  uploadBytesResumable(sotrageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(prog);
+      },
+      (error) => console.log(error),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          
+          seturldata(""+downloadURL);
+          console.log(downloadURL)
+        /*   const xhr = new XMLHttpRequest();
+            xhr.responseType = 'blob';
+            xhr.onload = (event) => {
+              const blob = xhr.response;
+            };
+            xhr.open('GET', downloadURL);
+            xhr.send(); */
+
+
+            var sqlDatetime = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toJSON().slice(0, 19).replace('T', ' ');
+
+            axios.post('/createcomplaint', {
+              title: data.get('title'),
+              date: sqlDatetime,
+              against: value.nsuid,
+              category: formdata,
+              body: data.get('body'),
+              reviewer: value2.nsuid,
+              evidence: downloadURL
+            }, {
+              headers: {
+                "x-access-token": sessionStorage.getItem("jwtkey")
+              },
+            }
+            )
+            .then(function (response) {
+              console.log(response);
+              fetchComplaint();
+              unExpandForm();
+            })
+            .catch(function (error) {
+              console.log(error);
+              alert(error);
+            });
+        });
+      }
+    );
+  };
   
   return (
     <>
@@ -256,6 +430,42 @@ export default function Dashboard() {
     
         <DialogContent>
           <FileUpload/>
+        </DialogContent>
+          
+      </Dialog>
+
+      <Dialog open={open2}  maxWidth="lg">
+        
+        <DialogContent sx={{width: 300}}>
+        <Typography variant="h6" align="center">
+          Welcome! Please select your role before continuing
+        </Typography>
+        <br/>
+        <FormControl fullWidth onSubmit>
+          <InputLabel id="demo-simple-select-label">Role*</InputLabel>
+              <Select
+                
+                helperText="shit"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={role}
+                label="role"
+                onChange={handleRole}
+              >
+                <MenuItem value={'1'}>Student</MenuItem>
+                <MenuItem value={'2'}>Faculty</MenuItem>
+                <MenuItem value={'3'}>Admin Employee</MenuItem>
+                
+              </Select>
+              <Button
+              onClick={updateRoleStatus}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2, }}
+            >
+              Continue
+            </Button>
+          </FormControl>
         </DialogContent>
           
       </Dialog>
@@ -320,8 +530,12 @@ export default function Dashboard() {
               label="category"
               onChange={handleChange}
             >
-              <MenuItem value={"bullying"}>Bullying</MenuItem>
-              <MenuItem value={"sanitation"}>Sanitation</MenuItem>
+              <MenuItem value={"Course Registration"}>Course registration</MenuItem>
+              <MenuItem value={"Exam"}>Exam</MenuItem>
+              <MenuItem value={"Result Compilation"}>Result compilation</MenuItem>
+              <MenuItem value={"Student Welfare"}>Student welfare</MenuItem>
+              <MenuItem value={"Student Lecturers Relationship"}>Student lecturers relationship</MenuItem>
+              <MenuItem value={"Research Projects"}>Research projects</MenuItem>
               
             </Select>
         </FormControl>
@@ -344,14 +558,14 @@ export default function Dashboard() {
 
         {expanded ?
         <>
-        {(studentList.length === 0) ? ( <p>Fetching user list</p>) : (
+        {(reviewerList.length === 0) ? ( <p>Fetching reviewer list</p>) : (
           <Autocomplete
           disablePortal
           value={value2}
           onChange={(event, newValue) => {
             setValue2(newValue);
           }}
-          options={studentList}
+          options={reviewerList}
           getOptionLabel={(option) => option.name}
           sx={{ width: 'max' }}
           renderOption={(props, option) => (
@@ -368,8 +582,8 @@ export default function Dashboard() {
 
         {expanded ?
         <div>
-        <Input accept="image/*" label="Evidence" id="icon-button-file" type="file"/>
-        <AttachFileIcon/>
+        <input onChange={formHandler} type="file" className="input" />
+        <h2>Uploading done{progress}%</h2>
         </div>
         :null}
         
@@ -490,8 +704,11 @@ export default function Dashboard() {
         flexGrow: 1,
        }}
        align="center" > Complaints Received // {reviewComplaint.length} complaints</Typography>
-        {receivedComplaint.map((data, i) => (
+        {reviewComplaint.map((data, i) => (
+          <>
           <AdminCompCard fetchedData={data}/>
+          
+          </>
         ))}
       </>
       )}
