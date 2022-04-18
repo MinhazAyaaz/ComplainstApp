@@ -1,4 +1,5 @@
 const { verifySignUp } = require("../middleware");
+
 const controller = require("../controllers/comments.controller");
 const { authJwt } = require("../middleware");
 module.exports = function(app) {

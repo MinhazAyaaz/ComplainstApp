@@ -283,6 +283,16 @@ exports.createComment = async (req, res) => {
   if(checkUser2 == null){
     return res.status(432)
   }
+  if (!req.body.comment) {
+    return res.status(781)
+  }
+  let commentid=req.body.comment;
+    let commentlength=commentid.length;
+    
+    if((commentlength>5))
+    {
+      return res.sendStatus(782)
+    } 
 
   // Save User to Database
   Comments.create({
