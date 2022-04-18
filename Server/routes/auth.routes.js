@@ -86,6 +86,12 @@ module.exports = function(app) {
   );
 
   app.get(
+    "/roleStatus",
+    [authJwt.verifyToken] ,
+    controller.findRole
+  );
+
+  app.get(
     "/confirmation/:token",
     controller.update
   );

@@ -25,7 +25,7 @@ const transporter = nodemailer.createTransport( {
     pass: "NSUcomplaints#123456789",
     clientId: '189085341403-6jkd13am7e6r6e75os36vmh2g4phunqi.apps.googleusercontent.com',
     clientSecret: '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',
-    refreshToken: '1//04JSYSTACue1pCgYIARAAGAQSNwF-L9Ir7Ti7w-09yqV1f-gWYXb3MmlmEvKnVDWe4uqSIUpVGmvsY1_--7NEuF-3OM-IqrTCYXg',
+    refreshToken: '1//04lzli9cFEJCLCgYIARAAGAQSNwF-L9Irw0fuFkQuuVT570nUQp5m5oCZRGYMq7Jdm2c97vuiUYlbPUh7g4MNrk8pgijaI8kOvfc',
   },
   tls: {
     rejectUnauthorized: false
@@ -493,6 +493,20 @@ exports.findReviewers = (req, res) => {
       res.send({findID : false})
     else
       res.send({findID : true})
+  };
+
+  exports.findRole = async (req, res) => {
+    
+  
+    let checkUser = await User.findOne({
+      where: {
+        nsuid: req.userId
+      }
+    });
+    if(checkUser.role == null)
+      res.send({findRole : false})
+    else
+      res.send({findRole : true})
   };
 
 exports.update = (req, res) => {

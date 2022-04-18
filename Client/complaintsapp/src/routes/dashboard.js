@@ -218,6 +218,27 @@ export default function Dashboard() {
     });
   }
 
+  async function checkRoleStatus (){
+    await axios.get('/idStatus', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      setOpen(!response.data.findID)
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
+
   //Complaint form rendering
   const expandForm = () =>{
     setExpanded(true);
