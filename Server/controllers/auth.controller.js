@@ -327,7 +327,7 @@ exports.findOtherUser = (req, res) => {
   
   User.findOne({
     where: {
-      nsuid: req.userId
+      nsuid: req.query.id
     }
   })
     .then(data => {

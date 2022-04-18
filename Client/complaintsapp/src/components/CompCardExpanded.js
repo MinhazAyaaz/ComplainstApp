@@ -18,6 +18,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Menu from '@mui/material/Menu';
 import EditIcon from '@mui/icons-material/Edit';
 import DialogContentText from '@mui/material/DialogContentText';
+import FilePresentIcon from '@mui/icons-material/FilePresent';
 
 import CompDetails from "./CompDetails";
 import axios from "axios";
@@ -35,6 +36,8 @@ export default function CompCardExpanded( fetchedData ) {
   const [backendData, setBackEndData] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [user, setUser] = React.useState({})
+  const [userAgaisnt, setUserAgaisnt] = React.useState({})
+  const [userReviewer, setUserReviewer] = React.useState({})
 
   const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -71,6 +74,8 @@ export default function CompCardExpanded( fetchedData ) {
 }
 
 async function fetchUserInfo (){
+
+  //Get data of creator
   await axios.get('/otherUser', {
     headers: {
       "x-access-token": sessionStorage.getItem("jwtkey")
@@ -82,6 +87,48 @@ async function fetchUserInfo (){
   .then(function (response) {
     console.log(response.data);
     setUser(response.data)
+    // setFiledComplaint(response.data)
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+  });
+
+  //Get data of the user complaint is lodged agaisnt
+  await axios.get('/otherUser', {
+    headers: {
+      "x-access-token": sessionStorage.getItem("jwtkey")
+    },
+    params: {
+      id: fetchedData.data.against
+    }
+  })
+  .then(function (response) {
+    console.log(response.data);
+    setUserAgaisnt(response.data)
+    // setFiledComplaint(response.data)
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+  });
+
+  //Get data of reviewer of the complaint
+  await axios.get('/otherUser', {
+    headers: {
+      "x-access-token": sessionStorage.getItem("jwtkey")
+    },
+    params: {
+      id: fetchedData.data.reviewer
+    }
+  })
+  .then(function (response) {
+    console.log(response.data);
+    setUserReviewer(response.data)
     // setFiledComplaint(response.data)
   })
   .catch(function (error) {
@@ -198,15 +245,66 @@ async function fetchUserInfo (){
                   </ListItemText>
                 </MenuItem>
                 <MenuItem>
-                <ListItemText >Against: {backendData.against}</ListItemText>
+                <Card sx={{ p: 0, marginTop: 0, padding: 0}}>
+                <Typography variant="body2"> Complaint lodged against: </Typography>
+
+                  <CardHeader
+                    avatar={
+                      <Avatar src={userAgaisnt.photo} sx={{ width: 30, height: 30,backgroundColor: '#1976d2'}}>
+                        
+                      </Avatar>
+                    }
+                    title={
+                      <>
+                      <Typography variant="body1">
+                    {userAgaisnt.name+" ("+userAgaisnt.nsuid+")"}
+                    </Typography>
+                      </>
+                    }
+                  />
+                </Card>
                 </MenuItem>
                 <MenuItem>
-                <ListItemText >Reviewer: {backendData.reviewer}</ListItemText>
+                <Card sx={{ p: 0, marginTop: 0, padding: 0}}>
+                <Typography variant="body2"> Selected Reviewer: </Typography>
+
+                  <CardHeader
+                    avatar={
+                      <Avatar src={userReviewer.photo} sx={{ width: 30, height: 30,backgroundColor: '#1976d2'}}>
+                        
+                      </Avatar>
+                    }
+                    title={
+                      <>
+                      <Typography variant="body1">
+                    {userReviewer.name+" ("+userReviewer.nsuid+")"}
+                    </Typography>
+                      </>
+                    }
+                  />
+                </Card>                
                 </MenuItem>
                 <MenuItem>
-                <ListItemText >Evidence: <Button onClick={() => openInNewTab(backendData.evidence)}>Click here</Button></ListItemText>
                 </MenuItem>
-           
+                <MenuItem>
+                <Card sx={{ p: 0, marginTop: 0, padding: 0}}>
+                <Typography variant="body2"> Evidence: </Typography>
+
+                  <CardHeader
+                    avatar={
+                      <FilePresentIcon/>
+                    }
+                    title={
+                      <>
+                      <Typography variant="body1">
+                      Attached Evidence
+                    </Typography>
+                      </>
+                    }
+                    onClick={() => openInNewTab(backendData.evidence)}
+                  />
+                </Card> 
+                </MenuItem>
                
             </MenuList>
             <DialogActions>

@@ -171,41 +171,8 @@ export default function CommentView( fetchedData ) {
       {comments.map((data, index) =>(
         <>
     
-      <Card sx={{   p: 3,
-        
-        marginTop: 0,
-        padding: 1,
-        
-        backgroundColor: (theme) =>
-          theme.palette.mode === 'dark' ? '#1A2027' : '#fff'}}>
 
-        <CardHeader
-          avatar={
-            <Avatar sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
-              X
-            </Avatar>
-          }
-          title={
-            <>
-            <Typography variant="body2" color="text.secondary">
-          {data.user}
-          </Typography>
-            </>
-          }
-          subheader={
-            <>
-              <Typography variant="body" type="h1" color="text.primary">
-          {data.comment}
-          </Typography>
-            </>
-          }
-          
-          
-        />
-        
-        
-
-      </Card>
+      <Comment data={data}/>
     </>
       ))}
 
