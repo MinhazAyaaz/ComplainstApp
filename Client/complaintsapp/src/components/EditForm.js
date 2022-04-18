@@ -115,7 +115,9 @@ const uploadFiles = (file,data) => {
               category: formdata,
               evidence:downloadURL,
               body: data.get('body'),
-              reviewer: data.get('reviewer')
+              reviewer: data.get('reviewer'),
+              status:fetchedData.data.status
+
             }, {
               headers: {
                 "x-access-token": sessionStorage.getItem("jwtkey")

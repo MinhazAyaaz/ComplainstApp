@@ -363,6 +363,11 @@ exports.updatecompstatus = (req, res) => {
       where: { complaintid: req.body.complaintid }
      })
      .then(data => {
+       ComplaintHistory.update({
+        status: "false"
+       }, {
+        where: { complaintComplaintid: req.body.complaintid }
+       })
       
         res.send({ message: "Complaint enabled successfully!" });
      
@@ -380,9 +385,15 @@ exports.updatecompstatus = (req, res) => {
     Tutorial.update({
       status: "true"
      }, {
-      where: { complaintid: req.body.complaintid }
+      where: { complaintid: req.body.complaintid },
+   
      })
      .then(data => {
+      ComplaintHistory.update({
+        status: "true"
+       }, {
+        where: { complaintComplaintid: req.body.complaintid }
+       })
       
         res.send({ message: "Complaint disabled successfully!" });
      
@@ -485,11 +496,13 @@ exports.update = async (req, res) => {
     body: req.body.body,
     reviewer: req.body.reviewer,
     category: req.body.category,
-    status: req.body.status ? req.body.status : false,evidence:req.body.evidence
+   evidence:req.body.evidence
     },{
     where: {
       complaintid:req.body.complaintid,
-      createdby: req.userId
+      createdby: req.userId,
+      status:0
+
     }
   });
   // });
@@ -511,7 +524,8 @@ exports.update = async (req, res) => {
    
     where: {
       complaintComplaintid:req.body.complaintid,
-      createdby: req.userId
+      createdby: req.userId,
+      status:0
     },
     order: [ [ 'complaintVersion', 'DESC' ]]
   });
@@ -531,7 +545,7 @@ exports.update = async (req, res) => {
     category: req.body.category,
     createdby: req.userId,
     evidence:req.body.evidence,
-    status: req.body.status ? req.body.status : false,
+    //status: req.body.status ? req.body.status : false,
     complaintComplaintid:req.body.complaintid,
   };
 
