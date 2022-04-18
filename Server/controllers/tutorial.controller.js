@@ -578,7 +578,7 @@ exports.findVersions = (req, res) => {
   //res.json(req);
  //RECEIVED!!!!
  const complaintid= req.userId;
- ComplaintHistory.findAll({where: { against: complaintid, complaintComplaintid:req.query.complaintid}, order: [ ['updatedAt','DESC'] ]})
+ ComplaintHistory.findAll({where: { complaintComplaintid:req.query.complaintid}, order: [ ['updatedAt','DESC'] ]})
   
     .then(data => {
       res.send(data); 
