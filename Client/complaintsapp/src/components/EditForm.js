@@ -322,6 +322,7 @@ const handleSubmit2 = (event) => {
           <Autocomplete
           disablePortal
           value={value2}
+         
           onChange={(event, newValue) => {
             setValue2(newValue);
           }}

@@ -376,6 +376,26 @@ exports.findUserToComplainAgainst = (req, res) => {
       });
     });
 };
+exports.findReviewerToReview = (req, res) => {
+  
+
+    User.findAll({
+      attributes: ['name', 'nsuid'],
+      where: {
+        [Op.or]: [{role: '2'},{role:'3'}], nsuid: {
+          [Op.ne]: req.body.nsuid
+        }
+      }})
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(534).send({
+          message:
+            err.message || "Some error occurred while retrieving reviewers."
+        });
+      });
+};
 
 exports.findReviewers = (req, res) => {
   
