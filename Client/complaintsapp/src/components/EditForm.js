@@ -33,6 +33,8 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../firebase';
 
+import Autocomplete from '@mui/material/Autocomplete';
+
 
 import axios from 'axios';
 
@@ -53,7 +55,9 @@ export default function EditForm( fetchedData) {
   const [progress, setProgress] = useState(0);
   const [urldata, seturldata] = React.useState('');
   const [file2, setfile] = React.useState();
-  
+  const [reviewerList, setReviewerList] = React.useState([]);
+  const [value2, setValue2] = useState({name: "", nsuid: ""})
+
   
 
   React.useEffect(()=>{
@@ -65,18 +69,42 @@ export default function EditForm( fetchedData) {
       status: fetchedData.data.status,
       title: fetchedData.data.title,
       against: fetchedData.data.against,
-      // category: fetchedData.data.category,
+      category: fetchedData.data.category,
       body: fetchedData.data.body,
       reviewer: fetchedData.data.reviewer,
       evidence: fetchedData.data.evidence
 
     })
 
+    fetchReviewerList()
     setFormdata(fetchedData.data.category)
+    seturldata(fetchedData.data.evidence)
    
  }, [])
 
-
+ async function fetchReviewerList (){
+  //API Endpoint '/findAll' is for testing only
+  //
+  await axios.get('/reviewers', {
+    headers: {
+      "x-access-token": sessionStorage.getItem("jwtkey")
+    },
+    params: {
+      id: 12345
+    }
+  })
+  .then(function (response) {
+    setReviewerList(response.data)
+    console.log(reviewerList)
+    console.log(response)
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+  });
+}
  
 //labib edit complaints
 const formHandler = (e) => {
@@ -115,7 +143,7 @@ const uploadFiles = (file,data) => {
               category: formdata,
               evidence:downloadURL,
               body: data.get('body'),
-              reviewer: data.get('reviewer'),
+              reviewer: value2.nsuid,
               status:fetchedData.data.status
 
             }, {
@@ -144,8 +172,44 @@ const uploadFiles = (file,data) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    uploadFiles(file2,data);
+    // uploadFiles(file2,data);
 
+    var sqlDatetime = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toJSON().slice(0, 19).replace('T', ' ');
+
+    console.log({
+      complaintid:fetchedData.data.complaintid,
+      title: data.get('title'),
+      date: sqlDatetime,
+      against: fetchedData.data.against,
+      category: formdata,
+      body: data.get('body'),
+      reviewer: value2.nsuid,
+      evidence: urldata,
+      status:fetchedData.data.status
+    })
+    axios.post('/editcomplaint', {
+      complaintid:fetchedData.data.complaintid,
+      title: data.get('title'),
+      date: sqlDatetime,
+      against: fetchedData.data.against,
+      category: formdata,
+      body: data.get('body'),
+      reviewer: value2.nsuid,
+      evidence: urldata,
+      status:fetchedData.data.status
+    }, {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+    }
+    )
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert(error);
+    });
      
      
     
@@ -162,7 +226,7 @@ const uploadFiles = (file,data) => {
      
     
 
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1, minWidth: 500 }}>
         
         <TextField
           multiline={true}
@@ -234,18 +298,27 @@ const uploadFiles = (file,data) => {
           defaultValue={backendData.body}
         />
   
-        <TextField
-          multiline={true}
-          margin="normal"
-          required
-          fullWidth
-          name="reviewer"
-          label="Who will review it?"
-          type="reviewer"
-          id="reviewer"
-          autoComplete="reviewer"
-          defaultValue={backendData.reviewer}
+        {(reviewerList.length === 0) ? ( <p>Fetching reviewer list</p>) : (
+          <Autocomplete
+          disablePortal
+          value={value2}
+          onChange={(event, newValue) => {
+            setValue2(newValue);
+          }}
+          options={reviewerList}
+          getOptionLabel={(option) => option.name}
+          
+          renderOption={(props, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+              {option.name} ({option.nsuid})
+            </Box>
+          )}
+          renderInput={(params) => <TextField {...params} label="Who will review the complaint" />}
+          
         />
+        )}
+
+        <br/>
     
 
         <div>

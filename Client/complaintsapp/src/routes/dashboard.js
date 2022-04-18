@@ -440,8 +440,12 @@ export default function Dashboard() {
               label="category"
               onChange={handleChange}
             >
-              <MenuItem value={"bullying"}>Bullying</MenuItem>
-              <MenuItem value={"sanitation"}>Sanitation</MenuItem>
+              <MenuItem value={"Course Registration"}>Course registration</MenuItem>
+              <MenuItem value={"Exam"}>Exam</MenuItem>
+              <MenuItem value={"Result Compilation"}>Result compilation</MenuItem>
+              <MenuItem value={"Student Welfare"}>Student welfare</MenuItem>
+              <MenuItem value={"Student Lecturers Relationship"}>Student lecturers relationship</MenuItem>
+              <MenuItem value={"Research Projects"}>Research projects</MenuItem>
               
             </Select>
         </FormControl>

@@ -223,7 +223,7 @@ export default function CompCard( fetchedData ) {
 
       <CardHeader
         avatar={
-          <Avatar src={user.idscan} sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
+          <Avatar src={user.photo} sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
             
           </Avatar>
         }

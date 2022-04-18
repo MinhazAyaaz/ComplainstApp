@@ -132,7 +132,7 @@ export default function CommentView( fetchedData ) {
 
   return (
     <>
-    { (sessionStorage.getItem("role") == "2" || sessionStorage.getItem("role") == "3") ?
+    { ((sessionStorage.getItem("role") == "2" || sessionStorage.getItem("role") == "3") && (fetchedData.fetchedData.status == "0")) ?
     <Card sx={{   p: 3,
           margin: 1,
           padding: 1,
