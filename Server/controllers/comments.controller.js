@@ -289,7 +289,7 @@ exports.createComment = async (req, res) => {
   let commentid=req.body.comment;
     let commentlength=commentid.length;
     
-    if((commentlength>5))
+    if((commentlength>1000))
     {
       return res.sendStatus(782)
     } 
