@@ -27,11 +27,27 @@ module.exports = function(app) {
     "/Gsignup",
     controller.GoogleSignup
   );
+  app.post(
+    "/GsignupMobile",
+    controller.GoogleSignup
+  );
 
   app.get(
     "/users",
     [authJwt.verifyToken] ,
     controller.findAll
+  );
+
+  app.get(
+    "/user",
+    [authJwt.verifyToken] ,
+    controller.findUser
+  );
+
+  app.get(
+    "/otherUser",
+    [authJwt.verifyToken] ,
+    controller.findOtherUser
   );
 
   app.get(

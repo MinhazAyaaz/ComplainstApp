@@ -8,10 +8,16 @@ import Typography from '@mui/material/Typography';
 import PrimarySearchAppBar from '../components/navbar';
 import Profilecard from '../components/Profilecard';
 import MiniCompCard from '../components/MiniCompCard';
+import { Card } from '@mui/material';
+import { Grid } from '@mui/material';
+
+import { MenuList, MenuItem, ListItemText } from '@mui/material';
 
 import axios from 'axios';
 
 export default function Profile() {
+
+  const [user, setUser] = useState({})
 
   useEffect(()=>{
     
@@ -20,7 +26,7 @@ export default function Profile() {
   }, [])
 
   async function fetchUserInfo (){
-    await axios.get('/getcomplaint/filed', {
+    await axios.get('/user', {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
       },
@@ -30,6 +36,7 @@ export default function Profile() {
     })
     .then(function (response) {
       console.log(response.data);
+      setUser(response.data)
       // setFiledComplaint(response.data)
     })
     .catch(function (error) {
@@ -38,7 +45,6 @@ export default function Profile() {
     .then(function () {
       // always executed
     });
-
   }
 
   return (
@@ -46,7 +52,7 @@ export default function Profile() {
     <React.Fragment>
         <PrimarySearchAppBar/>
 
-
+    
       <Box
           sx={{
             marginTop: 8,
@@ -55,23 +61,49 @@ export default function Profile() {
             alignItems: 'center',
           }}
         >
-            <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-          <IconButton
-          >
-            <Avatar sx={{ width: 55, height: 55, alignItems: 'center',backgroundColor: '#1976d2'}}>M</Avatar>
-          </IconButton>
 
-            </Box>
-          <Typography component="h1" variant="h5"alignItems={'center'} >
-            Emon Sarker
+<Grid container spacing={2} sx={{maxWidth: 900}}>
+      <Grid item xs={5} >
+        <Card>
+            <img className="profileId" src={user.idscan}/>
+          </Card>
+      </Grid>
+      <Grid item xs={7} >
+        <Card sx={{margin: 3, padding: 3}}>
+        <Typography component="h1" variant="h5"alignItems={'center'} >
+            Account Information
           </Typography>
-            <Profilecard/>
-          <Typography component="h3" variant="h7"alignItems={'center'} marginTop={5}>
-            Complaints Filed
-          </Typography>
-            <MiniCompCard/>
-            <MiniCompCard/>
+        <MenuList>
+                
+                <MenuItem>
+                <ListItemText >Name: {user.name} </ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText >ID: {user.nsuid}</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText > Email: {user.email} </ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText > Role: {user.role} </ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText > Account: {user.status} </ListItemText>
+                </MenuItem>
+                <MenuItem>
+                <ListItemText > Joined: {user.createdAt} </ListItemText>
+                </MenuItem>
+                <MenuItem>
+                </MenuItem>
+           
+               
+            </MenuList>
+          </Card>
+      </Grid>
+    </Grid>
 
+          
+        
 
         </Box>
 

@@ -22,10 +22,17 @@ import InfoIcon from '@mui/icons-material/Info';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ForumIcon from '@mui/icons-material/Forum';
 
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
 export default function PrimarySearchAppBar() {
 
+  const [user, setUser] = useState({})
 
-
+  useEffect(() => {
+    fetchUserInfo()
+  }, [])
+  
 
 
   // const logout = () => {
@@ -63,7 +70,28 @@ export default function PrimarySearchAppBar() {
     
   };
 
-  
+  async function fetchUserInfo (){
+    await axios.get('/user', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setUser(response.data)
+      // setFiledComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
+
 
 
 
@@ -96,10 +124,10 @@ export default function PrimarySearchAppBar() {
         }
         title={
           <Typography gutterBottom  component="div">
-          Emon Sarker
+          {user.name}
         </Typography>
         }
-        subheader={"1931461642"}
+        subheader={user.nsuid}
         
       />
         <MenuItem onClick={()=>{window.location.href = '/profile';}}> <ManageAccountsIcon sx={{paddingRight: 1}}/> View profile</MenuItem>

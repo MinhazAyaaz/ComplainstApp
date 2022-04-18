@@ -49,6 +49,7 @@ export default function CompCard( fetchedData ) {
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [color2, setColor] = React.useState({})
+  const [user, setUser] = React.useState({})
   const [comment, setComment] = React.useState();
   const [edit, setEdit] = React.useState();
   const [complaintVersions, setComplaintVersions] = React.useState([])
@@ -104,8 +105,10 @@ export default function CompCard( fetchedData ) {
        evidence: fetchedData.fetchedData.evidence
      })
      
+     fetchUserInfo()
      fetchComments()
      fetchComplaintVersions()
+
 
      if(fetchedData.fetchedData.status == '0'){
         setColor(activeColor)
@@ -138,6 +141,29 @@ export default function CompCard( fetchedData ) {
     });
     
   };
+
+  async function fetchUserInfo (){
+    await axios.get('/otherUser', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: fetchedData.fetchedData.createdby
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setUser(response.data)
+      // setFiledComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
+
 
   async function fetchComments (){
     //API Endpoint '/findAll' is for testing only
@@ -197,8 +223,8 @@ export default function CompCard( fetchedData ) {
 
       <CardHeader
         avatar={
-          <Avatar sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
-            X
+          <Avatar src={user.idscan} sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
+            
           </Avatar>
         }
         title={
@@ -206,7 +232,7 @@ export default function CompCard( fetchedData ) {
           {backendData.title}
         </Typography>
         }
-        subheader={"Created by: " +fetchedData.fetchedData.createdby}
+        subheader={"Created by: " + user.name +" ("+fetchedData.fetchedData.createdby+")"}
         action={
           <>
               
