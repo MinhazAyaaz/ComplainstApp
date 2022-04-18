@@ -113,7 +113,7 @@ const formHandler = (e) => {
   setfile(file);
   console.log(file2);
 };
-const uploadFiles = (file,data) => {
+const uploadFiles = (file) => {
   //
   if (!file) return;
   const sotrageRef = ref(storage, `evidences/${file.name}`);
@@ -133,39 +133,58 @@ const uploadFiles = (file,data) => {
         
         seturldata(""+downloadURL);
         console.log(downloadURL)
-        var sqlDatetime = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toJSON().slice(0, 19).replace('T', ' ');
-        console.log(sqlDatetime);
-            axios.post('/editcomplaint', {
-              complaintid:fetchedData.data.complaintid,
-              title: data.get('title'),
-              date:sqlDatetime,
-              against: fetchedData.data.against,
-              category: formdata,
-              evidence:downloadURL,
-              body: data.get('body'),
-              reviewer: value2.nsuid,
-              status:fetchedData.data.status
-
-            }, {
-              headers: {
-                "x-access-token": sessionStorage.getItem("jwtkey")
-              },
-            }
-            )
-            // .then(function (response) {
-            //   console.log(response);
-            //   // fetchComplaint();
-            //   // unExpandForm();
-            // })
-            // .catch(function (error) {
-            //   console.log(error);
-            //   alert(error);
-            // });
-            document.getElementById("myForm").reset();
+       
      
       });
     }
   );
+};
+const handleSubmit2 = (event) => {
+  event.preventDefault();
+  
+
+  uploadFiles(file2);
+
+  /* var sqlDatetime = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toJSON().slice(0, 19).replace('T', ' ');
+
+  console.log({
+    complaintid:fetchedData.data.complaintid,
+    title: data.get('title'),
+    date: sqlDatetime,
+    against: fetchedData.data.against,
+    category: formdata,
+    body: data.get('body'),
+    reviewer: value2.nsuid,
+    evidence: urldata,
+    status:fetchedData.data.status
+  })
+  axios.post('/editcomplaint', {
+    complaintid:fetchedData.data.complaintid,
+    title: data.get('title'),
+    date: sqlDatetime,
+    against: fetchedData.data.against,
+    category: formdata,
+    body: data.get('body'),
+    reviewer: value2.nsuid,
+    evidence: urldata,
+    status:fetchedData.data.status
+  }, {
+    headers: {
+      "x-access-token": sessionStorage.getItem("jwtkey")
+    },
+  }
+  )
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+    alert(error);
+  });
+    */
+   
+  
+
 };
 
   const handleSubmit = (event) => {
@@ -173,6 +192,7 @@ const uploadFiles = (file,data) => {
     const data = new FormData(event.currentTarget);
 
     // uploadFiles(file2,data);
+    console.log(urldata)
 
     var sqlDatetime = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000).toJSON().slice(0, 19).replace('T', ' ');
 
@@ -322,9 +342,14 @@ const uploadFiles = (file,data) => {
     
 
         <div>
+        
         <input onChange={formHandler} type="file" className="input" />
         <h2>Uploading done{progress}%</h2>
+        <button  onClick={handleSubmit2}>Upload</button>
+     
+       
         </div>
+      
    
         
  
@@ -344,9 +369,3 @@ const uploadFiles = (file,data) => {
    
   );
 }
-  
-      
-      
-    
- 
-
