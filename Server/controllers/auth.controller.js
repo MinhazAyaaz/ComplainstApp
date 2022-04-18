@@ -382,7 +382,7 @@ exports.findReviewers = (req, res) => {
   User.findAll({
     attributes: ['name', 'nsuid'],
     where: {
-      role: '2'
+      [Op.or]: [{role: '2'},{role:'3'}]
     }})
     .then(data => {
       res.send(data);
