@@ -188,8 +188,10 @@ export default function Profile() {
         Submit
       </Button>
       </Box>
-      <Button onClick={() => openInNewTab(user.photo)}>Click here to view profile picture</Button>
-    
+     
+      <Card>
+            <img className="profilepic" src={user.photo}/>
+          </Card>
         
       </Box>
       </Grid>
