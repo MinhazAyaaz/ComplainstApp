@@ -409,7 +409,7 @@ exports.findReviewers = (req, res) => {
         res.send(data);
       })
       .catch(err => {
-        res.status(509).send({
+        res.status(537).send({
           message:
             err.message || "Some error occurred while retrieving reviewers."
         });
@@ -427,7 +427,7 @@ exports.findReviewers = (req, res) => {
      
     })
     .catch(err => {
-      res.status(509).send({
+      res.status(578).send({
         message:
           err.message || "Some error in deactivation."
       });
@@ -544,7 +544,7 @@ exports.uploadId = (req, res) => {
      
     })
     .catch(err => {
-      res.status(509).send({
+      res.status(579).send({
         message:
           err.message || "Some error in deactivation."
       });
@@ -564,9 +564,9 @@ exports.uploadId = (req, res) => {
        
       })
       .catch(err => {
-        res.status(509).send({
+        res.status(567).send({
           message:
-            err.message || "Some error in deactivation."
+            err.message || "Some error in prof pic upload."
         });
       })
      
