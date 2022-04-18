@@ -22,45 +22,60 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+//The landing page activity
 public class MainActivity extends AppCompatActivity {
 
-    private String item;
-
-    String[] items = {"Student","Helper Staff","Admin"};
-    AutoCompleteTextView autoCompleteTextView;
+    //Declaring required variables
+    private String selectedRole;
+    String[] roles = {"Student","Helper Staff","Admin"};
+    AutoCompleteTextView roleDropdown;
     ArrayAdapter<String> adapterItems;
     Button proceed;
 
+    //The onCreate function is called on start of activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        item = null;
-        autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
+        //Initializing the variables
+        selectedRole = null;
+        roleDropdown = findViewById(R.id.autoCompleteTextView);
         proceed = findViewById(R.id.elevatedButton);
 
-        adapterItems = new ArrayAdapter<String>(this,R.layout.list_item,items);
-        autoCompleteTextView.setAdapter(adapterItems);
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //The roles array is set in the ArrayAdapter and passed to the roleDropdown component
+        //The OnItemClickListener assigns the selected option to the selectedRole variable
+        adapterItems = new ArrayAdapter<String>(this,R.layout.list_item,roles);
+        roleDropdown.setAdapter(adapterItems);
+        roleDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                item = parent.getItemAtPosition(position).toString();
+                selectedRole = parent.getItemAtPosition(position).toString();
             }
         });
 
+        //The click listener for the proceed button launches activity based on the selectedRole
         proceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    if(item.equals("Student")) {
+                    //if selected role is Student
+                    if(selectedRole.equals("Student")) {
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                     }
-                    else{
-                        Toast.makeText(MainActivity.this, "Not currently available!", Toast.LENGTH_SHORT).show();
+                    //if selected role is Helper Staff
+                    else if(selectedRole.equals(("Helper Staff"))){
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                    //if selected role is Admin
+                    else if(selectedRole.equals(("Admin"))){
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
                     }
                 }catch(Exception e){
+                    //If no role is selected the user is asked to select a role
                     Toast.makeText(MainActivity.this, "Please select a role!", Toast.LENGTH_SHORT).show();
                 }
             }

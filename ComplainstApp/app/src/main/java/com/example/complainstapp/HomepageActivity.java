@@ -54,6 +54,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomepageActivity extends AppCompatActivity{
 
+    //Declaring variables for the text fields,buttons and google sign up
+    //We make the variables private so they cannot be accessed.
     private Button createButton;
     private Button logoutButton;
     private ImageButton backButton;
@@ -64,23 +66,28 @@ public class HomepageActivity extends AppCompatActivity{
     private final ArrayList<Complaint> complaintArrayList = new ArrayList<>();
     GoogleSignInClient mGoogleSignInClient;
 
+    //The onCreate method which is called on activity start
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
 
+        //Initializing the variables
         createButton = findViewById(R.id.createButton5);
         filterGroup = findViewById(R.id.filterGrouping);
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.dataView);
         logoutButton = findViewById(R.id.signOutButton);
 
+        //Retrieving the access token received from the post request in the previous activity
         accessToken = getIntent().getExtras().getString("token");
 
-        //Log.e("Homepage Access Token",accessToken);
-
+        //progress bar used to show loading
         progressBar.setVisibility(View.VISIBLE);
 
+        //Get request to get filed complaints
+        //We are sending the access token as x-access-token
+        //The JSON Array received is used to create a Complaint object
         AndroidNetworking.get("http://192.168.0.109:5000/getcomplaint/filed")
                 .setTag("test1")
                 .addHeaders("x-access-token",accessToken)
@@ -103,8 +110,11 @@ public class HomepageActivity extends AppCompatActivity{
                             complaintArrayList.add(tempComplaint);
                         }
 
+                        //Upon response we are creating the object.
+                        //The object is then added to an array list which is served to the recycler view
                         RecyclerAdapter recyclerAdapter = new RecyclerAdapter(complaintArrayList);
                         recyclerView.setAdapter(recyclerAdapter);
+                        //After setting all the complaints to the recycler view we hide the progress bar
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                     @Override
@@ -114,14 +124,16 @@ public class HomepageActivity extends AppCompatActivity{
                 });
 
 
-
+        //The filterGroup is used to switch between filed and received complaints
         filterGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int selectedId) {
 
+                //Initially we clear the array list to remove previous complaints
                 complaintArrayList.clear();
                 progressBar.setVisibility(View.VISIBLE);
                 if(selectedId == R.id.radioButton3){
+                    //We then call the get request for the filed complaints and add them to the Array List
                     AndroidNetworking.get("http://192.168.0.109:5000/getcomplaint/filed")
                             .setTag("test1")
                             .addHeaders("x-access-token",accessToken)
@@ -131,8 +143,10 @@ public class HomepageActivity extends AppCompatActivity{
                                 @Override
                                 public void onResponse(JSONArray response) {
                                     for(int i=0;i<response.length();i++){
+                                        //We create a temporary object and initialize null
                                         Complaint tempComplaint = null;
                                         try {
+                                            //Here we get the JSONObject from the response and call every attribute using getString() method
                                             tempComplaint = new Complaint(response.getJSONObject(i).getString("complaintid"),response.getJSONObject(i).getString("createdAt"),
                                                     response.getJSONObject(i).getString("status"), response.getJSONObject(i).getString("title"),
                                                     response.getJSONObject(i).getString("against"),
@@ -141,11 +155,15 @@ public class HomepageActivity extends AppCompatActivity{
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
+                                        //after creating every complaint we add it to the array list
                                         complaintArrayList.add(tempComplaint);
                                     }
 
+                                    //Upon response we are creating the object.
+                                    //The object is then added to an array list which is served to the recycler view
                                     RecyclerAdapter recyclerAdapter = new RecyclerAdapter(complaintArrayList);
                                     recyclerView.setAdapter(recyclerAdapter);
+                                    //After setting all the complaints to the recycler view we hide the progress bar
                                     progressBar.setVisibility(View.INVISIBLE);
                                 }
                                 @Override
@@ -155,6 +173,7 @@ public class HomepageActivity extends AppCompatActivity{
                             });
                 }
                 else if(selectedId == R.id.radioButton4){
+                    //We call the get request for the received complaints and add them to the Array List
                     AndroidNetworking.get("http://192.168.0.109:5000/getcomplaint/received")
                             .setTag("test1")
                             .addHeaders("x-access-token",accessToken)
@@ -164,8 +183,10 @@ public class HomepageActivity extends AppCompatActivity{
                                 @Override
                                 public void onResponse(JSONArray response) {
                                     for(int i=0;i<response.length();i++){
+                                        //We create a temporary object and initialize null
                                         Complaint tempComplaint = null;
                                         try {
+                                            //Here we get the JSONObject from the response and call every attribute using getString() method
                                             tempComplaint = new Complaint(response.getJSONObject(i).getString("complaintid"),response.getJSONObject(i).getString("createdAt"),
                                                     response.getJSONObject(i).getString("status"), response.getJSONObject(i).getString("title"),
                                                     response.getJSONObject(i).getString("against"),
@@ -174,11 +195,15 @@ public class HomepageActivity extends AppCompatActivity{
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
+                                        //after creating every complaint we add it to the array list
                                         complaintArrayList.add(tempComplaint);
                                     }
 
+                                    //Upon response we are creating the object.
+                                    //The object is then added to an array list which is served to the recycler view
                                     RecyclerAdapter recyclerAdapter = new RecyclerAdapter(complaintArrayList);
                                     recyclerView.setAdapter(recyclerAdapter);
+                                    //After setting all the complaints to the recycler view we hide the progress bar
                                     progressBar.setVisibility(View.INVISIBLE);
                                 }
                                 @Override
@@ -190,15 +215,20 @@ public class HomepageActivity extends AppCompatActivity{
             }
         });
 
+        //The create button redirects the user to the create complaint page
+        //where the user can proceed in creating a complaint
+        //it does this by calling the CreateComplaint activity
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomepageActivity.this, CreateComplaint.class);
+                //We send access token to this activity as well as we need it for the post/get request
                 intent.putExtra("token",accessToken);
                 startActivity(intent);
             }
         });
 
+        //The logout button calls the signOut() method which signs the user out of the app
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,6 +236,7 @@ public class HomepageActivity extends AppCompatActivity{
             }
         });
 
+        //We initialize the google sign in client again so that we can use it to log out of our google account
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com")
                 .requestEmail()
@@ -215,6 +246,7 @@ public class HomepageActivity extends AppCompatActivity{
 
     }
 
+    //This signout method signs us out of the google account and redirects user back to login page
     private void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -227,6 +259,7 @@ public class HomepageActivity extends AppCompatActivity{
                 });
     }
 
+    //The back method is disabled so user cannot go back to login without pressing logout
     @Override
     public void onBackPressed() {
         moveTaskToBack(false);
