@@ -193,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
                 Uri personPhoto = acct.getPhotoUrl();
 
                 //The google account details are send to the backend to authenticate the account
-                AndroidNetworking.post("http://192.168.0.109:5000/Gsignup")
+                AndroidNetworking.post("http://192.168.0.109:5000/GsignupMobile")
                         .addBodyParameter("token",acct.getIdToken())
                         .addBodyParameter("nsuid",acct.getDisplayName().substring((acct.getDisplayName().lastIndexOf(" ") + 1)))
                         .setTag("test1")
