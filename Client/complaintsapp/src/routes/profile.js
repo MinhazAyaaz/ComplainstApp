@@ -10,6 +10,9 @@ import Profilecard from '../components/Profilecard';
 import MiniCompCard from '../components/MiniCompCard';
 import { Card } from '@mui/material';
 import { Grid } from '@mui/material';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from '../firebase';
+import { Button } from '@mui/material';
 
 import { MenuList, MenuItem, ListItemText } from '@mui/material';
 
@@ -18,12 +21,74 @@ import axios from 'axios';
 export default function Profile() {
 
   const [user, setUser] = useState({})
+  const [progress, setProgress] = useState(0);
+  const [urldata, seturldata] = React.useState('');
+  const [file2, setfile] = React.useState();
+  
 
   useEffect(()=>{
     
     fetchUserInfo();
     
   }, [])
+  const formHandler = (e) => {
+    //e.preventDefault();
+    const file = e.target.files[0];
+    setfile(file);
+    console.log(file2);
+  };
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
+  }
+  
+  const uploadFiles = (file,data) => {
+    //
+    if (!file) return;
+    const sotrageRef = ref(storage, `profilepicture/${file.name}`);
+    const uploadTask =  uploadBytesResumable(sotrageRef, file);
+  
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(prog);
+      },
+      (error) => console.log(error),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          
+          seturldata(""+downloadURL);
+          console.log(downloadURL)
+          
+              axios.put('/uploadprofilepic', {
+              
+                photo:downloadURL
+  
+              }, {
+                headers: {
+                  "x-access-token": sessionStorage.getItem("jwtkey")
+                },
+              }
+              )
+              
+              document.getElementById("myForm").reset();
+       
+        });
+      }
+    );
+  };
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    uploadFiles(file2,data);
+ 
+  
+  };
 
   async function fetchUserInfo (){
     await axios.get('/user', {
@@ -99,6 +164,34 @@ export default function Profile() {
                
             </MenuList>
           </Card>
+          <Typography component="h1" variant="h5"alignItems={'center'} >
+            Upload profile Picture
+          </Typography>
+          <Box id="myForm" component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        
+      
+
+      
+        <div>
+        <input onChange={formHandler} type="file" className="input" />
+        <h2>Uploading done{progress}%</h2>
+        </div>
+      
+        
+     
+      <Box sx={{display: "flex",
+      justifyContent: "flex-end",
+                alignItems: "flex-end"}}
+                >
+    
+      <Button  variant="outlined" type="submit" >
+        Submit
+      </Button>
+      </Box>
+      <Button onClick={() => openInNewTab(user.photo)}>Click here to view profile picture</Button>
+    
+        
+      </Box>
       </Grid>
     </Grid>
 

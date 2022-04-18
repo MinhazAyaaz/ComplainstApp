@@ -551,3 +551,23 @@ exports.uploadId = (req, res) => {
     })
    
     };
+    exports.setprofilepic = (req, res) => {
+      User.update({
+        photo: req.body.photo
+       }, {
+        where: { nsuid: req.userId  }
+       })
+       .then(data => {
+        
+        res.send({message:`sent succesfully to ${req.userId}`})  
+        
+       
+      })
+      .catch(err => {
+        res.status(509).send({
+          message:
+            err.message || "Some error in deactivation."
+        });
+      })
+     
+      };
