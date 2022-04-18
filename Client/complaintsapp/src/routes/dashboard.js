@@ -40,6 +40,9 @@ const Img = styled('img')({
 export default function Dashboard() {
 
   const [open, setOpen] = useState(true)
+  const [open2, setOpen2] = useState(true)
+  const [role, setRole] = React.useState('');
+
   const [backendData, setBackEndData] = useState([])
   const [filedComplaint, setFiledComplaint] = useState([])
   const [receivedComplaint, setReceivedComplaint] = useState([])
@@ -62,7 +65,8 @@ export default function Dashboard() {
   const [file2, setfile] = React.useState();
   
   useEffect(()=>{
-    checkIdStatus();
+      checkIdStatus();
+      checkRoleStatus();
       fetchComplaint();
       fetchUserList();
       fetchReviewerList();
@@ -218,6 +222,51 @@ export default function Dashboard() {
     });
   }
 
+  async function checkRoleStatus (){
+    await axios.get('/roleStatus', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      setOpen2(!response.data.findRole)
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
+
+  function updateRoleStatus(){
+    
+    axios.put('/updateStatus', {
+      role: role
+      
+    },{headers: {
+      "x-access-token": sessionStorage.getItem("jwtkey")
+    },
+    params: {
+      id: 12345
+    }}
+    )
+    .then(function (response) {
+      console.log(response);
+      sessionStorage.setItem("role", role)
+      window.location.reload()
+     
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert(error);
+    });
+  }
+
   //Complaint form rendering
   const expandForm = () =>{
     setExpanded(true);
@@ -309,6 +358,10 @@ export default function Dashboard() {
     setFormdata(event.target.value);
   };
 
+  const handleRole = (event) => {
+    setRole(event.target.value);
+  };
+
   const uploadFiles = (file,data) => {
     //
     if (!file) return;
@@ -376,6 +429,42 @@ export default function Dashboard() {
     
         <DialogContent>
           <FileUpload/>
+        </DialogContent>
+          
+      </Dialog>
+
+      <Dialog open={open2}  maxWidth="lg">
+        
+        <DialogContent sx={{width: 300}}>
+        <Typography variant="h6" align="center">
+          Welcome! Please select your role before continuing
+        </Typography>
+        <br/>
+        <FormControl fullWidth onSubmit>
+          <InputLabel id="demo-simple-select-label">Role*</InputLabel>
+              <Select
+                
+                helperText="shit"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={role}
+                label="role"
+                onChange={handleRole}
+              >
+                <MenuItem value={'1'}>Student</MenuItem>
+                <MenuItem value={'2'}>Faculty</MenuItem>
+                <MenuItem value={'3'}>Admin Employee</MenuItem>
+                
+              </Select>
+              <Button
+              onClick={updateRoleStatus}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2, }}
+            >
+              Continue
+            </Button>
+          </FormControl>
         </DialogContent>
           
       </Dialog>

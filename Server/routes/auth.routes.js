@@ -86,6 +86,12 @@ module.exports = function(app) {
   );
 
   app.get(
+    "/roleStatus",
+    [authJwt.verifyToken] ,
+    controller.findRole
+  );
+
+  app.get(
     "/confirmation/:token",
     controller.update
   );
@@ -99,6 +105,10 @@ module.exports = function(app) {
   app.put(
     "/uploadstuff",    [authJwt.verifyToken] ,
     controller.updatetest
+  );
+  app.put(
+    "/updateStatus",    [authJwt.verifyToken] ,
+    controller.updateStatus
   );
   app.put(
     "/uploadprofilepic",    [authJwt.verifyToken] ,
