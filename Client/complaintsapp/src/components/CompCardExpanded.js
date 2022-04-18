@@ -34,7 +34,8 @@ export default function CompCardExpanded( fetchedData ) {
   const [complaintVersions, setComplaintVersions] = useState([])
   const [backendData, setBackEndData] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  
+  const [user, setUser] = React.useState({})
+
   const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -59,6 +60,7 @@ export default function CompCardExpanded( fetchedData ) {
       evidence: fetchedData.data.evidence
     })
 
+    fetchUserInfo()
     fetchComplaintVersions();
    
  }, [])
@@ -66,6 +68,28 @@ export default function CompCardExpanded( fetchedData ) {
  const openInNewTab = (url) => {
   const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
   if (newWindow) newWindow.opener = null
+}
+
+async function fetchUserInfo (){
+  await axios.get('/otherUser', {
+    headers: {
+      "x-access-token": sessionStorage.getItem("jwtkey")
+    },
+    params: {
+      id: fetchedData.data.createdby
+    }
+  })
+  .then(function (response) {
+    console.log(response.data);
+    setUser(response.data)
+    // setFiledComplaint(response.data)
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+  });
 }
 
  async function fetchComplaintVersions (){
@@ -105,7 +129,7 @@ export default function CompCardExpanded( fetchedData ) {
       <Card >
         <CardHeader
           avatar={
-            <Avatar sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
+            <Avatar src={user.idscan} sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
               X
             </Avatar>
           }
@@ -114,7 +138,7 @@ export default function CompCardExpanded( fetchedData ) {
             {backendData.title}
           </Typography>
           }
-          subheader={backendData.creationdate}
+          subheader={user.name +" ("+ user.nsuid +")"}
           action={
             <>
               <IconButton onClick={() => setOpen(null)}>

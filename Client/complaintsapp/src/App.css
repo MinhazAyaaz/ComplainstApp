@@ -19,6 +19,13 @@
   }
 }
 
+.profileId{
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 .fileUploadBtn{
   display: none;

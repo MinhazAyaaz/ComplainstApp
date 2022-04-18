@@ -193,6 +193,61 @@ exports.GoogleSignup = async (req, res) => {
     });
 };
 
+exports.GoogleSignupMobile = async (req, res) => {
+  
+  const { token } = req.body;
+
+  //Fetched idToken is used to verify the user using Google's API
+  //hd: northsouth.edu is used to restrict domain to northsouth university
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience:'689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com',
+    hd: "northsouth.edu"
+  });
+
+  
+  let family_name = ticket.payload.family_name; //nsu id
+  let given_name = ticket.payload.given_name; //user name
+  let email = ticket.payload.email;
+  let picture = ticket.payload.picture;
+  // return res.send({
+  //   id: family_name,
+  //   name: given_name,
+  //   email: email,
+  //   picture: picture
+  // })
+  // const { family_name, given_name, email, picture } = ticket.getPayload();
+  
+
+  //Check if Google account user already exists in database
+  let checkUser = await User.findOne({
+    where: {
+      nsuid: family_name
+    }
+  });
+  if(checkUser){
+    //if they exist, just return a verification token
+    var authToken = jwt.sign({ id: family_name }, config.secret, {
+      expiresIn: 86400 // 24 hours
+    });
+        res.status(200).send({
+          id: checkUser.id,
+          nsuid: checkUser.nsuid,
+          email: checkUser.email,
+          verified: checkUser.verified,
+          accessToken: authToken
+        });
+      ;
+
+    return res.send(999);
+  }
+  else{
+    res.send({ message: "User was registered successfully!" });
+  }
+
+  
+};
+
 //HANDLES LOGIN FORM FUCNTIONS 
 exports.login = (req, res) => {
 
@@ -244,6 +299,44 @@ exports.login = (req, res) => {
     })
     .catch(err => {
       res.status(503).send({ message: "Error" });
+    });
+};
+
+exports.findUser = (req, res) => {
+    
+  
+  User.findOne({
+    where: {
+      nsuid: req.userId
+    }
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(502).send({
+        message:
+          err.message || "Some error occurred while retrieving users."
+      });
+    });
+};
+
+exports.findOtherUser = (req, res) => {
+    
+  
+  User.findOne({
+    where: {
+      nsuid: req.userId
+    }
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(502).send({
+        message:
+          err.message || "Some error occurred while retrieving users."
+      });
     });
 };
 
