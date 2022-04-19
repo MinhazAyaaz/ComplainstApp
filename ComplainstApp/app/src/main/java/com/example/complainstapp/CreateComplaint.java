@@ -86,7 +86,7 @@ public class CreateComplaint extends AppCompatActivity {
         DetailsSTT = findViewById(R.id.detailsSpeech);
         ReviewerSTT = findViewById(R.id.reviewSpeech);
 
-        AndroidNetworking.get("http://192.168.0.109:5000/users")
+        AndroidNetworking.get("http://192.168.43.187:5000/users")
                 .setTag("test1")
                 .addHeaders("x-access-token",accessToken)
                 .setPriority(Priority.LOW)
@@ -118,7 +118,7 @@ public class CreateComplaint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                AndroidNetworking.post("http://192.168.0.109:5000/createcomplaint")
+                AndroidNetworking.post("http://192.168.43.187:5000/createcomplaint")
                         .addBodyParameter("category", category.getText().toString())
                         .addBodyParameter("title", title.getText().toString())
                         .addBodyParameter("against", against.getText().toString())
