@@ -88,7 +88,7 @@ public class HomepageActivity extends AppCompatActivity{
         //Get request to get filed complaints
         //We are sending the access token as x-access-token
         //The JSON Array received is used to create a Complaint object
-        AndroidNetworking.get("http://192.168.0.109:5000/getcomplaint/filed")
+        AndroidNetworking.get("http://192.168.43.187:5000/getcomplaint/filed")
                 .setTag("test1")
                 .addHeaders("x-access-token",accessToken)
                 .setPriority(Priority.LOW)
@@ -134,7 +134,7 @@ public class HomepageActivity extends AppCompatActivity{
                 progressBar.setVisibility(View.VISIBLE);
                 if(selectedId == R.id.radioButton3){
                     //We then call the get request for the filed complaints and add them to the Array List
-                    AndroidNetworking.get("http://192.168.0.109:5000/getcomplaint/filed")
+                    AndroidNetworking.get("http://192.168.43.187:5000/getcomplaint/filed")
                             .setTag("test1")
                             .addHeaders("x-access-token",accessToken)
                             .setPriority(Priority.LOW)
@@ -174,7 +174,7 @@ public class HomepageActivity extends AppCompatActivity{
                 }
                 else if(selectedId == R.id.radioButton4){
                     //We call the get request for the received complaints and add them to the Array List
-                    AndroidNetworking.get("http://192.168.0.109:5000/getcomplaint/received")
+                    AndroidNetworking.get("http://192.168.43.187:5000/getcomplaint/received")
                             .setTag("test1")
                             .addHeaders("x-access-token",accessToken)
                             .setPriority(Priority.LOW)
