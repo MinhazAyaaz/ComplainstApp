@@ -261,6 +261,7 @@ exports.login = (req, res) => {
     });
 };
 
+//Creates comment
 exports.createComment = async (req, res) => {
     
   let checkUser = await Tutorial.findOne({

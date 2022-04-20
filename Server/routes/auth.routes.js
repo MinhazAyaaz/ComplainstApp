@@ -55,6 +55,13 @@ module.exports = function(app) {
     [authJwt.verifyToken] ,
     controller.findReviewers
   );
+
+  app.get(
+    "/reviewerOne",
+    [authJwt.verifyToken] ,
+    controller.findReviewerOne
+  );
+
   app.get(
     "/reviewertoreview",
     [authJwt.verifyToken] ,

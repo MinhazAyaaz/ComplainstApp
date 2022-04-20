@@ -349,9 +349,7 @@ async function fetchUserInfo (){
           
         </DialogContent>
         <DialogActions>
-        <Button  variant="outlined" type="submit" >
-        Submit
-      </Button>
+        
           <Button onClick={() => setOpen(null)} variant="outlined">
             Close
           </Button>
