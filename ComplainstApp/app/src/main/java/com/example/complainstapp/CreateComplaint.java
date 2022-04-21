@@ -1,8 +1,12 @@
 package com.example.complainstapp;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -11,7 +15,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -49,6 +56,10 @@ public class CreateComplaint extends AppCompatActivity {
     private ActivityResultLauncher<Intent> launcher;
     private String checkButton;
     private Context context;
+    private MediaRecorder mediaRecorder;
+    private MediaPlayer mediaPlayer;
+    private String audioSavePath = null;
+    private boolean isRecording = false;
 
     private AutoCompleteTextView category;
     private TextView title;
@@ -61,6 +72,9 @@ public class CreateComplaint extends AppCompatActivity {
     private ImageButton TitleSTT;
     private ImageButton DetailsSTT;
     private ImageButton ReviewerSTT;
+    private ImageButton uploadDocument;
+    private ImageButton uploadAudio;
+    private ImageButton uploadImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +84,7 @@ public class CreateComplaint extends AppCompatActivity {
 
         userArray = new ArrayList<String>();
 
-        //accessToken = getIntent().getExtras().getString("token");
+        accessToken = getIntent().getExtras().getString("token");
 
         backButton = findViewById(R.id.backButton);
         category = findViewById(R.id.categoryField);
@@ -85,6 +99,9 @@ public class CreateComplaint extends AppCompatActivity {
         TitleSTT = findViewById(R.id.titleSpeech);
         DetailsSTT = findViewById(R.id.detailsSpeech);
         ReviewerSTT = findViewById(R.id.reviewSpeech);
+        uploadDocument = findViewById(R.id.uploadFileButton);
+        uploadAudio = findViewById(R.id.uploadAudioButton);
+        uploadImage = findViewById(R.id.uploadImageButton);
 
         AndroidNetworking.get("http://192.168.43.187:5000/users")
                 .setTag("test1")
@@ -191,6 +208,48 @@ public class CreateComplaint extends AppCompatActivity {
             }
         });
 
+        uploadAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(isRecording==false){
+
+                    if(checkPermissions()==true){
+
+                        audioSavePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"recordingAudio.mp3";
+
+                        mediaRecorder = new MediaRecorder();
+                        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                        mediaRecorder.setOutputFile(audioSavePath);
+
+                        try {
+                            mediaRecorder.prepare();
+                            mediaRecorder.start();
+                            Toast.makeText(CreateComplaint.this,"Recording started!",Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }else{
+                        ActivityCompat.requestPermissions(CreateComplaint.this,new String[]
+                                {Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+                    }
+
+                }
+                else{
+
+                    mediaRecorder.stop();
+                    mediaRecorder.release();
+                    Toast.makeText(CreateComplaint.this,"Recording stopped!",Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+
+
+
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -224,5 +283,14 @@ public class CreateComplaint extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Start Speaking");
         launcher.launch(intent);
+    }
+
+    private boolean checkPermissions(){
+
+        int first = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO);
+        int second = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        return first == PackageManager.PERMISSION_GRANTED && second == PackageManager.PERMISSION_GRANTED;
+
     }
 }
