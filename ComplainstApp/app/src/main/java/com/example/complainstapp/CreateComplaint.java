@@ -1,12 +1,14 @@
 package com.example.complainstapp;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -26,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +37,16 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -60,6 +68,8 @@ public class CreateComplaint extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private String audioSavePath = null;
     private boolean isRecording = false;
+    private StorageReference mStorage;
+    private ProgressDialog mProgress;
 
     private AutoCompleteTextView category;
     private TextView title;
@@ -85,6 +95,8 @@ public class CreateComplaint extends AppCompatActivity {
         userArray = new ArrayList<String>();
 
         accessToken = getIntent().getExtras().getString("token");
+        mStorage = FirebaseStorage.getInstance().getReference();
+        mProgress = new ProgressDialog(this);
 
         backButton = findViewById(R.id.backButton);
         category = findViewById(R.id.categoryField);
@@ -243,6 +255,7 @@ public class CreateComplaint extends AppCompatActivity {
                     mediaRecorder.stop();
                     mediaRecorder.release();
                     Toast.makeText(CreateComplaint.this,"Recording stopped!",Toast.LENGTH_SHORT).show();
+                    uploadAudio();
 
                 }
             }
@@ -273,6 +286,26 @@ public class CreateComplaint extends AppCompatActivity {
                     Intent data = result.getData();
                     reviewer.setText(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0));
                 }
+            }
+        });
+
+    }
+
+    private void uploadAudio() {
+
+        mProgress.setMessage("Uploading Audio....");
+        mProgress.show();
+
+        StorageReference filepath = mStorage.child("Audio").child("new_audio.mp3");
+        Uri uri = Uri.fromFile(new File(audioSavePath));
+        filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                mProgress.dismiss();
+                Toast.makeText(CreateComplaint.this,"Audio has been uploaded!",Toast.LENGTH_SHORT).show();
+                Log.e("Firebase Url",taskSnapshot.toString());
+
             }
         });
 

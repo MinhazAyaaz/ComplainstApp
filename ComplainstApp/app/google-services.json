@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "398223416319",
+    "project_id": "cse327-8133d",
+    "storage_bucket": "cse327-8133d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398223416319:android:1b0d1abcab554d6f1aa5ca",
+        "android_client_info": {
+          "package_name": "com.example.complainstapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "398223416319-7l13re65cn4le66p5u57s4n8j2v0aqtl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUold8icNHqaIzoyy8Ny5iUiiN4xPJO5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "398223416319-7l13re65cn4le66p5u57s4n8j2v0aqtl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
