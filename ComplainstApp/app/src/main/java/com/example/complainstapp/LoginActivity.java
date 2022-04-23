@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 //OnResponse the Homepage is started as an intent
                 //We also send the access token to the next activity after receiving it as a response
                 //We show a toast depending on the error code received.
-                AndroidNetworking.post("http://192.168.43.187:5000/login")
+                AndroidNetworking.post("http://192.168.0.109:5000/login")
                         .addBodyParameter("nsuid", idLayout.getEditText().getText().toString())
                         .addBodyParameter("password", passwordLayout.getEditText().getText().toString())
                         .setTag("test")
@@ -193,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
                 Uri personPhoto = acct.getPhotoUrl();
 
                 //The google account details are send to the backend to authenticate the account
-                AndroidNetworking.post("http://192.168.43.187:5000/GsignupMobile")
+                AndroidNetworking.post("http://192.168.0.109:5000/GsignupMobile")
                         .addBodyParameter("token",acct.getIdToken())
                         .addBodyParameter("nsuid",acct.getDisplayName().substring((acct.getDisplayName().lastIndexOf(" ") + 1)))
                         .setTag("test1")

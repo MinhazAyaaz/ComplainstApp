@@ -1,5 +1,8 @@
 package com.example.complainstapp;
 
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -15,6 +18,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -60,7 +64,7 @@ public class CreateComplaint extends AppCompatActivity {
 
     private String accessToken;
     private ArrayList<String> userArray;
-    private static final int REQUEST_CODE_SPEECH_INPUT = 1;
+    public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
     private ActivityResultLauncher<Intent> launcher;
     private String checkButton;
     private Context context;
@@ -147,7 +151,7 @@ public class CreateComplaint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                AndroidNetworking.post("http://192.168.43.187:5000/createcomplaint")
+                AndroidNetworking.post("http://192.168.0.109:5000/createcomplaint")
                         .addBodyParameter("category", category.getText().toString())
                         .addBodyParameter("title", title.getText().toString())
                         .addBodyParameter("against", against.getText().toString())
@@ -220,6 +224,8 @@ public class CreateComplaint extends AppCompatActivity {
             }
         });
 
+        audioSavePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"recordingAudio.3gp";
+
         uploadAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -228,25 +234,23 @@ public class CreateComplaint extends AppCompatActivity {
 
                     if(checkPermissions()==true){
 
-                        audioSavePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"recordingAudio.mp3";
-
                         mediaRecorder = new MediaRecorder();
                         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-                        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
                         mediaRecorder.setOutputFile(audioSavePath);
 
                         try {
                             mediaRecorder.prepare();
                             mediaRecorder.start();
+                            isRecording=true;
                             Toast.makeText(CreateComplaint.this,"Recording started!",Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            Log.e("Media error man",e.toString());
                         }
 
                     }else{
-                        ActivityCompat.requestPermissions(CreateComplaint.this,new String[]
-                                {Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+                        RequestPermissions();
                     }
 
                 }
@@ -255,6 +259,7 @@ public class CreateComplaint extends AppCompatActivity {
                     mediaRecorder.stop();
                     mediaRecorder.release();
                     Toast.makeText(CreateComplaint.this,"Recording stopped!",Toast.LENGTH_SHORT).show();
+                    isRecording=false;
                     uploadAudio();
 
                 }
@@ -318,12 +323,34 @@ public class CreateComplaint extends AppCompatActivity {
         launcher.launch(intent);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_AUDIO_PERMISSION_CODE:
+                if (grantResults.length > 0) {
+                    boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean permissionToStore = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    if (permissionToRecord && permissionToStore) {
+                        Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+        }
+    }
+
     private boolean checkPermissions(){
 
-        int first = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO);
-        int second = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int first = ActivityCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
+        int second = ActivityCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
 
         return first == PackageManager.PERMISSION_GRANTED && second == PackageManager.PERMISSION_GRANTED;
 
+    }
+
+    private void RequestPermissions() {
+        ActivityCompat.requestPermissions(CreateComplaint.this, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
     }
 }
