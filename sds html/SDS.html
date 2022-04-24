@@ -128,7 +128,7 @@ h1 {
     <a href="#6" class="a2">6. Database Design</a>
     <a href="#6.1" class="a1">6.1 Detailed ER Diagram</a>
     <a href="#6.2" class="a1">6.2 Detailed Relation Descriptions</a>
-    <a href="#5" class="a2">7. Implementation Plan</a>
+    <a href="#7" class="a2">7. Implementation Plan</a>
   </div>
 
   <!-- Title page -->
@@ -156,40 +156,36 @@ h1 {
     <h4 id="TOC"> Table of Contents</h4>
 
     <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;">
-            1. Introduction...............................................................................................4</h4>
+            1. Introduction...............................................................................................3</h4>
     <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;">
-            2. Document Conventions....................................................................................6</h4>
+            2. Document Conventions............................................................................4</h4>
     <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;">
-            3. Description of Design Components...............................................................9</h4>
+            3. Description of Design Components.........................................................4</h4>
     <p style="font-size: medium;">
-      &emsp;3.1 Client-Side Application........................................................................................9<br>
-      &emsp;3.2 Server-Side Application................................................................................9<br>
-      &emsp;3.3 Mobile-Side Application..................................................................................9<br>
+      &emsp;3.1 Client-Side Application............................................................................4<br>
+      &emsp;3.2 Server-Side Application...........................................................................5<br>
+      &emsp;3.3 Mobile-Side Application...........................................................................6<br>
     </p>
 
     <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;"> 
-            4. High-Level Component Design..........................................................................................10</h4>
-    <p style="font-size: medium;">
-      &emsp;4.1 Sign Up.....................................................................................................10<br>
-      &emsp;4.2 Log In........................................................................................................11<br>
-    </p>
+            4. High-Level Component Design..................................................................7</h4>
 
     <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;"> 
-            5. Class Diagrams.............................................................20</h4>
+            5. Class Diagrams............................................................................................7</h4>
     <p style="font-size: medium;">
-      &emsp;5.1 Detailed Class Diagrams........................................................................20<br>
-      &emsp;5.2 Detailed Class Descriptions...................................................................................20<br>
+      &emsp;5.1 Detailed Class Diagrams..........................................................................7<br>
+      &emsp;5.2 Detailed Class Descriptions......................................................................8<br>
     </p>
     
     <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;"> 
-      6. Database Design........................................................................................21</h4>
+      6. Database Design..........................................................................................10</h4>
       <p style="font-size: medium;">
-        &emsp;6.1 Detailed ER Diagram........................................................................20<br>
-        &emsp;6.2 Detailed Relation Descriptions...................................................................................20<br>
+        &emsp;6.1 Detailed ER Diagram................................................................................10<br>
+        &emsp;6.2 Detailed Relation Descriptions..................................................................11<br>
       </p>
 
     <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;"> 
-      7. Implementation Plan.............................................................20</h4></br></br>
+      7. Implementation Plan.....................................................................................12</h4></br></br>
   </div>
   <!-- Code for srs body below-->
 
@@ -233,6 +229,8 @@ h1 {
     <p>Institutional: The proposed system can only be utilized by North South University. This will require coordination and 
       collaboration across the technical team at the institution and developers of this software. </p>
 
+      <footer></footer>
+
     <h3 id="2">2. Document Conventions</h3>
     <p>For the ER Diagram Chen’s notation was used.</p>
 
@@ -256,7 +254,7 @@ h1 {
         in creating validation schemas and programming error handling in our forms.</li></br>
       <li>Moment: moment is a simple package used to format and display proper date and time.</li>
     </ol>
-
+    <footer></footer>
     <h3 id="3.2">3.2 Server-Side Application</h3>
     <p>Our server is running on the Node.js version 12 environment. This is a javascript runtime environment as that is 
       our preferred technology when developing a server-side application. We utilized a framework on our server application: 
@@ -286,7 +284,7 @@ h1 {
         only for its storage bucket to create permanent URLs to access files reliably for our application. Express-fileupload is used to 
         handle the filedata and file manipulation before upload.</li>
     </ol>
-
+    <footer></footer>
     <h3 id="3.3">3.3 Mobile-Side Application</h3>
     <p>The Mobile Application mainly runs on the Android SDK Version 31 with a minimum version of 13. Java is the primary 
       language used for the development of this app. Each page of the app is broken down into a different component. 
@@ -327,19 +325,93 @@ h1 {
     <!-- Section 2 starts here -->
 
     <h3 id="4">4. High-Level Component Design</h3>
-
-    <footer></footer>
+    <img src="highLevelComponent.png" alt="Italian Trulli">
 
     <!-- Section 3 starts here -->
 
     <h3 id="5">5. Class Diagrams</h3>
     <h3 id="5.1">5.1 Detailed Class Diagrams</h3>
     <img src="classDiagram.jpg" alt="Italian Trulli">
+    <footer></footer>
     <h3 id="5.2">5.2 Detailed Class Descriptions</h3>
+    <p>Login()<br>
+      Purpose: This functional component is used for the logging in users. This component also uses POST requests for both Google sign up and logging in users 
+      </p>
+    <p>SignUp()<br>
+      Purpose: This function used to create new users for the system. This function also allows the uploading of ID for signing up. Both of these actions are done through POST requests 
+      </p>
+    <p>FileUpload()<br>
+      Purpose: The purpose of this function is to generate a URL for the file that has been uploaded and stored to the MySQL database 
+      </p>
+    <p>AdminAddAccount()<br>
+      Purpose: This function enables the creation of new users by the Admin. The ID upload is also done by the admin.
+      </p>
+    <p>dashboard()<br>
+      Purpose: This functional component fetches the complaint that has been filed and also fetches the complaints that were received. It allows users to create complaints where the list of reviewers and users of the system are also fetched. The status for each complaint is activated or enabled. It provides a complete view of the activities done by the user.
+      </p>
+    <p>Profile()<br>
+      Purpose: The profile component allows the users information to be displayed. It also allows users to set a new profile picture
+      </p>
+    <p>Navbar()<br>
+      Purpose: The navbar component is used at the top of each page. It contains the logout button and the notifications. 
+      </p>
+    <p>AdminDisableAccountTable ()<br>
+      Purpose: This component displays the table with the list of all users and allows the admin to disable the account. 
+      </p>
+    <p>CompCard(fetchedData)<br>
+      Purpose: This component fetches the complaints from the database and the comments made on a particular component 
+      </p>
+    <p>CompCardReceived(fetchedData)<br>
+      Purpose: This component fetches the complaints that a particular user has received.
+      </p>
+    <p>AdminCompCard(fetchedData)<br>
+      Purpose: This component is the component for showing complaints to the admin. This allows the admin to open and close complaints.
+      </p>
+    <p>SwitchComp()<br>
+      Purpose: This component is the switch that allows for enabling and closing a complaint 
+      </p>
+      <footer></footer>
+    <p>CompCardExpanded(fetchedData) <br>
+      Purpose: This gets detailed information for the complaints that were filed. This allows users to see the previous complaint versions.
+      </p>
+    <p>CompCardReceivedExpanded(fetchedData) <br>
+      Purpose: This gets detailed information for the complaints that were received . This allows users to see the previous complaint versions.
+      </p>
+    <p>AdminCompCardExpanded(fetchedData)<br>
+      Purpose: This gets detailed information for the complaints for the admin. This allows admins to see the previous complaint versions and allows the admin to edit the complaints.
+      </p>
+    <p>CompDetails(props)<br>
+      Purpose: This component is the UI for the detailed information of all the previous complaint versions. 
+      </p>
+    <p>EditForm(fetchedData)<br>
+      Purpose: This component allows users to resubmit the creation form to make edits to create a new version of the complaint. 
+      </p>
+    <p>Comment(data) <br>
+      Purpose:The comment functional component allows comments to be posted by reviewers. 
+      </p>
+    <p>CommentView()<br>
+      Purpose: This functional component allows reviewers to create comments and fetch the comments for users to view. 
+      </p>
+    <p style="font-weight: bold;">Middleware</p>
+    <p>verifySignUp()<br>
+      Purpose: The purpose of this is for sanitation for signup. Duplicate Nsuid or email is checked and the roles, ID,name and password are used. The validation for email is used.
+      </p>
+    <p>authJWT()<br>
+      Purpose: This is used to check the access to the roles  of different users. Whether a person is an admin or a reviewer is checked. Whether a verified token is used accessing the system is also checked. 
+      </p>
+    <p>
+      verifyComplaints()<br>
+      Purpose: The complaint is sanitised to check for all required fields to be entered. 
+      </p>
+
+      <footer></footer>
 
     <h3 id="6">6. Database Design</h3>
     <h3 id="6.1">6.1 Detailed ER Diagram</h3>
     <img src="erDiagram.jpg" alt="Italian Trulli">
+
+    <footer></footer>
+
     <h3 id="6.2">6.2 Detailed Relation Descriptions</h3>
     <p>User table: The user table stores general information of all users of the system. The 'nsuid' field of the user table 
       serves as the primary key of the table as each user is assigned a unique NSU ID. The password stored is hashed and not 
@@ -363,15 +435,17 @@ h1 {
     <p>Attributes:commentid: integer,comment:string,user:string,createdAt:datetime,updatedAt:datetime,complaintComplaintid:
       integer.</p>
 
+      <footer></footer>
+
     <h3 id="7">7. Implementation Plan</h3>
     <p>Initially, a requirement analysis was done to understand the features and requirements of the project. Some background 
       research on the basics of different technology stacks was utilized to ensure the correct choice of tech stack was made. 
-      Consequently, a Software requirement specification and a software design specification will be made. </br>The project was 
+      Consequently, a Software requirement specification and a software design specification will be made. </br></br>The project was 
       divided into 3 core parts. The project will first undergo stages of planning to ensure the key milestones that need to 
       be completed in 3 cycles. Following the planning, each feature implementation will be handed over to each team member 
       for completion. The work progress will be monitored via weekly meetings to ensure optimum communication. All changes 
       to the code base must be pushed into the git repository to ensure version control and proper backup. All project updates 
-      and the timeline for completion will be communicated via the Trello board. </br>The features of the web app will be prioritized 
+      and the timeline for completion will be communicated via the Trello board. </br></br>The features of the web app will be prioritized 
       for the first two cycles of development. Initially, the focus will be on front-end development for both the web app and 
       the mobile app. Next api endpoints for the backend will be created. This will be followed by connecting the backend and 
       the front together. Following this phase unit testing will start for the api, simultaneously sanitation will be done in 
