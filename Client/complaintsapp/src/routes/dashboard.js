@@ -157,7 +157,7 @@ export default function Dashboard() {
   async function fetchUserList (){
     //API Endpoint '/findAll' is for testing only
     //
-    await axios.get('/findAll', {
+    await axios.get('/againstusers', {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
       },
@@ -178,15 +178,16 @@ export default function Dashboard() {
     });
   }
 
-  async function fetchReviewerList (){
+  async function fetchReviewerList ( value1 ){
     //API Endpoint '/findAll' is for testing only
     //
-    await axios.get('/reviewers', {
+    console.log(value1.nsuid)
+    await axios.get('/reviewertoreview', {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
       },
       params: {
-        id: 12345
+        id: value1.nsuid
       }
     })
     .then(function (response) {
@@ -353,6 +354,7 @@ export default function Dashboard() {
     document.getElementById("myForm").reset();
     setFiledComplaint(empty)
     fetchComplaint();
+
   };
 
   const handleChange = (event) => {
@@ -383,6 +385,7 @@ export default function Dashboard() {
           
           seturldata(""+downloadURL);
           console.log(downloadURL)
+          window.location.reload()
         /*   const xhr = new XMLHttpRequest();
             xhr.responseType = 'blob';
             xhr.onload = (event) => {
@@ -412,6 +415,7 @@ export default function Dashboard() {
               console.log(response);
               fetchComplaint();
               unExpandForm();
+              
             })
             .catch(function (error) {
               console.log(error);
@@ -502,7 +506,13 @@ export default function Dashboard() {
           disablePortal
           value={value}
           onChange={(event, newValue) => {
-            setValue(newValue);
+            console.log(newValue)
+            setValue(newValue)
+            
+              setReviewerList(empty)
+              fetchReviewerList( newValue )
+            
+            
           }}
           options={studentList}
           getOptionLabel={(option) => option.name}

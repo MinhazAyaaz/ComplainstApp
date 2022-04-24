@@ -55,6 +55,9 @@ export default function AdminCompCard( fetchedData ) {
   const [comment, setComment] = React.useState();
   const [color2, setColor] = React.useState({})
   const [myColor, setmyColor] = React.useState('white');
+  const [user, setUser] = React.useState({})
+  const [userAgaisnt, setUserAgaisnt] = React.useState({})
+  const [userReviewer, setUserReviewer] = React.useState({})
   const activeColor = { maxWidth: 900,  p: 3,
     margin: 'auto',
     marginTop: 1,
@@ -105,7 +108,7 @@ export default function AdminCompCard( fetchedData ) {
      })
      
      fetchComments()
-     
+     fetchUserInfo()
      setChecked(!fetchedData.fetchedData.status)
 
      if(fetchedData.fetchedData.status == '0'){
@@ -118,7 +121,71 @@ export default function AdminCompCard( fetchedData ) {
   }, [])
 
   
+  async function fetchUserInfo (){
 
+    //Get data of creator
+    await axios.get('/otherUser', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: fetchedData.fetchedData.createdby
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setUser(response.data)
+      // setFiledComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  
+    //Get data of the user complaint is lodged agaisnt
+    await axios.get('/otherUser', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: fetchedData.fetchedData.against
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setUserAgaisnt(response.data)
+      // setFiledComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  
+    //Get data of reviewer of the complaint
+    await axios.get('/otherUser', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: fetchedData.data.reviewer
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setUserReviewer(response.data)
+      // setFiledComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -214,8 +281,8 @@ export default function AdminCompCard( fetchedData ) {
 
       <CardHeader
         avatar={
-          <Avatar sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
-            X
+          <Avatar src={user.photo} sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
+            
           </Avatar>
         }
         title={
@@ -223,7 +290,7 @@ export default function AdminCompCard( fetchedData ) {
           {backendData.title}
         </Typography>
         }
-        subheader={"Created by: " +fetchedData.fetchedData.createdby}
+        subheader={"Created by: " + user.name +" ("+fetchedData.fetchedData.createdby+")"}
         action={
           <>
         

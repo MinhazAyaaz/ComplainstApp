@@ -118,7 +118,7 @@ export default function PrimarySearchAppBar() {
       >
         <CardHeader
         avatar={
-          <Avatar sx={{ width: 50, height: 50,backgroundColor: '#1976d2'}}>
+          <Avatar src={user.photo} sx={{ width: 50, height: 50,backgroundColor: '#1976d2'}}>
             X
           </Avatar>
         }

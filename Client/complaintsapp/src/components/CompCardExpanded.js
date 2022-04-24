@@ -20,6 +20,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import DialogContentText from '@mui/material/DialogContentText';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 
+import { blue } from '@mui/material/colors';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+
 import CompDetails from "./CompDetails";
 import axios from "axios";
 
@@ -51,7 +54,7 @@ export default function CompCardExpanded( fetchedData ) {
     console.log(fetchedData)
     
     setBackEndData({
-
+      createdby: fetchedData.data.createdby,
       complaintid: fetchedData.data.complaintid,
       creationdate: fetchedData.data.createdAt,
       status: fetchedData.data.status,
@@ -346,9 +349,7 @@ async function fetchUserInfo (){
           
         </DialogContent>
         <DialogActions>
-        <Button  variant="outlined" type="submit" >
-        Submit
-      </Button>
+        
           <Button onClick={() => setOpen(null)} variant="outlined">
             Close
           </Button>
@@ -360,32 +361,24 @@ async function fetchUserInfo (){
 
       <Dialog open={ open === "history"}>
         
-      
-        <DialogActions>
-        <DialogContentText>
-           The complaint edit history are as follows:
-          </DialogContentText>
-            {complaintVersions.map((data, i) => 
-          <CompDetails fetchedData={data}/>
-        )} 
-         {/* <CompDetails fetchedData = {complaintVersions} i={0}></CompDetails>  */}
-
+      <DialogTitle id="alert-dialog-title"><Avatar sx={{ bgcolor: blue[500] }}>
+        <AssignmentIcon />
+      </Avatar>
+          {" The complaint edit versions are as follows: "}
+        </DialogTitle>
+        {/* <List sx={{ pt: 0 }}> */}
+        {complaintVersions.map((data) => (
+        
+            <CompDetails fetchedData={data}/> 
          
-         {/* <CompDetails
-          complaintVersion= {fetchedData.data.complaintid}
-      creationdate={ fetchedData.data.creationdate}
-      status={ fetchedData.data.status}
-      title={ fetchedData.data.title}
-      against={ fetchedData.data.against}
-      category={ fetchedData.data.category}
-      body={ fetchedData.data.body}
-      reviewer={ fetchedData.data.reviewer}></CompDetails>  */}
+        ))}
 
+      
           <Button onClick={() => setOpen(null)} variant="outlined">
             Close
           </Button>
           
-        </DialogActions>
+        {/* </DialogActions> */}
         
       </Dialog>
       

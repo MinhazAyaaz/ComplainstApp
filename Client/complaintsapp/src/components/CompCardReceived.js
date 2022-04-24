@@ -18,6 +18,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CloseIcon from '@mui/icons-material/Close';
 import Menu from '@mui/material/Menu';
 
+import Comment from '@mui/icons-material/Comment';
+
 import Dialogs from './Dialogs';
 import CompCardReceivedExpanded from './CompCardReceivedExpanded';
 
@@ -38,7 +40,7 @@ const ExpandMore = styled((props) => {
 }));
 
 
-export default function CompCardReceived( fetchedData ) {
+export default function CompCard( fetchedData ) {
 
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
@@ -47,7 +49,11 @@ export default function CompCardReceived( fetchedData ) {
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [color2, setColor] = React.useState({})
- 
+  const [user, setUser] = React.useState({})
+  const [comment, setComment] = React.useState();
+  const [edit, setEdit] = React.useState();
+  const [complaintVersions, setComplaintVersions] = React.useState([])
+
   const activeColor = { maxWidth: 900,  p: 3,
     margin: 'auto',
     marginTop: 1,
@@ -96,8 +102,14 @@ export default function CompCardReceived( fetchedData ) {
        body: fetchedData.fetchedData.body,
        reviewer: fetchedData.fetchedData.reviewer,
        createdby: fetchedData.fetchedData.createdby,
+       evidence: fetchedData.fetchedData.evidence
      })
      
+     fetchUserInfo()
+     fetchComments()
+     fetchComplaintVersions()
+
+
      if(fetchedData.fetchedData.status == '0'){
         setColor(activeColor)
      }
@@ -130,14 +142,89 @@ export default function CompCardReceived( fetchedData ) {
     
   };
 
+  async function fetchUserInfo (){
+    await axios.get('/otherUser', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: fetchedData.fetchedData.createdby
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setUser(response.data)
+      // setFiledComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
+
+
+  async function fetchComments (){
+    //API Endpoint '/findAll' is for testing only
+    //
+    console.log(fetchedData.fetchedData.complaintid)
+      await axios.get('/fetchComment', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        complaintid: fetchedData.fetchedData.complaintid
+      }
+    })
+    .then(function (response) {
+      setComment(response.data.length)
+      console.log(comment)
+      console.log(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+      
+    });
+  };
+
+  async function fetchComplaintVersions (){
+    await axios.get('/getcomplaintVersions', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345,
+        complaintid:fetchedData.fetchedData.complaintid
+      }
+    })
+    .then(function (response) {
+      console.log("from edit  history");
+      // console.log(response.data);
+      setEdit(response.data.length)
+      console.log(complaintVersions);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  
+   
+  
+  }
 
   return (
     <Card sx={color2}>
 
       <CardHeader
         avatar={
-          <Avatar sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
-            X
+          <Avatar src={user.photo} sx={{ width: 45, height: 45,backgroundColor: '#1976d2'}}>
+            
           </Avatar>
         }
         title={
@@ -145,7 +232,7 @@ export default function CompCardReceived( fetchedData ) {
           {backendData.title}
         </Typography>
         }
-        subheader={"Created by: " +fetchedData.fetchedData.createdby}
+        subheader={"Created by: " + user.name +" ("+fetchedData.fetchedData.createdby+")"}
         action={
           <>
               
@@ -198,12 +285,12 @@ export default function CompCardReceived( fetchedData ) {
         aria-label="show 17 new notifications"
       >
 
-        <Badge badgeContent={17} color="error" size="small" sx={{ marginRight:4}} >
+        <Badge badgeContent={comment} color="error" size="small" sx={{ marginRight:4}} >
           <CommentIcon sx={{ color:'#1976d2',marginRight:1}}
         />
 
               </Badge>
-              <Badge badgeContent={17} color="error" >
+              <Badge badgeContent={edit} color="error" >
                 <EditIcon sx={{ color:'#1976d2',marginRight:1 }}
                  />
 
@@ -215,8 +302,7 @@ export default function CompCardReceived( fetchedData ) {
           aria-expanded={expanded}
           aria-label="show more"
         >
-              {(backendData.status == 0) ? <p>Complaint status: <b>active</b> </p> : <p> Complaint status: <b>closed</b></p>}
-
+        {(backendData.status == 0) ? <p>Complaint status: <b>active</b> </p> : <p> Complaint status: <b>closed</b></p>}
         </ExpandMore>
 
         {( backendData.length === 0) ? (

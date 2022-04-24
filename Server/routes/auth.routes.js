@@ -57,6 +57,18 @@ module.exports = function(app) {
   );
 
   app.get(
+    "/reviewerOne",
+    [authJwt.verifyToken] ,
+    controller.findReviewerOne
+  );
+
+  app.get(
+    "/reviewertoreview",
+    [authJwt.verifyToken] ,
+    controller.findReviewerToReview
+  );
+
+  app.get(
     "/userswithstatus",
     [authJwt.verifyToken] ,
     controller.findUserWithStatus

@@ -57,6 +57,7 @@ export default function EditForm( fetchedData) {
   const [file2, setfile] = React.useState();
   const [reviewerList, setReviewerList] = React.useState([]);
   const [value2, setValue2] = useState({name: "", nsuid: ""})
+  const [value3, setValue3] = useState()
 
   
 
@@ -77,6 +78,7 @@ export default function EditForm( fetchedData) {
     })
 
     fetchReviewerList()
+    
     setFormdata(fetchedData.data.category)
     seturldata(fetchedData.data.evidence)
    
@@ -85,17 +87,39 @@ export default function EditForm( fetchedData) {
  async function fetchReviewerList (){
   //API Endpoint '/findAll' is for testing only
   //
-  await axios.get('/reviewers', {
+  await axios.get('/reviewertoreview', {
     headers: {
       "x-access-token": sessionStorage.getItem("jwtkey")
     },
     params: {
-      id: 12345
+      id: fetchedData.data.against
     }
   })
   .then(function (response) {
     setReviewerList(response.data)
     console.log(reviewerList)
+  
+    console.log(response)
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+  });
+
+  await axios.get('/reviewerOne', {
+    headers: {
+      "x-access-token": sessionStorage.getItem("jwtkey")
+    },
+    params: {
+      id: fetchedData.data.reviewer
+    }
+  })
+  .then(function (response) {
+    setValue2(response.data)
+    console.log(value2)
+  
     console.log(response)
   })
   .catch(function (error) {
@@ -105,7 +129,7 @@ export default function EditForm( fetchedData) {
     // always executed
   });
 }
- 
+console.log(value2)
 //labib edit complaints
 const formHandler = (e) => {
   //e.preventDefault();
@@ -322,6 +346,7 @@ const handleSubmit2 = (event) => {
           <Autocomplete
           disablePortal
           value={value2}
+         
           onChange={(event, newValue) => {
             setValue2(newValue);
           }}
@@ -344,8 +369,8 @@ const handleSubmit2 = (event) => {
         <div>
         
         <input onChange={formHandler} type="file" className="input" />
-        <h2>Uploading done{progress}%</h2>
-        <button  onClick={handleSubmit2}>Upload</button>
+        <h2>Uploading done {progress}%</h2>
+        <button  onClick={handleSubmit2}> Update Evidence</button>
      
        
         </div>
