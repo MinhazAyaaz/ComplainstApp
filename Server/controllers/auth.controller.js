@@ -382,9 +382,8 @@ exports.findReviewerToReview = (req, res) => {
     User.findAll({
       attributes: ['name', 'nsuid'],
       where: {
-        [Op.or]: [{role: '2'},{role:'3'}],
-         nsuid: {
-          [Op.ne]: req.body.nsuid
+        [Op.or]: [{role: '2'},{role:'3'}], nsuid: {
+          [Op.ne]: req.query.id
         }
       }})
       .then(data => {
@@ -405,6 +404,26 @@ exports.findReviewers = (req, res) => {
     attributes: ['name', 'nsuid'],
     where: {
       [Op.or]: [{role: '2'},{role:'3'}]
+    }})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(534).send({
+        message:
+          err.message || "Some error occurred while retrieving reviewers."
+      });
+    });
+};
+
+exports.findReviewerOne = (req, res) => {
+  
+
+  User.findOne({
+    attributes: ['name', 'nsuid'],
+    where: {
+      [Op.or]: [{role: '2'},{role:'3'}],
+      nsuid: req.query.id
     }})
     .then(data => {
       res.send(data);

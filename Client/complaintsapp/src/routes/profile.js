@@ -13,7 +13,7 @@ import { Grid } from '@mui/material';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../firebase';
 import { Button } from '@mui/material';
-
+import { CardHeader } from '@mui/material';
 import { MenuList, MenuItem, ListItemText } from '@mui/material';
 
 import axios from 'axios';
@@ -62,6 +62,7 @@ export default function Profile() {
           
           seturldata(""+downloadURL);
           console.log(downloadURL)
+          window.location.reload()
           
               axios.put('/uploadprofilepic', {
               
@@ -135,17 +136,26 @@ export default function Profile() {
       </Grid>
       <Grid item xs={7} >
         <Card sx={{margin: 3, padding: 3}}>
+        <CardHeader
+        avatar={
+          <Avatar src={user.photo} sx={{ width: 80, height: 80,backgroundColor: '#1976d2'}}>
+            X
+          </Avatar>
+        }
+        title={
+          <Typography gutterBottom  component="div">
+          {user.name}
+        </Typography>
+        }
+        subheader={user.nsuid}
+        
+      />
         <Typography component="h1" variant="h5"alignItems={'center'} >
             Account Information
           </Typography>
         <MenuList>
                 
-                <MenuItem>
-                <ListItemText >Name: {user.name} </ListItemText>
-                </MenuItem>
-                <MenuItem>
-                <ListItemText >ID: {user.nsuid}</ListItemText>
-                </MenuItem>
+               
                 <MenuItem>
                 <ListItemText > Email: {user.email} </ListItemText>
                 </MenuItem>
@@ -185,13 +195,11 @@ export default function Profile() {
                 >
     
       <Button  variant="outlined" type="submit" >
-        Submit
+        Upload
       </Button>
       </Box>
      
-      <Card>
-            <img className="profilepic" src={user.photo}/>
-          </Card>
+     
         
       </Box>
       </Grid>

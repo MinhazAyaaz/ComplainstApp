@@ -99,16 +99,19 @@ export default function CommentView( fetchedData ) {
 
   const handleSubmit = () => {
     
-    // eslint-disable-next-line no-console
-
+    console.log(fetchedData.fetchedData.createdby);
     console.log({
       comment: value,
       complaintid: backendData.complaintid,
+      createdby:backendData.createdby,
+      against: backendData.against
     });
-    
+    //LABIB 
    axios.post('/createComment', {
       comment: value,
       complaintid: backendData.complaintid,
+      createdby:backendData.createdby,
+      against: backendData.against
     }, {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")

@@ -27,7 +27,7 @@ const transporter = nodemailer.createTransport( {
     pass: "NSUcomplaints#123456789",
     clientId: '189085341403-6jkd13am7e6r6e75os36vmh2g4phunqi.apps.googleusercontent.com',
     clientSecret: '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',
-    refreshToken: '1//04JSYSTACue1pCgYIARAAGAQSNwF-L9Ir7Ti7w-09yqV1f-gWYXb3MmlmEvKnVDWe4uqSIUpVGmvsY1_--7NEuF-3OM-IqrTCYXg',
+    refreshToken: '1//04lzli9cFEJCLCgYIARAAGAQSNwF-L9Irw0fuFkQuuVT570nUQp5m5oCZRGYMq7Jdm2c97vuiUYlbPUh7g4MNrk8pgijaI8kOvfc',
   },
   tls: {
     rejectUnauthorized: false
@@ -261,6 +261,7 @@ exports.login = (req, res) => {
     });
 };
 
+//Creates comment
 exports.createComment = async (req, res) => {
     
   let checkUser = await Tutorial.findOne({
@@ -294,26 +295,57 @@ exports.createComment = async (req, res) => {
       return res.sendStatus(782)
     } 
 
+    //LABIB comment histroy
+let complaintby = await User.findOne({
+  where: {
+    nsuid: req.body.createdby,
+   
+  }
+});
+  let complaintAgainst = await User.findOne({
+    where: {
+      nsuid: req.body.against,
+     
+    }
+  });
   // Save User to Database
   Comments.create({
     comment: req.body.comment,
     user: req.userId,
     complaintComplaintid: req.body.complaintid
   })
-    .then(comment => {
+  .then(data => {
 
-      try{
-      
-        
-       }catch(e){
-        res.status(888).send()
-       }
-
-      
+    transporter.sendMail({
+      from: "nsucomplaints.noreply@gmail.com",
+      to: complaintby.email,
+      subject: "You have a new comment on your complaint",
+      html: `<p>Your complaint reviewer (${checkUser2.name},${checkUser2.nsuid}) has left a comment on your complaint : </p>
+      <h2>${ req.body.comment}</h2>
+      <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+      `,
     })
-    .catch(err => {
-      res.status(511).send({ message: err.message });
-    });
+    
+
+    
+  })
+  .then(data => {
+
+    transporter.sendMail({
+    from: "nsucomplaints.noreply@gmail.com",
+    to: complaintAgainst.email,
+    subject: "A comment has been made on a complaint made against you.",
+    html: `<p>The reviewer (${checkUser2.name},${checkUser2.nsuid}) of a complaint made by (${complaintby.name},${complaintby.nsuid}) against you,
+     has left a comment: </p>
+    <h2>${ req.body.comment}</h2>
+    <a target="_blank" href="http://localhost:3000/dashboard">View Complaint</a>
+    `,
+  })
+})
+  .catch(err => {
+    res.status(511).send({ message: err.message });
+  });
+  
   };
 
  exports.fetchComments = (req, res) => {
