@@ -303,17 +303,7 @@ exports.createComment = async (req, res) => {
     .then(comment => {
 
       try{
-        //generates confirmation email link
-        // emailToken = jwt.sign( {user: req.body.nsuid}, EMAIL_SECRET )
-        // const url = `http://localhost:5000/confirmation/${emailToken}`
-  
-        //   //confirmation email configuration
-        //   transporter.sendMail({
-        //     from: "nsucomplaints.noreply@gmail.com",
-        //     to: req.body.email,
-        //     subject: "Confirm Email",
-        //     html: `Please click this email to confirm your email: <a target="_blank" href="${url}">${url}</a>`,
-        // })
+      
         
        }catch(e){
         res.status(888).send()

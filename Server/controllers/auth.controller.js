@@ -382,7 +382,8 @@ exports.findReviewerToReview = (req, res) => {
     User.findAll({
       attributes: ['name', 'nsuid'],
       where: {
-        [Op.or]: [{role: '2'},{role:'3'}], nsuid: {
+        [Op.or]: [{role: '2'},{role:'3'}],
+         nsuid: {
           [Op.ne]: req.body.nsuid
         }
       }})

@@ -180,7 +180,7 @@ export default function Dashboard() {
   async function fetchReviewerList (){
     //API Endpoint '/findAll' is for testing only
     //
-    await axios.get('/reviewers', {
+    await axios.get('/reviewertoreview', {
       headers: {
         "x-access-token": sessionStorage.getItem("jwtkey")
       },
