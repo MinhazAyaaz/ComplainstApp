@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CSE327 SDS</title>
+  <link type="text/css" rel="stylesheet" href="style.css">
+  <style>
+    * {
+  box-sizing: border-box;
+}
+html,
+body {
+  padding: 1rem;
+  min-height: 100%;
+}
+
+div {
+  padding: 3rem;
+  min-height: 100%;
+  background: #fff;
+  color: #000;
+  font-family: Arial;
+}
+
+body {
+  font-size: 1.4rem;
+  text-rendering: optimizeLegibility;
+}
+
+h1 {
+  font-size: 5rem;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+}
+
+.sidenav {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 400px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #111; /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+
+.a1 {
+  padding: 6px 2px 6px 0px;
+  margin-left: 1.5rem;
+  text-decoration: none;
+  font-size: 15px;
+  color: #ffffff;
+  display: block;
+}
+
+.a2 {
+  padding: 6px 2px 6px 0px;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: #0094ff;
+}
+
+/* Style page content */
+.main {
+  margin-left: 450px; /* Same as the width of the sidebar */
+  padding: 0px 10px;
+}
+
+@media print and (max-width: 600px) {
+  @page {
+    size: A4; /* DIN A4 standard, Europe */
+    margin-top: 50px;
+  }
+  .sidenav {
+    display: none;
+  }
+  .main {
+    display: block;
+    margin-left: 0px;
+    page-break-before: always;
+    padding: 10px 20px;
+  }
+  footer {
+    page-break-after: always;
+  }
+  img {
+    padding: 0;
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
+}
+  html, body {
+        height: 99%;    
+    }
+}
+
+</style>
+</head>
+
+<body>
+  <!-- Side Navigation Bar -->
+  <div class="sidenav" id="noprint">
+    <h2 style="color: white; font-size: larger;">Table of Content</h2>
+    <a href="#title" class="a1">Title Page</a>
+    <a href="#TOC" class="a1">Table of Contents</a>
+    <a href="#1" class="a2">1. Introduction</a>
+    <a href="#2" class="a2">2. Document Conventions</a>
+    <a href="#3" class="a2">3. Description of Design Components</a>
+    <a href="#3.1" class="a1">3.1 Client-Side Application</a>
+    <a href="#3.2" class="a1">3.2 Server-Side Application</a>
+    <a href="#3.3" class="a1">3.3 Mobile-Side Application</a>
+    <a href="#4" class="a2">4. High-Level Component Design</a>
+    <a href="#5" class="a2">5. Class Diagrams</a>
+    <a href="#5.1" class="a1">5.1 Detailed Class Diagram</a>
+    <a href="#5.2" class="a1">5.2 Detailed Class Descriptions</a>
+    <a href="#6" class="a2">6. Database Design</a>
+    <a href="#6.1" class="a1">6.1 Detailed ER Diagram</a>
+    <a href="#6.2" class="a1">6.2 Detailed Relation Descriptions</a>
+    <a href="#5" class="a2">7. Implementation Plan</a>
+  </div>
+
+  <!-- Title page -->
+
+  <div class="main" id="title" style="padding-top: 50px;">
+    <h1>Software Development</h1>
+    <h1>Specification</h1>
+    <h2>for</h2>
+    <h1>CSE327.1.4</h1>
+    <h3>Version 1.0 approved
+      </br></br>Prepared by:</br>
+      <ul>
+        <li>Emon Sarker</li>
+        <li>Labib Rahman</li>
+        <li>Parinda Rahman</li>
+        <li>Minhazul Abedin Ayaaz</li>
+      </ul>
+      </br>24/04/2022
+    </h3>
+  </div>
+
+  <!-- Content page code -->
+
+  <div class="main">
+    <h4 id="TOC"> Table of Contents</h4>
+
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;">
+            1. Introduction...............................................................................................4</h4>
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;">
+            2. Document Conventions....................................................................................6</h4>
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;">
+            3. Description of Design Components...............................................................9</h4>
+    <p style="font-size: medium;">
+      &emsp;3.1 Client-Side Application........................................................................................9<br>
+      &emsp;3.2 Server-Side Application................................................................................9<br>
+      &emsp;3.3 Mobile-Side Application..................................................................................9<br>
+    </p>
+
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;"> 
+            4. High-Level Component Design..........................................................................................10</h4>
+    <p style="font-size: medium;">
+      &emsp;4.1 Sign Up.....................................................................................................10<br>
+      &emsp;4.2 Log In........................................................................................................11<br>
+    </p>
+
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;"> 
+            5. Class Diagrams.............................................................20</h4>
+    <p style="font-size: medium;">
+      &emsp;5.1 Detailed Class Diagrams........................................................................20<br>
+      &emsp;5.2 Detailed Class Descriptions...................................................................................20<br>
+    </p>
+    
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;"> 
+      6. Database Design........................................................................................21</h4>
+      <p style="font-size: medium;">
+        &emsp;6.1 Detailed ER Diagram........................................................................20<br>
+        &emsp;6.2 Detailed Relation Descriptions...................................................................................20<br>
+      </p>
+
+    <h4 id="sec1.1" style="font-size: medium; margin-bottom: -8px;"> 
+      7. Implementation Plan.............................................................20</h4></br></br>
+  </div>
+  <!-- Code for srs body below-->
+
+  <div class="main" style="font-size: large;">
+
+    <!-- Section 1 starts here -->
+
+    <h3 id="1">1. Introduction</h3>
+    <p>This software design specification documents and tracks the necessary information required to effectively define 
+      the architecture and system design of the North South University Complaints System. The intent of this software was 
+      to provide a platform where members of the North South University can lodge complaints and put forward suggestions 
+      in a systematic manner. The main requirements of the system include:</p>
+    <ul>
+      <li>Creating complaints</li>
+      <li>Choosing reviewers for the lodged complaints</li>
+      <li>Closing complaints</li>
+      <li>Having a history of the lodged complaints</li>
+      <li>Putting comments on complaints</li>
+    </ul>
+    <p>Much of the functionality has been achieved in the initial implementation. The initial requirement also specifies a 
+      mobile application alongside the main webapp. An android app has been successfully implemented to meet this requirement. 
+    </p>
+  <p style="font-weight: bold;">User Types:</p>
+  <p>The software has been designed to serve the needs of many different types of users, with features and functions appropriate
+     for each one: </p>
+     <ul>
+      <li>Users are individuals looking to lodge a complaint. Registered users have a user account and profile showing details 
+        of complaints</li>
+      <li>Faculties can both lodge a complaint and close them if they have been assigned as the reviewer for the complaint</li>
+      <li>Admins can create accounts for users and also lodge complaints on behalf of them.</li>
+    </ul>
+
+    <p style="font-weight: bold;">Design Constraints: </p>
+    <p>The proposed solution does not utilize the current architecture and system design of the RDS system. This is desirable if 
+      this system is to be scaled up.</p>
+
+    <p>Financial: The full implementation of the project could be financially significant. Much of the code could be improved 
+      further.</p>
+    <p>Technical: The development and integration of the software into the existing software RDS is a major constraint as mentioned 
+      before. Specific skills and technical understanding of the underlying RDS system is required.</p>
+    <p>Institutional: The proposed system can only be utilized by North South University. This will require coordination and 
+      collaboration across the technical team at the institution and developers of this software. </p>
+
+    <h3 id="2">2. Document Conventions</h3>
+    <p>For the ER Diagram Chen’s notation was used.</p>
+
+    <h3 id="3">3. Description of Design Components</h3>
+    <h3 id="3.1">3.1 Client-Side Application</h3>
+    <p>Client-side application is going to be built on React.js- the javascript library by Facebook. The approach to 
+      the design will be through building hierarchical functional components to manage the use cases of the users. The 
+      front-end application will be supplemented with additional Node packages to accelerate the development speed and 
+      to give the application a high quality feel. The following Node packages are used:
+    </p>
+    <ol>
+      <li>Material UI (mui, emotionui, emotion): mui is our preferred choice of a React component library. It’s prebuilt 
+        components are used through the project (e.g Navigation bar, menus, cards, buttons, icons, switches, badges, grid, 
+        autocomplete, form, etc)</li></br>
+      <li>React-Router-Dom: As React is a single-page-app development technology, React-Router helps us organize our 
+        components neatly into different URLs. This lets us create various “pages” for the user to navigate to access 
+        different features instead of having it all in one page.</li></br>
+      <li>Axios: Axios is our preferred HTTP client used to create GET, POST, PUT requests from the client application. 
+        It abstracts away the complexity of using built-in HTTP functions as ‘fetch’.</li></br>
+      <li>Formik (formik, formuk-yup): Formik is our preferred form validation and error handling package. It is useful 
+        in creating validation schemas and programming error handling in our forms.</li></br>
+      <li>Moment: moment is a simple package used to format and display proper date and time.</li>
+    </ol>
+
+    <h3 id="3.2">3.2 Server-Side Application</h3>
+    <p>Our server is running on the Node.js version 12 environment. This is a javascript runtime environment as that is 
+      our preferred technology when developing a server-side application. We utilized a framework on our server application: 
+      Express.js. Express.js is a lightweight and flexible framework to develop our REST api for both web and mobile. Along 
+      with Express.js we used additional Node Packages to develop our server application. The following Node packages are used:
+    </p>
+    <ol>
+      <li>Sequelize: Sequelize is our preferred Object Relational Mapper (ORM). It abstracts away the complexity and necessity 
+        to write raw SQL queries. Furthermore it adds various features to help scale and maintain our entire backend and database 
+        application. Sequelize introduces .routes, .model, .controllers. The .model files are responsible for modeling the database 
+        tables; .controllers are responsible to handle request and response logic for various end points; .routes combine the 
+        controllers and exposes the api endpoints for our application.</li></br>
+      <li>JSON Web Token (JWT): JWTs are used on our server side to create access tokens, validation tokens and authorization tokens. 
+        They are used in creating the account verification link that is emailed to people on signing up. They are used to create access 
+        tokens that are used to access data through protected api end-points. They are used to create user tokens as well to pass data 
+        about the user between client and  server. </li></br>
+      <li>B-crypt: B-crypt is our encryption library that is used to encrypt, decrypt and match passwords. We add salt and user IDs 
+        along with the user set password to create a unique and secure hashed password to store in our database. Furthermore it also 
+        lets us log users in as it allows us to match hashed passwords.</li></br>
+      <li>Nodemailer: Nodemailer is our emailing client. It is used to create emails dynamically in our server application. Nodemailer 
+        combines a third-party email provider (such as G-mail) to our server. Then send out the generated email through the email 
+        provider. These emails have various use cases.</li></br>
+      <li>Google Auth Library (OAuth2): Google’s Auth library is used to handle and process signing up and logging in users who prefer 
+        to do it with their existing Google account. It lets us extract user information from the generated tokenId sent by a successful 
+        Google authorization and lets us create a user in our database with that data.</li></br>
+      <li>Express-fileupload & Firebase: These are used in conjunction to handle file upload and handling on our server. Firebase is used 
+        only for its storage bucket to create permanent URLs to access files reliably for our application. Express-fileupload is used to 
+        handle the filedata and file manipulation before upload.</li>
+    </ol>
+
+    <h3 id="3.3">3.3 Mobile-Side Application</h3>
+    <p>The Mobile Application mainly runs on the Android SDK Version 31 with a minimum version of 13. Java is the primary 
+      language used for the development of this app. Each page of the app is broken down into a different component. 
+      The components include:
+    </p>
+    <ol>
+      <li>MainActivity - This is the landing page component of the mobile app. Upon launching the app, it shows the user 
+        the MainActivity which contains a dropdown menu where the user can choose his/her role and then click on the button 
+        to proceed as necessary.</li></br>
+      <li>LoginActivity - Contains the nsu id and password field where the user has to enter their credentials. This page 
+        also contains a login sign in button which prompts them to login with google.</li></br>
+      <li>HomepageActivity - Contains the dashboard where the complaints filed/received by the users are shown in card view. 
+        There are two radio buttons at the top to filter the complaints shown.The activity contains two button one for signing 
+        out of the app and another for creating a new complaint.</li></br>
+      <li>CreateComplaintActivity - The activity contains the form which the user has to fill up to lodge a complaint. Beside 
+        each of the field is a speech to text button which supports both English and Bangla text. There are three buttons 
+        under the evidence title which are the upload file button, take picture button and record audio button. Each button 
+        can be used to upload their respective file types and upload to firebase. </li></br>
+      <li>EditComplaintActivity - Contains the same sub components as the CreateComplaintActivity, the only difference is 
+        that it's used to edit existing infomation. </li>
+    </ol>
+    <p>Several api's were used in the development of the app's components which include:</p>
+    <ol>
+      <li>Fast Android Networking: Fast Android Networking Library is a powerful library for doing any type of networking 
+        in Android applications which is made on top of OkHttp Networking Layer.</li></br>
+      <li>Google Play Services Authentication version 20: Google Play services powers a broad set of SDKs on Android. 
+        These SDKs are unique in that they only require a thin client library to be included in your app, as shown in 
+        figure 1. At runtime, the client library communicates with the bulk of the SDK's implementation and footprint 
+        in Google Play services.</li></br>
+      <li>Material Design Components for Android 1.5.0: Components such as the card view, text fields and dialogs were 
+        used from the Material Design.</li>
+    </ol>
+
+    <!-- Section 1 ends here -->
+
+    <footer></footer>
+
+    <!-- Section 2 starts here -->
+
+    <h3 id="4">4. High-Level Component Design</h3>
+
+    <footer></footer>
+
+    <!-- Section 3 starts here -->
+
+    <h3 id="5">5. Class Diagrams</h3>
+    <h3 id="5.1">5.1 Detailed Class Diagrams</h3>
+    <img src="classDiagram.jpg" alt="Italian Trulli">
+    <h3 id="5.2">5.2 Detailed Class Descriptions</h3>
+
+    <h3 id="6">6. Database Design</h3>
+    <h3 id="6.1">6.1 Detailed ER Diagram</h3>
+    <img src="erDiagram.jpg" alt="Italian Trulli">
+    <h3 id="6.2">6.2 Detailed Relation Descriptions</h3>
+    <p>User table: The user table stores general information of all users of the system. The 'nsuid' field of the user table 
+      serves as the primary key of the table as each user is assigned a unique NSU ID. The password stored is hashed and not 
+      in plaintext. Links to image resources are stored within their fields respectively.</p>
+    <p>Attributes: nsuid: Integar,name: String, email:string,idscan:String,photo:String,password:String,status:String</p>
+    <p>Complaint table: The complaint table stores all the complaints generated by users of the system. Each complaint is 
+      assigned a unique id which is its primary key. The 'createdBy', 'against' and 'reviewer' are foreign keys referencing 
+      the 'nsuid' field of the 'user' table.</p>
+    <p>Attributes: complaintid: Integer, title:String, against: string, createdby: string, body:string, reviewer: string, 
+      category: string,evidence: string,createdAt: datetime, updatedAt: datetime, status: boolean</p>
+    <p>Complaint history table: This table stores the different versions of the complaints that are created. The 
+      'complaintVersions' 
+      serves as the primary key for the table while 'complaintComplaintId' is a foreign key referencing the 'complaintid' field of 
+      'complaint' table.</p>
+    <p>Attributes: complaintVersion: Decimal, date:datatime, title: string, createdby: string, body:string, reviewer: string, 
+      category: string,evidence: string,createdAt: datetime, updatedAt: datetime,  against: string, status:boolean,
+      complaintComplaintid: integer</p>
+    <p>Comments table: The 'commentid' is the primary key of the comments table and each comment is associated with a specific 
+      complaint referred by the 'complaintComplaintId' field which is a forgein key referencing the 'complaintid' field of 
+      'complaint' table.</p>
+    <p>Attributes:commentid: integer,comment:string,user:string,createdAt:datetime,updatedAt:datetime,complaintComplaintid:
+      integer.</p>
+
+    <h3 id="7">7. Implementation Plan</h3>
+    <p>Initially, a requirement analysis was done to understand the features and requirements of the project. Some background 
+      research on the basics of different technology stacks was utilized to ensure the correct choice of tech stack was made. 
+      Consequently, a Software requirement specification and a software design specification will be made. </br>The project was 
+      divided into 3 core parts. The project will first undergo stages of planning to ensure the key milestones that need to 
+      be completed in 3 cycles. Following the planning, each feature implementation will be handed over to each team member 
+      for completion. The work progress will be monitored via weekly meetings to ensure optimum communication. All changes 
+      to the code base must be pushed into the git repository to ensure version control and proper backup. All project updates 
+      and the timeline for completion will be communicated via the Trello board. </br>The features of the web app will be prioritized 
+      for the first two cycles of development. Initially, the focus will be on front-end development for both the web app and 
+      the mobile app. Next api endpoints for the backend will be created. This will be followed by connecting the backend and 
+      the front together. Following this phase unit testing will start for the api, simultaneously sanitation will be done in 
+      the front end. Lastly, the api will be connected to the mobile app and it will be debugged and tested for any errors.</p>
+
+  
+  </div>
+</body>
+
+</html>
