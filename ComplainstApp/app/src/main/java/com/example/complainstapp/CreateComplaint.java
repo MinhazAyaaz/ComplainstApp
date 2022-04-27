@@ -56,9 +56,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class CreateComplaint extends AppCompatActivity {
-
-
-
+    
     private ImageButton backButton;
     private Button submitButton;
 
