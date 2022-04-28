@@ -9,6 +9,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -22,8 +23,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
@@ -51,7 +54,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -62,16 +68,19 @@ public class CreateComplaint extends AppCompatActivity {
 
     private String accessToken;
     private ArrayList<String> userArray;
-    public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
-    private ActivityResultLauncher<Intent> launcher;
+    private static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
+    private static final int CAMERA_REQUEST_CODE = 2;
+    private ActivityResultLauncher<Intent> TTSlauncher;
+    private ActivityResultLauncher<Intent> cameralauncher;
     private String checkButton;
     private Context context;
     private MediaRecorder mediaRecorder;
-    private MediaPlayer mediaPlayer;
     private String audioSavePath = null;
+    private String imageSavePath = null;
     private boolean isRecording = false;
     private StorageReference mStorage;
     private ProgressDialog mProgress;
+    private OutputStream outputStream;
 
     private AutoCompleteTextView category;
     private TextView title;
@@ -223,6 +232,7 @@ public class CreateComplaint extends AppCompatActivity {
         });
 
         audioSavePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"recordingAudio.3gp";
+        imageSavePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"capturingImage.jpg";
 
         uploadAudio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,7 +240,7 @@ public class CreateComplaint extends AppCompatActivity {
 
                 if(isRecording==false){
 
-                    if(checkPermissions()==true){
+                    if(checkAudioPermissions()==true){
 
                         mediaRecorder = new MediaRecorder();
                         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -248,7 +258,7 @@ public class CreateComplaint extends AppCompatActivity {
                         }
 
                     }else{
-                        RequestPermissions();
+                        ActivityCompat.requestPermissions(CreateComplaint.this, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
                     }
 
                 }
@@ -264,9 +274,61 @@ public class CreateComplaint extends AppCompatActivity {
             }
         });
 
+        uploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                askCameraPermission();
+            }
+        });
+
+        cameralauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+
+                if(result.getResultCode() == RESULT_OK){
+
+                    mProgress.setMessage("Uploading Image....");
+                    mProgress.show();
+
+                    Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
+                    File file = new File(imageSavePath);
+                    try {
+                        outputStream = new FileOutputStream(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
+                    try {
+                        outputStream.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        outputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    StorageReference filepath = mStorage.child("Photos").child("new_image.jpg");
+                    Uri uri = Uri.fromFile(new File(imageSavePath));
+                    filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            mProgress.dismiss();
+                            Toast.makeText(CreateComplaint.this,"Image has been uploaded!",Toast.LENGTH_SHORT).show();
+                            Log.e("Firebase Url",taskSnapshot.toString());
+
+                        }
+                    });
+                }
+
+            }
+        });
 
 
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+
+        TTSlauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if(result.getResultCode() == RESULT_OK && result.getData()!=null && checkButton=="category"){
@@ -318,7 +380,7 @@ public class CreateComplaint extends AppCompatActivity {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Start Speaking");
-        launcher.launch(intent);
+        TTSlauncher.launch(intent);
     }
 
     @Override
@@ -336,10 +398,21 @@ public class CreateComplaint extends AppCompatActivity {
                     }
                 }
                 break;
+            case CAMERA_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera();
+                }
+                break;
         }
     }
 
-    private boolean checkPermissions(){
+
+    private void openCamera() {
+        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameralauncher.launch(camera);
+    }
+
+    private boolean checkAudioPermissions(){
 
         int first = ActivityCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
         int second = ActivityCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
@@ -348,7 +421,15 @@ public class CreateComplaint extends AppCompatActivity {
 
     }
 
-    private void RequestPermissions() {
-        ActivityCompat.requestPermissions(CreateComplaint.this, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
+    private void askCameraPermission() {
+
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},CAMERA_REQUEST_CODE);
+        }
+        else{
+            openCamera();
+        }
+
     }
+
 }
