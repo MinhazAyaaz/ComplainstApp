@@ -37,6 +37,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,6 +77,7 @@ public class CreateComplaint extends AppCompatActivity {
     private MediaRecorder mediaRecorder;
     private String audioSavePath = null;
     private String imageSavePath = null;
+    private String evidenceUrl = null;
     private boolean isRecording = false;
     private boolean fileExists;
     private StorageReference mStorage;
@@ -131,10 +133,10 @@ public class CreateComplaint extends AppCompatActivity {
         uploadAudio = findViewById(R.id.uploadAudioButton);
         uploadImage = findViewById(R.id.uploadImageButton);
 
-        AndroidNetworking.get("http://192.168.43.187:5000/users")
+        AndroidNetworking.get("http://192.168.0.109:5000/users")
                 .setTag("test1")
                 .addHeaders("x-access-token",accessToken)
-                .setPriority(Priority.LOW)
+                .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener(){
                     @Override
@@ -163,29 +165,37 @@ public class CreateComplaint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                AndroidNetworking.post("http://192.168.0.109:5000/createcomplaint")
-                        .addBodyParameter("category", category.getText().toString())
-                        .addBodyParameter("title", title.getText().toString())
-                        .addBodyParameter("against", against.getText().toString())
-                        .addBodyParameter("body", details.getText().toString())
-                        .addBodyParameter("reviewer", reviewer.getText().toString())
-                        .setTag("test")
-                        .addHeaders("x-access-token",accessToken)
-                        .setPriority(Priority.HIGH)
-                        .build()
-                        .getAsJSONObject(new JSONObjectRequestListener() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Toast.makeText(context,"Complaint has been created!",Toast.LENGTH_LONG).show();
-                                Log.e("Response",response.toString());
-                                finish();
-                            }
-                            @Override
-                            public void onError(ANError error) {
-                                Log.e("Error",error.toString());
-                            }
-                        });
+                if(category.getText().toString().isEmpty() || title.getText().toString().isEmpty() ||
+                        against.getText().toString().isEmpty() || details.getText().toString().isEmpty()
+                        || reviewer.getText().toString().isEmpty() || evidenceUrl == null){
+                    Toast.makeText(context, "Please complete all fields and upload evidence!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    AndroidNetworking.post("http://192.168.0.109:5000/createcomplaint")
+                            .addBodyParameter("category", category.getText().toString())
+                            .addBodyParameter("title", title.getText().toString())
+                            .addBodyParameter("against", against.getText().toString())
+                            .addBodyParameter("body", details.getText().toString())
+                            .addBodyParameter("evidence", evidenceUrl)
+                            .addBodyParameter("reviewer", reviewer.getText().toString())
+                            .setTag("test")
+                            .addHeaders("x-access-token", accessToken)
+                            .setPriority(Priority.HIGH)
+                            .build()
+                            .getAsJSONObject(new JSONObjectRequestListener() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(context, "Complaint has been created!", Toast.LENGTH_LONG).show();
+                                    Log.e("Response", response.toString());
+                                    finish();
+                                }
 
+                                @Override
+                                public void onError(ANError error) {
+                                    Log.e("Error", error.toString());
+                                }
+                            });
+                }
             }
         });
 
@@ -199,40 +209,40 @@ public class CreateComplaint extends AppCompatActivity {
         CategorySTT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                speechToText();
                 checkButton = "category";
+                speechToText();
             }
         });
 
         TitleSTT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                speechToText();
                 checkButton = "title";
+                speechToText();
             }
         });
 
         DetailsSTT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                speechToText();
                 checkButton = "details";
+                speechToText();
             }
         });
 
         AgainstSTT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                speechToText();
                 checkButton = "against";
+                speechToText();
             }
         });
 
         ReviewerSTT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                speechToText();
                 checkButton = "reviewer";
+                speechToText();
             }
         });
 
@@ -255,7 +265,7 @@ public class CreateComplaint extends AppCompatActivity {
                         mediaRecorder = new MediaRecorder();
                         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
                         mediaRecorder.setOutputFile(audioSavePath);
 
                         try {
@@ -349,7 +359,12 @@ public class CreateComplaint extends AppCompatActivity {
                             mProgress.dismiss();
                             Toast.makeText(CreateComplaint.this,"Image has been uploaded!",Toast.LENGTH_SHORT).show();
                             Log.e("Firebase Url",taskSnapshot.toString());
-
+                            filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    evidenceUrl = uri.toString();
+                                }
+                            });
                         }
                     });
                 }
@@ -374,6 +389,12 @@ public class CreateComplaint extends AppCompatActivity {
                             mProgress.dismiss();
                             Toast.makeText(CreateComplaint.this,"File has been uploaded!",Toast.LENGTH_SHORT).show();
                             Log.e("Firebase Url",taskSnapshot.toString());
+                            filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    evidenceUrl = uri.toString();
+                                }
+                            });
                         }
                     });
                 }
@@ -436,17 +457,73 @@ public class CreateComplaint extends AppCompatActivity {
                 mProgress.dismiss();
                 Toast.makeText(CreateComplaint.this,"Audio has been uploaded!",Toast.LENGTH_SHORT).show();
                 Log.e("Firebase Url",taskSnapshot.toString());
-
+                filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        evidenceUrl = uri.toString();
+                    }
+                });
             }
         });
-
     }
 
     private void speechToText() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Start Speaking");
-        TTSlauncher.launch(intent);
+
+        if(checkButton.equals("against")){
+
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Start Speaking");
+            TTSlauncher.launch(intent);
+
+        }
+        else if(checkButton.equals("reviewer")){
+
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Start Speaking");
+            TTSlauncher.launch(intent);
+
+        }
+        else {
+
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("Choose language");
+            builder.setMessage("Select your preferred language for text to speech");
+
+            builder.setPositiveButton("ENGLISH", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                    intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Start Speaking");
+                    TTSlauncher.launch(intent);
+                    dialog.dismiss();
+
+                }
+            });
+
+            builder.setNegativeButton("BENGALI", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "bn-BD");
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "bn-BD");
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "bn-BD");
+                    intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Start Speaking");
+                    TTSlauncher.launch(intent);
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+
+        }
+
     }
 
     @Override
