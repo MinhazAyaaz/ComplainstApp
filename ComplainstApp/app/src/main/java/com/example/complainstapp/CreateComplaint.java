@@ -7,6 +7,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -62,32 +64,33 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class CreateComplaint extends AppCompatActivity {
-    
-    private ImageButton backButton;
-    private Button submitButton;
+
+    private static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
+    private static final int CAMERA_REQUEST_CODE = 2;
+    private static final int FILE_REQUEST_CODE = 3;
 
     private String accessToken;
     private ArrayList<String> userArray;
-    private static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
-    private static final int CAMERA_REQUEST_CODE = 2;
-    private ActivityResultLauncher<Intent> TTSlauncher;
-    private ActivityResultLauncher<Intent> cameralauncher;
     private String checkButton;
     private Context context;
     private MediaRecorder mediaRecorder;
     private String audioSavePath = null;
     private String imageSavePath = null;
     private boolean isRecording = false;
+    private boolean fileExists;
     private StorageReference mStorage;
     private ProgressDialog mProgress;
     private OutputStream outputStream;
+
+    private ActivityResultLauncher<Intent> TTSlauncher;
+    private ActivityResultLauncher<Intent> cameralauncher;
+    private ActivityResultLauncher<Intent> filelauncher;
 
     private AutoCompleteTextView category;
     private TextView title;
     private TextView details;
     private AutoCompleteTextView against;
     private AutoCompleteTextView reviewer;
-
     private ImageButton CategorySTT;
     private ImageButton AgainstSTT;
     private ImageButton TitleSTT;
@@ -96,6 +99,8 @@ public class CreateComplaint extends AppCompatActivity {
     private ImageButton uploadDocument;
     private ImageButton uploadAudio;
     private ImageButton uploadImage;
+    private ImageButton backButton;
+    private Button submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +109,7 @@ public class CreateComplaint extends AppCompatActivity {
         context = this;
 
         userArray = new ArrayList<String>();
-
+        fileExists = false;
         accessToken = getIntent().getExtras().getString("token");
         mStorage = FirebaseStorage.getInstance().getReference();
         mProgress = new ProgressDialog(this);
@@ -238,6 +243,11 @@ public class CreateComplaint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if(fileExists){
+                    overwriteConfirm();
+                    Toast.makeText(CreateComplaint.this,"Overwrite confirmed! Please click upload button again!",Toast.LENGTH_SHORT).show();
+                }
+
                 if(isRecording==false){
 
                     if(checkAudioPermissions()==true){
@@ -277,18 +287,36 @@ public class CreateComplaint extends AppCompatActivity {
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(fileExists){
+                    overwriteConfirm();
+                    Toast.makeText(CreateComplaint.this,"Overwrite confirmed! Please click upload button again!",Toast.LENGTH_SHORT).show();
+                }
+
                 askCameraPermission();
             }
         });
+
+        uploadDocument.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(fileExists){
+                    overwriteConfirm();
+                    Toast.makeText(CreateComplaint.this,"Overwrite confirmed! Please click upload button again!",Toast.LENGTH_SHORT).show();
+                }
+
+                askFilePermission();
+            }
+        });
+
+
 
         cameralauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
 
                 if(result.getResultCode() == RESULT_OK){
-
-                    mProgress.setMessage("Uploading Image....");
-                    mProgress.show();
 
                     Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
                     File file = new File(imageSavePath);
@@ -309,12 +337,15 @@ public class CreateComplaint extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    StorageReference filepath = mStorage.child("Photos").child("new_image.jpg");
+                    mProgress.setMessage("Uploading Image....");
+                    mProgress.show();
+
+                    StorageReference filepath = mStorage.child("Photos").child("image"+System.currentTimeMillis()+".jpg");
                     Uri uri = Uri.fromFile(new File(imageSavePath));
                     filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                            fileExists = true;
                             mProgress.dismiss();
                             Toast.makeText(CreateComplaint.this,"Image has been uploaded!",Toast.LENGTH_SHORT).show();
                             Log.e("Firebase Url",taskSnapshot.toString());
@@ -323,6 +354,29 @@ public class CreateComplaint extends AppCompatActivity {
                     });
                 }
 
+            }
+        });
+
+        filelauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == RESULT_OK && result.getData()!=null){
+
+                    mProgress.setMessage("Uploading File....");
+                    mProgress.show();
+
+                    Uri data = result.getData().getData();
+                    StorageReference filepath = mStorage.child("Files").child("file-"+System.currentTimeMillis()+".pdf");
+                    filepath.putFile(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            fileExists = true;
+                            mProgress.dismiss();
+                            Toast.makeText(CreateComplaint.this,"File has been uploaded!",Toast.LENGTH_SHORT).show();
+                            Log.e("Firebase Url",taskSnapshot.toString());
+                        }
+                    });
+                }
             }
         });
 
@@ -356,17 +410,29 @@ public class CreateComplaint extends AppCompatActivity {
 
     }
 
+    private void openCamera() {
+        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameralauncher.launch(camera);
+    }
+
+    private void uploadFile() {
+        Intent intent = new Intent();
+        intent.setType("application/pdf");
+        intent.setAction(intent.ACTION_GET_CONTENT);
+        filelauncher.launch(intent);
+    }
+
     private void uploadAudio() {
 
         mProgress.setMessage("Uploading Audio....");
         mProgress.show();
 
-        StorageReference filepath = mStorage.child("Audio").child("new_audio.mp3");
+        StorageReference filepath = mStorage.child("Audio").child("recording"+System.currentTimeMillis()+".mp3");
         Uri uri = Uri.fromFile(new File(audioSavePath));
         filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                fileExists = true;
                 mProgress.dismiss();
                 Toast.makeText(CreateComplaint.this,"Audio has been uploaded!",Toast.LENGTH_SHORT).show();
                 Log.e("Firebase Url",taskSnapshot.toString());
@@ -403,13 +469,11 @@ public class CreateComplaint extends AppCompatActivity {
                     openCamera();
                 }
                 break;
+            case FILE_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    uploadFile();
+                }
         }
-    }
-
-
-    private void openCamera() {
-        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameralauncher.launch(camera);
     }
 
     private boolean checkAudioPermissions(){
@@ -418,6 +482,19 @@ public class CreateComplaint extends AppCompatActivity {
         int second = ActivityCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
 
         return first == PackageManager.PERMISSION_GRANTED && second == PackageManager.PERMISSION_GRANTED;
+
+    }
+
+    private void askFilePermission(){
+        boolean first = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
+        boolean second = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
+
+        if(!(first && second)){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE},FILE_REQUEST_CODE);
+        }
+        else{
+            uploadFile();
+        }
 
     }
 
@@ -430,6 +507,37 @@ public class CreateComplaint extends AppCompatActivity {
             openCamera();
         }
 
+    }
+
+    private void overwriteConfirm(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Confirm");
+        builder.setMessage("Do you want to overwrite previous file?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+
+                fileExists = false;
+                dialog.dismiss();
+
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                fileExists = true;
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }
