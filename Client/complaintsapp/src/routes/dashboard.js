@@ -63,8 +63,12 @@ export default function Dashboard() {
   const [progress, setProgress] = useState(0);
   const [urldata, seturldata] = React.useState('');
   const [file2, setfile] = React.useState();
-  
+  const [buttonName, setButtonName] = React.useState("Play");
+
+  const [audio, setAudio] = React.useState();
+var a;
   useEffect(()=>{
+   
       checkIdStatus();
       checkRoleStatus();
       fetchComplaint();
@@ -73,7 +77,10 @@ export default function Dashboard() {
       if( sessionStorage.getItem("role") == "2" || sessionStorage.getItem("role") == "3"){
         setReviewer(true)
       }
+      
   }, [])
+ 
+
 
   async function fetchComplaint (){
     await axios.get('/getcomplaint/filed', {
@@ -284,9 +291,49 @@ export default function Dashboard() {
     //e.preventDefault();
     const file = e.target.files[0];
     setfile(file);
-    console.log(file2);
+    setAudio(URL.createObjectURL(file));
+    
+    console.log(file);
+   
+    console.log(audio);
+  
+ 
 };
 
+console.log(file2);
+console.log(audio);
+console.log(a);
+
+const handleClick = () => {
+ 
+
+  if(buttonName=="Play"){
+    a = new Audio(audio);
+ 
+    a.play();
+    setButtonName("Pause")
+ 
+  
+    console.log("In");
+    console.log(buttonName);
+
+  }
+ else{
+  
+
+  a.pause();
+   
+    console.log("Out");
+
+  }  
+ 
+  
+};
+/* const handleClick2 = () => {
+  a = new Audio(audio);
+  a.pause();
+  console.log("hello2");
+}; */
   //toogles which complaints to show
   const toggleFiledComplaint = () =>{
     if(showFiledComaplint == false){
@@ -590,12 +637,22 @@ export default function Dashboard() {
         :null}
 
         {expanded ?
+      
+        <>
+         <Button  variant="outlined" onClick={handleClick} >
+        Play
+      </Button>
         <div>
+       
         <input onChange={formHandler} type="file" className="input" />
         <h2>Uploading done{progress}%</h2>
         </div>
-        :null}
         
+        </>
+        
+        :null}
+          
+     
         {expanded ?
       <Box sx={{display: "flex",
       justifyContent: "flex-end",
