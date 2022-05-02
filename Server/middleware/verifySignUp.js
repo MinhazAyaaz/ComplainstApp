@@ -100,10 +100,6 @@ checkemail = (req, res, next) => {
   next();
 };
 
-
-
-
-
 checkpassword = (req, res, next) => {
   
   var schema = new passwordValidator();

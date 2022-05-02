@@ -37,23 +37,19 @@ public final class CardLayoutBinding implements ViewBinding {
   public final TextView cardTitle;
 
   @NonNull
-  public final MaterialButton deleteButton;
-
-  @NonNull
-  public final MaterialButton editButton;
+  public final MaterialButton moreButton;
 
   private CardLayoutBinding(@NonNull CardView rootView, @NonNull MaterialCardView card,
       @NonNull TextView cardAgainst, @NonNull TextView cardDescription,
       @NonNull TextView cardSubTitleHeading, @NonNull TextView cardTitle,
-      @NonNull MaterialButton deleteButton, @NonNull MaterialButton editButton) {
+      @NonNull MaterialButton moreButton) {
     this.rootView = rootView;
     this.card = card;
     this.cardAgainst = cardAgainst;
     this.cardDescription = cardDescription;
     this.cardSubTitleHeading = cardSubTitleHeading;
     this.cardTitle = cardTitle;
-    this.deleteButton = deleteButton;
-    this.editButton = editButton;
+    this.moreButton = moreButton;
   }
 
   @Override
@@ -113,20 +109,14 @@ public final class CardLayoutBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.deleteButton;
-      MaterialButton deleteButton = ViewBindings.findChildViewById(rootView, id);
-      if (deleteButton == null) {
-        break missingId;
-      }
-
-      id = R.id.editButton;
-      MaterialButton editButton = ViewBindings.findChildViewById(rootView, id);
-      if (editButton == null) {
+      id = R.id.moreButton;
+      MaterialButton moreButton = ViewBindings.findChildViewById(rootView, id);
+      if (moreButton == null) {
         break missingId;
       }
 
       return new CardLayoutBinding((CardView) rootView, card, cardAgainst, cardDescription,
-          cardSubTitleHeading, cardTitle, deleteButton, editButton);
+          cardSubTitleHeading, cardTitle, moreButton);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

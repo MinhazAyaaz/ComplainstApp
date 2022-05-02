@@ -21,6 +21,7 @@ import Dashboard from './routes/dashboard';
 import CreateComplaint from './routes/CreateComplaint';
 import PrivateRoute from './routes/PrivateRoute';
 import Admin from './routes/Admin';
+import OCR from './routes/OCR';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -36,6 +37,7 @@ ReactDOM.render(
       }/>
       <Route path="profile" element={<Profile />}/>
       <Route path="admin" element={<Admin />}/>
+      <Route path="ocr" element={<OCR />}/>
       <Route path="createcomplaint" element={<CreateComplaint />}/>
     </Routes>
   </BrowserRouter>,

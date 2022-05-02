@@ -31,13 +31,13 @@ public final class ActivityLoginBinding implements ViewBinding {
   public final ConstraintLayout constraintLayout;
 
   @NonNull
-  public final TextInputEditText emailField;
-
-  @NonNull
   public final TextView errorEmail;
 
   @NonNull
   public final TextView errorPass;
+
+  @NonNull
+  public final TextInputEditText idField;
 
   @NonNull
   public final ImageButton imageButton;
@@ -46,10 +46,10 @@ public final class ActivityLoginBinding implements ViewBinding {
   public final ImageView imageView3;
 
   @NonNull
-  public final TextInputLayout outlinedPassField;
+  public final TextInputLayout outlinedIdField;
 
   @NonNull
-  public final TextInputLayout outlinedTextField;
+  public final TextInputLayout outlinedPassField;
 
   @NonNull
   public final TextInputEditText passField;
@@ -70,22 +70,23 @@ public final class ActivityLoginBinding implements ViewBinding {
   public final TextView textView4;
 
   private ActivityLoginBinding(@NonNull ConstraintLayout rootView, @NonNull Button button,
-      @NonNull ConstraintLayout constraintLayout, @NonNull TextInputEditText emailField,
-      @NonNull TextView errorEmail, @NonNull TextView errorPass, @NonNull ImageButton imageButton,
-      @NonNull ImageView imageView3, @NonNull TextInputLayout outlinedPassField,
-      @NonNull TextInputLayout outlinedTextField, @NonNull TextInputEditText passField,
-      @NonNull ImageButton signInButton, @NonNull TextView textView, @NonNull TextView textView2,
-      @NonNull TextView textView3, @NonNull TextView textView4) {
+      @NonNull ConstraintLayout constraintLayout, @NonNull TextView errorEmail,
+      @NonNull TextView errorPass, @NonNull TextInputEditText idField,
+      @NonNull ImageButton imageButton, @NonNull ImageView imageView3,
+      @NonNull TextInputLayout outlinedIdField, @NonNull TextInputLayout outlinedPassField,
+      @NonNull TextInputEditText passField, @NonNull ImageButton signInButton,
+      @NonNull TextView textView, @NonNull TextView textView2, @NonNull TextView textView3,
+      @NonNull TextView textView4) {
     this.rootView = rootView;
     this.button = button;
     this.constraintLayout = constraintLayout;
-    this.emailField = emailField;
     this.errorEmail = errorEmail;
     this.errorPass = errorPass;
+    this.idField = idField;
     this.imageButton = imageButton;
     this.imageView3 = imageView3;
+    this.outlinedIdField = outlinedIdField;
     this.outlinedPassField = outlinedPassField;
-    this.outlinedTextField = outlinedTextField;
     this.passField = passField;
     this.signInButton = signInButton;
     this.textView = textView;
@@ -133,12 +134,6 @@ public final class ActivityLoginBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.emailField;
-      TextInputEditText emailField = ViewBindings.findChildViewById(rootView, id);
-      if (emailField == null) {
-        break missingId;
-      }
-
       id = R.id.errorEmail;
       TextView errorEmail = ViewBindings.findChildViewById(rootView, id);
       if (errorEmail == null) {
@@ -148,6 +143,12 @@ public final class ActivityLoginBinding implements ViewBinding {
       id = R.id.errorPass;
       TextView errorPass = ViewBindings.findChildViewById(rootView, id);
       if (errorPass == null) {
+        break missingId;
+      }
+
+      id = R.id.idField;
+      TextInputEditText idField = ViewBindings.findChildViewById(rootView, id);
+      if (idField == null) {
         break missingId;
       }
 
@@ -163,15 +164,15 @@ public final class ActivityLoginBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.outlinedPassField;
-      TextInputLayout outlinedPassField = ViewBindings.findChildViewById(rootView, id);
-      if (outlinedPassField == null) {
+      id = R.id.outlinedIdField;
+      TextInputLayout outlinedIdField = ViewBindings.findChildViewById(rootView, id);
+      if (outlinedIdField == null) {
         break missingId;
       }
 
-      id = R.id.outlinedTextField;
-      TextInputLayout outlinedTextField = ViewBindings.findChildViewById(rootView, id);
-      if (outlinedTextField == null) {
+      id = R.id.outlinedPassField;
+      TextInputLayout outlinedPassField = ViewBindings.findChildViewById(rootView, id);
+      if (outlinedPassField == null) {
         break missingId;
       }
 
@@ -212,8 +213,8 @@ public final class ActivityLoginBinding implements ViewBinding {
       }
 
       return new ActivityLoginBinding((ConstraintLayout) rootView, button, constraintLayout,
-          emailField, errorEmail, errorPass, imageButton, imageView3, outlinedPassField,
-          outlinedTextField, passField, signInButton, textView, textView2, textView3, textView4);
+          errorEmail, errorPass, idField, imageButton, imageView3, outlinedIdField,
+          outlinedPassField, passField, signInButton, textView, textView2, textView3, textView4);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -35,13 +34,7 @@ public final class ActivityHomepageBinding implements ViewBinding {
   public final RadioGroup filterGrouping;
 
   @NonNull
-  public final ImageButton imageButton3;
-
-  @NonNull
   public final ProgressBar progressBar;
-
-  @NonNull
-  public final RadioButton radioButton2;
 
   @NonNull
   public final RadioButton radioButton3;
@@ -50,22 +43,24 @@ public final class ActivityHomepageBinding implements ViewBinding {
   public final RadioButton radioButton4;
 
   @NonNull
+  public final Button signOutButton;
+
+  @NonNull
   public final TextView textView11;
 
   private ActivityHomepageBinding(@NonNull ConstraintLayout rootView, @NonNull Button createButton5,
       @NonNull RecyclerView dataView, @NonNull RadioGroup filterGrouping,
-      @NonNull ImageButton imageButton3, @NonNull ProgressBar progressBar,
-      @NonNull RadioButton radioButton2, @NonNull RadioButton radioButton3,
-      @NonNull RadioButton radioButton4, @NonNull TextView textView11) {
+      @NonNull ProgressBar progressBar, @NonNull RadioButton radioButton3,
+      @NonNull RadioButton radioButton4, @NonNull Button signOutButton,
+      @NonNull TextView textView11) {
     this.rootView = rootView;
     this.createButton5 = createButton5;
     this.dataView = dataView;
     this.filterGrouping = filterGrouping;
-    this.imageButton3 = imageButton3;
     this.progressBar = progressBar;
-    this.radioButton2 = radioButton2;
     this.radioButton3 = radioButton3;
     this.radioButton4 = radioButton4;
+    this.signOutButton = signOutButton;
     this.textView11 = textView11;
   }
 
@@ -114,21 +109,9 @@ public final class ActivityHomepageBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.imageButton3;
-      ImageButton imageButton3 = ViewBindings.findChildViewById(rootView, id);
-      if (imageButton3 == null) {
-        break missingId;
-      }
-
       id = R.id.progressBar;
       ProgressBar progressBar = ViewBindings.findChildViewById(rootView, id);
       if (progressBar == null) {
-        break missingId;
-      }
-
-      id = R.id.radioButton2;
-      RadioButton radioButton2 = ViewBindings.findChildViewById(rootView, id);
-      if (radioButton2 == null) {
         break missingId;
       }
 
@@ -144,6 +127,12 @@ public final class ActivityHomepageBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.signOutButton;
+      Button signOutButton = ViewBindings.findChildViewById(rootView, id);
+      if (signOutButton == null) {
+        break missingId;
+      }
+
       id = R.id.textView11;
       TextView textView11 = ViewBindings.findChildViewById(rootView, id);
       if (textView11 == null) {
@@ -151,8 +140,7 @@ public final class ActivityHomepageBinding implements ViewBinding {
       }
 
       return new ActivityHomepageBinding((ConstraintLayout) rootView, createButton5, dataView,
-          filterGrouping, imageButton3, progressBar, radioButton2, radioButton3, radioButton4,
-          textView11);
+          filterGrouping, progressBar, radioButton3, radioButton4, signOutButton, textView11);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
