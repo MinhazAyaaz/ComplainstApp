@@ -5,9 +5,11 @@ function App() {
   const [ocr, setOcr] = useState("");
   const [ocr2, setOcr2] = useState("");
   const [imageData, setImageData] = useState(null);
+  const [progress, setProgress] = useState(0);
   const worker = createWorker({
     logger: (m) => {
       console.log(m);
+      setProgress(parseInt(m.progress*100))
     },
   });
   const convertImageToText = async () => {
@@ -18,34 +20,31 @@ function App() {
     const {
       data: { text },
     } = await worker.recognize(imageData);
+
     var text2 = text
-    // text2 = text.replace(/\\n/g, " ");
     text2 = text2.split('\n')
-    // text2 = text2.toString()
-    
+
     console.log(text2)
+
     var finalString = ""
     var tempString
-    // text2.forEach((word)=>{
-    //     if(word.length == 10){
-    //         finalString = word
-    //     }
-    // })
+  
     for(var i=0; i<text2.length;i++){
         if(text2[i].length >= 10){
             tempString = text2[i]
             tempString = Array.from(tempString)
+            console.log(tempString)
             for(var j=0; j<tempString.length; j++){
-                if(!isNaN(tempString[j])){
+                if(tempString[j]>='0' && tempString[j]<='9'){
                     finalString = finalString + tempString[j]
+                    console.log(tempString[j])
                 }
             }
-            
-            console.log(finalString)
-        
         }
         if(finalString.length == 10){
             break
+        }else{
+            finalString=""
         }
     }
     setOcr(finalString);
@@ -79,6 +78,12 @@ function App() {
           accept="image/*"
         />
       </div>
+      {progress < 100 && progress > 0 && <div>
+        <div className="progress-label">Progress ({progress}%)</div>
+        <div className="progress-bar">
+          <div className="progress" style={{width: `${progress}%`}} ></div>
+        </div>
+      </div>}
       <div className="display-flex">
         <img src={imageData} alt="" srcset="" className="ocrimg" />
         <p>{ocr}</p>
