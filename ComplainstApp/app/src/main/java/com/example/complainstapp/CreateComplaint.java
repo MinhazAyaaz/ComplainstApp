@@ -4,6 +4,7 @@ import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -30,7 +31,10 @@ import androidx.core.content.ContextCompat;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import android.widget.ArrayAdapter;
@@ -71,7 +75,9 @@ public class CreateComplaint extends AppCompatActivity {
     private static final int FILE_REQUEST_CODE = 3;
 
     private String accessToken;
-    private ArrayList<String> userArray;
+    private ArrayList<String> againstArrayNames;
+    private ArrayList<String> againstArrayId;
+    private ArrayList<String> reviewerArrayNames;
     private String checkButton;
     private Context context;
     private MediaRecorder mediaRecorder;
@@ -104,13 +110,15 @@ public class CreateComplaint extends AppCompatActivity {
     private ImageButton backButton;
     private Button submitButton;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint);
         context = this;
 
-        userArray = new ArrayList<String>();
+        againstArrayNames = new ArrayList<String>();
+        reviewerArrayNames = new ArrayList<String>();
         fileExists = false;
         accessToken = getIntent().getExtras().getString("token");
         mStorage = FirebaseStorage.getInstance().getReference();
@@ -133,7 +141,7 @@ public class CreateComplaint extends AppCompatActivity {
         uploadAudio = findViewById(R.id.uploadAudioButton);
         uploadImage = findViewById(R.id.uploadImageButton);
 
-        AndroidNetworking.get("http://192.168.0.109:5000/users")
+        AndroidNetworking.get("http://192.168.0.109:5000/againstusers")
                 .setTag("test1")
                 .addHeaders("x-access-token",accessToken)
                 .setPriority(Priority.HIGH)
@@ -144,7 +152,8 @@ public class CreateComplaint extends AppCompatActivity {
                         Log.e("users",response.toString());
                         for(int i=0;i<response.length();i++) {
                             try {
-                                userArray.add(response.getJSONObject(i).getString("name"));
+                                againstArrayNames.add(response.getJSONObject(i).getString("name"));
+                                againstArrayId.add(response.getJSONObject(i).getString("nsuid"));
                                 Log.e("yes",response.getJSONObject(i).getString("name"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -157,9 +166,67 @@ public class CreateComplaint extends AppCompatActivity {
                     }
                 });
 
-        ArrayAdapter<String> userAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,userArray);
+        ArrayAdapter<String> userAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,againstArrayNames);
         against.setAdapter(userAdapter);
         reviewer.setAdapter(userAdapter);
+
+        reviewer.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event){
+                reviewer.showDropDown();
+                return false;
+            }
+        });
+
+        against.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                against.showDropDown();
+                return false;
+            }
+        });
+
+
+
+        against.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                AndroidNetworking.get("http://192.168.0.109:5000/reviewertoreview")
+                        .setTag("test1")
+                        .addHeaders("x-access-token",accessToken)
+                        .addQueryParameter("nsuid", againstArrayId.get(againstArrayNames.indexOf(editable.toString())))
+                        .setPriority(Priority.HIGH)
+                        .build()
+                        .getAsJSONArray(new JSONArrayRequestListener(){
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                Log.e("users",response.toString());
+                                for(int i=0;i<response.length();i++) {
+                                    try {
+                                        againstArrayNames.add(response.getJSONObject(i).getString("name"));
+                                        againstArrayId.add(response.getJSONObject(i).getString("nsuid"));
+                                        Log.e("yes",response.getJSONObject(i).getString("name"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onError(ANError error) {
+                                Log.e("error",error.toString());
+                            }
+                        });
+            }
+        });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,5 +1,3 @@
-
-
 const bcrypt = require('bcryptjs')
 const mysql = require('mysql')
 const fileUpload = require('express-fileupload');
