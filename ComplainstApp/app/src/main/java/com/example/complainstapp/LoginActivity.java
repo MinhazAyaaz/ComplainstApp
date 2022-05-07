@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     //Declaring variables for the text fields,buttons and google sign up
     //We make the variables private so they cannot be accessed.
     private String accessToken;
+    private String profilePicture;
     private TextInputLayout idLayout;
     private TextInputLayout passwordLayout;
     private Button loginButton;
@@ -205,6 +206,7 @@ public class LoginActivity extends AppCompatActivity {
                                 //We retrieve the access token in a try-catch block in case we don't get a response
                                 try {
                                     accessToken = response.getString("accessToken");
+                                    Log.e("pp",response.toString());
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

@@ -8,10 +8,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.complainstapp.R;
@@ -21,7 +21,7 @@ import java.lang.String;
 
 public final class ActivityComplaintBinding implements ViewBinding {
   @NonNull
-  private final ConstraintLayout rootView;
+  private final ScrollView rootView;
 
   @NonNull
   public final AutoCompleteTextView againstField;
@@ -89,7 +89,7 @@ public final class ActivityComplaintBinding implements ViewBinding {
   @NonNull
   public final ImageButton uploadImageButton;
 
-  private ActivityComplaintBinding(@NonNull ConstraintLayout rootView,
+  private ActivityComplaintBinding(@NonNull ScrollView rootView,
       @NonNull AutoCompleteTextView againstField, @NonNull ImageButton againstSpeech,
       @NonNull ImageButton backButton, @NonNull AutoCompleteTextView categoryField,
       @NonNull ImageButton categorySpeech, @NonNull TextView complaintAgainst,
@@ -128,7 +128,7 @@ public final class ActivityComplaintBinding implements ViewBinding {
 
   @Override
   @NonNull
-  public ConstraintLayout getRoot() {
+  public ScrollView getRoot() {
     return rootView;
   }
 
@@ -285,7 +285,7 @@ public final class ActivityComplaintBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityComplaintBinding((ConstraintLayout) rootView, againstField, againstSpeech,
+      return new ActivityComplaintBinding((ScrollView) rootView, againstField, againstSpeech,
           backButton, categoryField, categorySpeech, complaintAgainst, complaintCategory,
           complaintDetail, complaintEvidence, complaintReviewer, complaintTitle, detailsField,
           detailsSpeech, pageTitle, reviewSpeech, reviewerField, saveButton, titleField,

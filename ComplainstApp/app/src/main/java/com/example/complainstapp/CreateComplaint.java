@@ -118,6 +118,7 @@ public class CreateComplaint extends AppCompatActivity {
         context = this;
 
         againstArrayNames = new ArrayList<String>();
+        againstArrayId = new ArrayList<String>();
         reviewerArrayNames = new ArrayList<String>();
         fileExists = false;
         accessToken = getIntent().getExtras().getString("token");
@@ -149,12 +150,10 @@ public class CreateComplaint extends AppCompatActivity {
                 .getAsJSONArray(new JSONArrayRequestListener(){
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.e("users",response.toString());
                         for(int i=0;i<response.length();i++) {
                             try {
                                 againstArrayNames.add(response.getJSONObject(i).getString("name"));
                                 againstArrayId.add(response.getJSONObject(i).getString("nsuid"));
-                                Log.e("yes",response.getJSONObject(i).getString("name"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -166,9 +165,8 @@ public class CreateComplaint extends AppCompatActivity {
                     }
                 });
 
-        ArrayAdapter<String> userAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,againstArrayNames);
-        against.setAdapter(userAdapter);
-        reviewer.setAdapter(userAdapter);
+        ArrayAdapter<String> againstAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,againstArrayNames);
+        against.setAdapter(againstAdapter);
 
         reviewer.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -186,35 +184,29 @@ public class CreateComplaint extends AppCompatActivity {
             }
         });
 
-
-
         against.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.e("beforeTextChanged",charSequence.toString());
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.e("OnTextChanged",charSequence.toString());
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
-
                 AndroidNetworking.get("http://192.168.0.109:5000/reviewertoreview")
                         .setTag("test1")
                         .addHeaders("x-access-token",accessToken)
-                        .addQueryParameter("nsuid", againstArrayId.get(againstArrayNames.indexOf(editable.toString())))
+                        .addQueryParameter("id", againstArrayId.get(againstArrayNames.indexOf(editable.toString())))
                         .setPriority(Priority.HIGH)
                         .build()
                         .getAsJSONArray(new JSONArrayRequestListener(){
                             @Override
                             public void onResponse(JSONArray response) {
-                                Log.e("users",response.toString());
                                 for(int i=0;i<response.length();i++) {
                                     try {
-                                        againstArrayNames.add(response.getJSONObject(i).getString("name"));
-                                        againstArrayId.add(response.getJSONObject(i).getString("nsuid"));
-                                        Log.e("yes",response.getJSONObject(i).getString("name"));
+                                        reviewerArrayNames.add(response.getJSONObject(i).getString("name"));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -225,6 +217,9 @@ public class CreateComplaint extends AppCompatActivity {
                                 Log.e("error",error.toString());
                             }
                         });
+
+                ArrayAdapter<String> reviewerAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,reviewerArrayNames);
+                reviewer.setAdapter(reviewerAdapter);
             }
         });
 

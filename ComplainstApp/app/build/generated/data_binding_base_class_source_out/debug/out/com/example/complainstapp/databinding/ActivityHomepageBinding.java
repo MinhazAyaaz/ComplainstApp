@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
@@ -34,6 +36,12 @@ public final class ActivityHomepageBinding implements ViewBinding {
   public final RadioGroup filterGrouping;
 
   @NonNull
+  public final CardView ppView;
+
+  @NonNull
+  public final ImageView profilePicture;
+
+  @NonNull
   public final ProgressBar progressBar;
 
   @NonNull
@@ -49,14 +57,16 @@ public final class ActivityHomepageBinding implements ViewBinding {
   public final TextView textView11;
 
   private ActivityHomepageBinding(@NonNull ConstraintLayout rootView, @NonNull Button createButton5,
-      @NonNull RecyclerView dataView, @NonNull RadioGroup filterGrouping,
-      @NonNull ProgressBar progressBar, @NonNull RadioButton radioButton3,
-      @NonNull RadioButton radioButton4, @NonNull Button signOutButton,
-      @NonNull TextView textView11) {
+      @NonNull RecyclerView dataView, @NonNull RadioGroup filterGrouping, @NonNull CardView ppView,
+      @NonNull ImageView profilePicture, @NonNull ProgressBar progressBar,
+      @NonNull RadioButton radioButton3, @NonNull RadioButton radioButton4,
+      @NonNull Button signOutButton, @NonNull TextView textView11) {
     this.rootView = rootView;
     this.createButton5 = createButton5;
     this.dataView = dataView;
     this.filterGrouping = filterGrouping;
+    this.ppView = ppView;
+    this.profilePicture = profilePicture;
     this.progressBar = progressBar;
     this.radioButton3 = radioButton3;
     this.radioButton4 = radioButton4;
@@ -109,6 +119,18 @@ public final class ActivityHomepageBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.ppView;
+      CardView ppView = ViewBindings.findChildViewById(rootView, id);
+      if (ppView == null) {
+        break missingId;
+      }
+
+      id = R.id.profilePicture;
+      ImageView profilePicture = ViewBindings.findChildViewById(rootView, id);
+      if (profilePicture == null) {
+        break missingId;
+      }
+
       id = R.id.progressBar;
       ProgressBar progressBar = ViewBindings.findChildViewById(rootView, id);
       if (progressBar == null) {
@@ -140,7 +162,8 @@ public final class ActivityHomepageBinding implements ViewBinding {
       }
 
       return new ActivityHomepageBinding((ConstraintLayout) rootView, createButton5, dataView,
-          filterGrouping, progressBar, radioButton3, radioButton4, signOutButton, textView11);
+          filterGrouping, ppView, profilePicture, progressBar, radioButton3, radioButton4,
+          signOutButton, textView11);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
