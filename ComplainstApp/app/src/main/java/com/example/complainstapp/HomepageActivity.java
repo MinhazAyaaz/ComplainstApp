@@ -65,6 +65,7 @@ public class HomepageActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private String accessToken;
+    private String name;
     private ImageView profilePicture;
     private final ArrayList<Complaint> complaintArrayList = new ArrayList<>();
     GoogleSignInClient mGoogleSignInClient;
@@ -83,11 +84,10 @@ public class HomepageActivity extends AppCompatActivity{
         logoutButton = findViewById(R.id.signOutButton);
         profilePicture = findViewById(R.id.profilePicture);
 
-        Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/nsu-complaints-app.appspot.com/o/evidences%2F2.jpg?alt=media&token=83752035-4264-48be-902b-c912e6eb228d").into(profilePicture);
-
-
         //Retrieving the access token received from the post request in the previous activity
         accessToken = getIntent().getExtras().getString("token");
+
+        Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/nsu-complaints-app.appspot.com/o/evidences%2F2.jpg?alt=media&token=83752035-4264-48be-902b-c912e6eb228d").into(profilePicture);
 
         //progress bar used to show loading
         progressBar.setVisibility(View.VISIBLE);

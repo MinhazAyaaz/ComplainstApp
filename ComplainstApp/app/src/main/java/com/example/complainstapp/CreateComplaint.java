@@ -143,6 +143,8 @@ public class CreateComplaint extends AppCompatActivity {
         uploadAudio = findViewById(R.id.uploadAudioButton);
         uploadImage = findViewById(R.id.uploadImageButton);
 
+        AndroidNetworking.initialize(getApplicationContext());
+
         AndroidNetworking.get("http://192.168.0.109:5000/againstusers")
                 .setTag("test1")
                 .addHeaders("x-access-token",accessToken)
@@ -227,7 +229,6 @@ public class CreateComplaint extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if(category.getText().toString().isEmpty() || title.getText().toString().isEmpty() ||
                         against.getText().toString().isEmpty() || details.getText().toString().isEmpty()
                         || reviewer.getText().toString().isEmpty() || evidenceUrl == null){
@@ -250,11 +251,41 @@ public class CreateComplaint extends AppCompatActivity {
                                 public void onResponse(JSONObject response) {
                                     Toast.makeText(context, "Complaint has been created!", Toast.LENGTH_LONG).show();
                                     Log.e("Response", response.toString());
-                                }
 
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent myIntent = new Intent(CreateComplaint.this, HomepageActivity.class);
+                                            myIntent.putExtra("token",accessToken);
+                                            startActivity(myIntent);
+                                            finish();
+                                        }
+                                    }, 3000);
+                                }
                                 @Override
                                 public void onError(ANError error) {
-                                    Log.e("Error", error.toString());
+                                    if(error.getErrorCode()==400){
+                                        Toast.makeText(context, "Content can not be empty!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else if(error.getErrorCode()==456){
+                                        Toast.makeText(context, "Body can not be empty!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else if(error.getErrorCode()==405){
+                                        Toast.makeText(context, "Reviewer can not be empty!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else if(error.getErrorCode()==406){
+                                        Toast.makeText(context, "Against can not be empty!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else if(error.getErrorCode()==407){
+                                        Toast.makeText(context, "Category can not be empty!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else if(error.getErrorCode()==513){
+                                        Toast.makeText(context, "Some error occurred while creating a complaint!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        Toast.makeText(context, "Could not create complaint!", Toast.LENGTH_SHORT).show();
+                                        Log.e("CreateComplaintError", String.valueOf(error.getErrorCode()));
+                                    }
                                 }
                             });
                 }
@@ -420,7 +451,6 @@ public class CreateComplaint extends AppCompatActivity {
                             fileExists = true;
                             mProgress.dismiss();
                             Toast.makeText(CreateComplaint.this,"Image has been uploaded!",Toast.LENGTH_SHORT).show();
-                            Log.e("Firebase Url",taskSnapshot.toString());
                             filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
@@ -450,7 +480,6 @@ public class CreateComplaint extends AppCompatActivity {
                             fileExists = true;
                             mProgress.dismiss();
                             Toast.makeText(CreateComplaint.this,"File has been uploaded!",Toast.LENGTH_SHORT).show();
-                            Log.e("Firebase Url",taskSnapshot.toString());
                             filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
@@ -518,7 +547,6 @@ public class CreateComplaint extends AppCompatActivity {
                 fileExists = true;
                 mProgress.dismiss();
                 Toast.makeText(CreateComplaint.this,"Audio has been uploaded!",Toast.LENGTH_SHORT).show();
-                Log.e("Firebase Url",taskSnapshot.toString());
                 filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
