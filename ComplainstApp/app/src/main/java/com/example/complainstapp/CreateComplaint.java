@@ -29,6 +29,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
@@ -234,14 +235,14 @@ public class CreateComplaint extends AppCompatActivity {
                 }
                 else {
                     AndroidNetworking.post("http://192.168.0.109:5000/createcomplaint")
+                            .addHeaders("x-access-token", accessToken)
                             .addBodyParameter("category", category.getText().toString())
                             .addBodyParameter("title", title.getText().toString())
-                            .addBodyParameter("against", against.getText().toString())
+                            .addBodyParameter("against", againstArrayId.get(againstArrayNames.indexOf(against.getText().toString())))
                             .addBodyParameter("body", details.getText().toString())
                             .addBodyParameter("evidence", evidenceUrl)
-                            .addBodyParameter("reviewer", reviewer.getText().toString())
+                            .addBodyParameter("reviewer", againstArrayId.get(againstArrayNames.indexOf(reviewer.getText().toString())))
                             .setTag("test")
-                            .addHeaders("x-access-token", accessToken)
                             .setPriority(Priority.HIGH)
                             .build()
                             .getAsJSONObject(new JSONObjectRequestListener() {
@@ -249,7 +250,6 @@ public class CreateComplaint extends AppCompatActivity {
                                 public void onResponse(JSONObject response) {
                                     Toast.makeText(context, "Complaint has been created!", Toast.LENGTH_LONG).show();
                                     Log.e("Response", response.toString());
-                                    finish();
                                 }
 
                                 @Override

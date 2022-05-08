@@ -11,6 +11,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -34,6 +35,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -63,6 +65,7 @@ public class HomepageActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private String accessToken;
+    private ImageView profilePicture;
     private final ArrayList<Complaint> complaintArrayList = new ArrayList<>();
     GoogleSignInClient mGoogleSignInClient;
 
@@ -78,6 +81,10 @@ public class HomepageActivity extends AppCompatActivity{
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.dataView);
         logoutButton = findViewById(R.id.signOutButton);
+        profilePicture = findViewById(R.id.profilePicture);
+
+        Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/nsu-complaints-app.appspot.com/o/evidences%2F2.jpg?alt=media&token=83752035-4264-48be-902b-c912e6eb228d").into(profilePicture);
+
 
         //Retrieving the access token received from the post request in the previous activity
         accessToken = getIntent().getExtras().getString("token");

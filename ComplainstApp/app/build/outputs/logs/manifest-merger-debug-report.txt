@@ -13,6 +13,7 @@ MERGED from [androidx.constraintlayout:constraintlayout:2.1.3] C:\Users\lance\.g
 MERGED from [com.amitshekhar.android:android-networking:1.0.2] C:\Users\lance\.gradle\caches\transforms-3\eb76b3f35620f662cd2bbededd82ac0e\transformed\jetified-android-networking-1.0.2\AndroidManifest.xml:18:1-27:12
 MERGED from [androidx.appcompat:appcompat:1.4.1] C:\Users\lance\.gradle\caches\transforms-3\386f16b1a499ebfebf74ac6c8095fc13\transformed\appcompat-1.4.1\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\lance\.gradle\caches\transforms-3\ac121d49256460b13f6b7b17dbc312c8\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:17:1-44:12
+MERGED from [com.github.bumptech.glide:glide:4.13.0] C:\Users\lance\.gradle\caches\transforms-3\61b0f660482ea496490e4fd256f664aa\transformed\jetified-glide-4.13.0\AndroidManifest.xml:2:1-12:12
 MERGED from [com.google.android.gms:play-services-auth:20.1.0] C:\Users\lance\.gradle\caches\transforms-3\b5b447f91d7201c8354aaabf59acb66d\transformed\jetified-play-services-auth-20.1.0\AndroidManifest.xml:17:1-40:12
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\36d49e3309c2f5b0cec824f3da6bbac8\transformed\jetified-viewpager2-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.firebase:firebase-storage:20.0.0] C:\Users\lance\.gradle\caches\transforms-3\cfc7a1498da3169b94ea2ea1d676eb59\transformed\jetified-firebase-storage-20.0.0\AndroidManifest.xml:15:1-39:12
@@ -54,11 +55,13 @@ MERGED from [androidx.savedstate:savedstate-ktx:1.1.0] C:\Users\lance\.gradle\ca
 MERGED from [androidx.savedstate:savedstate:1.1.0] C:\Users\lance\.gradle\caches\transforms-3\3c639aac26670c15e1cc36bbed8e87c2\transformed\jetified-savedstate-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1] C:\Users\lance\.gradle\caches\transforms-3\e65450ef94ce030fcda9f676b35ecc91\transformed\jetified-lifecycle-viewmodel-ktx-2.3.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] C:\Users\lance\.gradle\caches\transforms-3\06025f95f5451d60b4d4b28cd09efb29\transformed\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:17:1-24:12
-MERGED from [com.google.firebase:firebase-components:17.0.0] C:\Users\lance\.gradle\caches\transforms-3\d48a846f7a7599a8d9b2b5e5ba29214a\transformed\jetified-firebase-components-17.0.0\AndroidManifest.xml:15:1-23:12
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lance\.gradle\caches\transforms-3\76daf5c3a3c5af6d06280bcc382b63ce\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [com.github.bumptech.glide:gifdecoder:4.13.0] C:\Users\lance\.gradle\caches\transforms-3\e828d2025dac1c54e16a763d56b46a02\transformed\jetified-gifdecoder-4.13.0\AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.exifinterface:exifinterface:1.2.0] C:\Users\lance\.gradle\caches\transforms-3\64edecd819308b1f76c256e9ef84e639\transformed\exifinterface-1.2.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\lance\.gradle\caches\transforms-3\bf38df334ae296691a4cf035bcd9b7b3\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:17:1-37:12
 MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\6d635997c55d4cec5c45688f1b7c1517\transformed\jetified-startup-runtime-1.0.0\AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\5187d4af7ac8d4935351d1e5df008a50\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.firebase:firebase-components:17.0.0] C:\Users\lance\.gradle\caches\transforms-3\d48a846f7a7599a8d9b2b5e5ba29214a\transformed\jetified-firebase-components-17.0.0\AndroidManifest.xml:15:1-23:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lance\.gradle\caches\transforms-3\76daf5c3a3c5af6d06280bcc382b63ce\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.3.1] C:\Users\lance\.gradle\caches\transforms-3\e614cacd5c4beb4bfd915bad988732c2\transformed\jetified-lifecycle-livedata-core-ktx-2.3.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\lance\.gradle\caches\transforms-3\984b49b0b90cd76a2688ce3876b1a89f\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] C:\Users\lance\.gradle\caches\transforms-3\821f087c5ae942539d2213bb51da72c3\transformed\lifecycle-livedata-core-2.3.1\AndroidManifest.xml:17:1-24:12
@@ -127,6 +130,8 @@ MERGED from [androidx.constraintlayout:constraintlayout:2.1.3] C:\Users\lance\.g
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.3] C:\Users\lance\.gradle\caches\transforms-3\f001adcd5c836097b5bee861e7bdbf7d\transformed\constraintlayout-2.1.3\AndroidManifest.xml:9:5-20
 MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\lance\.gradle\caches\transforms-3\ac121d49256460b13f6b7b17dbc312c8\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:36:5-42:19
 MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\lance\.gradle\caches\transforms-3\ac121d49256460b13f6b7b17dbc312c8\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:36:5-42:19
+MERGED from [com.github.bumptech.glide:glide:4.13.0] C:\Users\lance\.gradle\caches\transforms-3\61b0f660482ea496490e4fd256f664aa\transformed\jetified-glide-4.13.0\AndroidManifest.xml:10:5-20
+MERGED from [com.github.bumptech.glide:glide:4.13.0] C:\Users\lance\.gradle\caches\transforms-3\61b0f660482ea496490e4fd256f664aa\transformed\jetified-glide-4.13.0\AndroidManifest.xml:10:5-20
 MERGED from [com.google.android.gms:play-services-auth:20.1.0] C:\Users\lance\.gradle\caches\transforms-3\b5b447f91d7201c8354aaabf59acb66d\transformed\jetified-play-services-auth-20.1.0\AndroidManifest.xml:22:5-38:19
 MERGED from [com.google.android.gms:play-services-auth:20.1.0] C:\Users\lance\.gradle\caches\transforms-3\b5b447f91d7201c8354aaabf59acb66d\transformed\jetified-play-services-auth-20.1.0\AndroidManifest.xml:22:5-38:19
 MERGED from [com.google.firebase:firebase-storage:20.0.0] C:\Users\lance\.gradle\caches\transforms-3\cfc7a1498da3169b94ea2ea1d676eb59\transformed\jetified-firebase-storage-20.0.0\AndroidManifest.xml:29:5-37:19
@@ -149,12 +154,14 @@ MERGED from [androidx.window:window:1.0.0] C:\Users\lance\.gradle\caches\transfo
 MERGED from [androidx.window:window:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\abfd13d57b35910b5a330613540c5f18\transformed\jetified-window-1.0.0\AndroidManifest.xml:24:5-31:19
 MERGED from [androidx.core:core:1.7.0] C:\Users\lance\.gradle\caches\transforms-3\9fe83c2984579376a043b548f23d1603\transformed\core-1.7.0\AndroidManifest.xml:24:5-89
 MERGED from [androidx.core:core:1.7.0] C:\Users\lance\.gradle\caches\transforms-3\9fe83c2984579376a043b548f23d1603\transformed\core-1.7.0\AndroidManifest.xml:24:5-89
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lance\.gradle\caches\transforms-3\76daf5c3a3c5af6d06280bcc382b63ce\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lance\.gradle\caches\transforms-3\76daf5c3a3c5af6d06280bcc382b63ce\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [com.github.bumptech.glide:gifdecoder:4.13.0] C:\Users\lance\.gradle\caches\transforms-3\e828d2025dac1c54e16a763d56b46a02\transformed\jetified-gifdecoder-4.13.0\AndroidManifest.xml:9:5-20
+MERGED from [com.github.bumptech.glide:gifdecoder:4.13.0] C:\Users\lance\.gradle\caches\transforms-3\e828d2025dac1c54e16a763d56b46a02\transformed\jetified-gifdecoder-4.13.0\AndroidManifest.xml:9:5-20
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\lance\.gradle\caches\transforms-3\bf38df334ae296691a4cf035bcd9b7b3\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:25:5-35:19
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\lance\.gradle\caches\transforms-3\bf38df334ae296691a4cf035bcd9b7b3\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:25:5-35:19
 MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\6d635997c55d4cec5c45688f1b7c1517\transformed\jetified-startup-runtime-1.0.0\AndroidManifest.xml:25:5-31:19
 MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\6d635997c55d4cec5c45688f1b7c1517\transformed\jetified-startup-runtime-1.0.0\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lance\.gradle\caches\transforms-3\76daf5c3a3c5af6d06280bcc382b63ce\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lance\.gradle\caches\transforms-3\76daf5c3a3c5af6d06280bcc382b63ce\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
 	android:requestLegacyExternalStorage
 		ADDED from E:\cse327.1.4\ComplainstApp\app\src\main\AndroidManifest.xml:13:9-52
 	android:appComponentFactory
@@ -245,6 +252,8 @@ MERGED from [androidx.appcompat:appcompat:1.4.1] C:\Users\lance\.gradle\caches\t
 MERGED from [androidx.appcompat:appcompat:1.4.1] C:\Users\lance\.gradle\caches\transforms-3\386f16b1a499ebfebf74ac6c8095fc13\transformed\appcompat-1.4.1\AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\lance\.gradle\caches\transforms-3\ac121d49256460b13f6b7b17dbc312c8\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\lance\.gradle\caches\transforms-3\ac121d49256460b13f6b7b17dbc312c8\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:20:5-44
+MERGED from [com.github.bumptech.glide:glide:4.13.0] C:\Users\lance\.gradle\caches\transforms-3\61b0f660482ea496490e4fd256f664aa\transformed\jetified-glide-4.13.0\AndroidManifest.xml:6:5-8:41
+MERGED from [com.github.bumptech.glide:glide:4.13.0] C:\Users\lance\.gradle\caches\transforms-3\61b0f660482ea496490e4fd256f664aa\transformed\jetified-glide-4.13.0\AndroidManifest.xml:6:5-8:41
 MERGED from [com.google.android.gms:play-services-auth:20.1.0] C:\Users\lance\.gradle\caches\transforms-3\b5b447f91d7201c8354aaabf59acb66d\transformed\jetified-play-services-auth-20.1.0\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-auth:20.1.0] C:\Users\lance\.gradle\caches\transforms-3\b5b447f91d7201c8354aaabf59acb66d\transformed\jetified-play-services-auth-20.1.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\36d49e3309c2f5b0cec824f3da6bbac8\transformed\jetified-viewpager2-1.0.0\AndroidManifest.xml:20:5-22:41
@@ -327,16 +336,20 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1] C:\Users\lance\.g
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1] C:\Users\lance\.gradle\caches\transforms-3\e65450ef94ce030fcda9f676b35ecc91\transformed\jetified-lifecycle-viewmodel-ktx-2.3.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] C:\Users\lance\.gradle\caches\transforms-3\06025f95f5451d60b4d4b28cd09efb29\transformed\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] C:\Users\lance\.gradle\caches\transforms-3\06025f95f5451d60b4d4b28cd09efb29\transformed\lifecycle-viewmodel-2.3.1\AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.firebase:firebase-components:17.0.0] C:\Users\lance\.gradle\caches\transforms-3\d48a846f7a7599a8d9b2b5e5ba29214a\transformed\jetified-firebase-components-17.0.0\AndroidManifest.xml:19:5-21:41
-MERGED from [com.google.firebase:firebase-components:17.0.0] C:\Users\lance\.gradle\caches\transforms-3\d48a846f7a7599a8d9b2b5e5ba29214a\transformed\jetified-firebase-components-17.0.0\AndroidManifest.xml:19:5-21:41
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lance\.gradle\caches\transforms-3\76daf5c3a3c5af6d06280bcc382b63ce\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lance\.gradle\caches\transforms-3\76daf5c3a3c5af6d06280bcc382b63ce\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [com.github.bumptech.glide:gifdecoder:4.13.0] C:\Users\lance\.gradle\caches\transforms-3\e828d2025dac1c54e16a763d56b46a02\transformed\jetified-gifdecoder-4.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.bumptech.glide:gifdecoder:4.13.0] C:\Users\lance\.gradle\caches\transforms-3\e828d2025dac1c54e16a763d56b46a02\transformed\jetified-gifdecoder-4.13.0\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.exifinterface:exifinterface:1.2.0] C:\Users\lance\.gradle\caches\transforms-3\64edecd819308b1f76c256e9ef84e639\transformed\exifinterface-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.2.0] C:\Users\lance\.gradle\caches\transforms-3\64edecd819308b1f76c256e9ef84e639\transformed\exifinterface-1.2.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\lance\.gradle\caches\transforms-3\bf38df334ae296691a4cf035bcd9b7b3\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\lance\.gradle\caches\transforms-3\bf38df334ae296691a4cf035bcd9b7b3\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\6d635997c55d4cec5c45688f1b7c1517\transformed\jetified-startup-runtime-1.0.0\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\6d635997c55d4cec5c45688f1b7c1517\transformed\jetified-startup-runtime-1.0.0\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\5187d4af7ac8d4935351d1e5df008a50\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\lance\.gradle\caches\transforms-3\5187d4af7ac8d4935351d1e5df008a50\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.firebase:firebase-components:17.0.0] C:\Users\lance\.gradle\caches\transforms-3\d48a846f7a7599a8d9b2b5e5ba29214a\transformed\jetified-firebase-components-17.0.0\AndroidManifest.xml:19:5-21:41
+MERGED from [com.google.firebase:firebase-components:17.0.0] C:\Users\lance\.gradle\caches\transforms-3\d48a846f7a7599a8d9b2b5e5ba29214a\transformed\jetified-firebase-components-17.0.0\AndroidManifest.xml:19:5-21:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lance\.gradle\caches\transforms-3\76daf5c3a3c5af6d06280bcc382b63ce\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\lance\.gradle\caches\transforms-3\76daf5c3a3c5af6d06280bcc382b63ce\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.3.1] C:\Users\lance\.gradle\caches\transforms-3\e614cacd5c4beb4bfd915bad988732c2\transformed\jetified-lifecycle-livedata-core-ktx-2.3.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.3.1] C:\Users\lance\.gradle\caches\transforms-3\e614cacd5c4beb4bfd915bad988732c2\transformed\jetified-lifecycle-livedata-core-ktx-2.3.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\lance\.gradle\caches\transforms-3\984b49b0b90cd76a2688ce3876b1a89f\transformed\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
