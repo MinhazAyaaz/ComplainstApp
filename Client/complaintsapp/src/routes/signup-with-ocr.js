@@ -150,14 +150,28 @@ export default function SignUpOcr() {
     .then(function (response) {
       console.log(response.data[0]);
       setUser(response.data[0])
-      // setFiledComplaint(response.data)
+      if(response.data[0].role == '1'){
+        setRole("Student")
+      }
+      if(response.data[0].role == '2'){
+        setRole("Faculty")
+      }
+      if(response.data[0].role == '3'){
+        setRole("Admin Employee")
+      }
+      if(response.data[0].role == '4'){
+        setRole("Staff")
+      }
     })
     .catch(function (error) {
       console.log(error);
     })
     .then(function () {
       // always executed
+      
+      console.log(role)
     });
+    
   }
 
     const validationSchema = yup.object({
@@ -251,10 +265,10 @@ export default function SignUpOcr() {
     
 
     axios.post('/signup', {
-      role: role,
-      name: data.get('name'),
-      nsuid: data.get('nsuid'),
-      email: data.get('email'),
+      role: user.role,
+      name: user.name,
+      nsuid: user.nsuid,
+      email: user.email,
       password: data.get('password'),
     })
     .then(function (response) {
@@ -403,30 +417,28 @@ export default function SignUpOcr() {
                 <br/>
                 {(emailMessage ? (<Typography align="center" color="black"><br/>An email has been sent to {email} please click on the link to activate your account. </Typography>):(null))}
 
-                <FormControl fullWidth error={roleError}>
-                <InputLabel id="demo-simple-select-label">Role*</InputLabel>
-                    <Select
-                        error={roleError}
-                        helperText="shit"
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        disabled={true}
-                        defaultValue={'1'}
-                        value={user.role}
-                        label="role"
-                        onChange={handleChange}
-                    >
-                        <MenuItem value={'1'}>Student</MenuItem>
-                        <MenuItem value={'2'}>Faculty</MenuItem>
-                        <MenuItem value={'3'}>Admin Employee</MenuItem>
-                        <MenuItem value={'4'}>Helping Staff</MenuItem>
-                    </Select>
-                    
-                        
-                    
-                </FormControl>
-
+                
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    
+                  <TextField
+                    
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="role"
+                    label="role"
+                    name="role"
+                    autoComplete="role"
+                    autoFocus
+                    sx={{ color : '#000'}}
+                    disabled={true}
+                    defaultValue={"Role"}
+                    value={role}
+                    onChange={formik.handleChange}
+                    error={ formik.touched.name && Boolean(formik.errors.name)}
+                    helperText={formik.touched.name && formik.errors.name}
+                    />
+                    
                     <TextField
                     
                     margin="normal"

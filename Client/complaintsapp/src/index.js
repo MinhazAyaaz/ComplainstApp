@@ -22,6 +22,7 @@ import CreateComplaint from './routes/CreateComplaint';
 import PrivateRoute from './routes/PrivateRoute';
 import Admin from './routes/Admin';
 import OCR from './routes/OCR';
+import SignUp2 from './routes/SignUp2'
 import SignUpOcr from './routes/signup-with-ocr';
 
 ReactDOM.render(
@@ -29,7 +30,7 @@ ReactDOM.render(
     <Routes>
       <Route path="/" element={<SignIn />}/>
       <Route path="/fileupload" element={<FileUpload />}/>
-      <Route path="signup" element={<SignUp />}/>
+      <Route path="signup" element={<SignUp2 />}/>
       <Route path="login" element={<Login />}/>
       <Route path="dashboard" element={
         <PrivateRoute>

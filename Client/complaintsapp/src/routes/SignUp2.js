@@ -20,11 +20,12 @@ import InputLabel from "@mui/material/InputLabel";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { Input } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
-import FormLabel from "@material-ui/core/FormLabel";
+// import FormLabel from "@material-ui/core/FormLabel";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
+// import Radio from "@material-ui/core/Radio";
+import { Radio, RadioGroup, FormLabel } from "@mui/material";
+// import RadioGroup from "@material-ui/core/RadioGroup";
 import axios from "axios";
 import { breakpoints } from "@mui/system";
 
@@ -90,6 +91,7 @@ export default function SignUp2() {
     }),
 
     nsuid: Yup.string()
+      // .number("Enter numbers only")
       .length(10, "NSU ID should be of 10 characters length")
       .required("NSU ID  is required"),
     password: Yup.string()
@@ -300,6 +302,7 @@ export default function SignUp2() {
                 as={TextField}
                 required
                 fullWidth
+                type="password"
                 name="password"
                 label="Password"
                 placeholder="Enter your password"
