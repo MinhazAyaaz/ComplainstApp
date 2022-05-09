@@ -255,7 +255,8 @@ exports.login = (req, res) => {
   //Look for an account with the ID
   User.findOne({
     where: {
-      nsuid: req.body.nsuid
+      nsuid: req.body.nsuid,status:"activated"
+   
     }
   })
     .then(user => {
@@ -456,11 +457,24 @@ exports.findReviewerOne = (req, res) => {
         });
       });
   };
-  exports.updatedeactiavtionstatus = (req, res) => {
+  exports.updatedeactiavtionstatus = async (req, res) => {
+    
+    let checkUser2 = await User.findOne({
+      where: {
+        nsuid: req.userId,
+        role: '5'
+      }
+    });
+    if(checkUser2 == null){
+      return res.status(4980)
+    }
+  
     User.update({
       status: "disabled"
      }, {
-      where: { nsuid: req.body.nsuid }
+      where: { 
+        nsuid: req.body.nsuid
+       }
      })
      .then(data => {
       

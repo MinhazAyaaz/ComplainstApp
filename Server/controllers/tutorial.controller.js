@@ -320,6 +320,39 @@ exports.findAll2 = (req, res) => {
       });
     });
 };
+exports.findAll4 = async (req, res) => {
+   let checkUser2 = await User.findOne({
+    where: {
+      nsuid: req.userId,
+      role: '5'
+    }
+  }) 
+
+  if(checkUser2 == null){
+    return res.status(5981)
+  } 
+
+  //res.json(req);
+ //const against=req.userId.userId;
+ const complaintid= req.userId;
+
+  Tutorial.findAll()
+  
+  .then(data => {
+    res.send(data);
+   
+    
+  })
+  .catch(err => {
+    res.status(5980).send({
+      message:
+        `Cannot get comp with id=${complaintid} and against =${against}. `
+    });
+  });
+
+
+ 
+};
 
 // find all published Tutorial
 exports.findAll3 = (req, res) => {

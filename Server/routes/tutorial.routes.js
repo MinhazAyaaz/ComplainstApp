@@ -21,7 +21,7 @@ module.exports = app => {
   
     // Retrieve all Tutorials
     router.get("/getcomplaint/received", [authJwt.verifyToken],tutorials.findAll);
-  
+    router.get("/getcomplaint/all", [authJwt.verifyToken],tutorials.findAll4);
     // Retrieve all published Tutorials
     router.get("/getcomplaint/filed", [authJwt.verifyToken],tutorials.findAll2);
   
