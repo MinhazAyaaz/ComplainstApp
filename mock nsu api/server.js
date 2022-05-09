@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const bcrypt = require('bcrypt')
 const mysql = require('mysql')
 const connection = mysql.createConnection({
@@ -11,6 +12,8 @@ const connection = mysql.createConnection({
 
 connection.connect()
 
+app.use(cors())
+
 app.get("/api", (req,res)=>{
   res.json({"users": ["userOne", "userTwo", "userThree"]})
 })
@@ -21,6 +24,16 @@ const users = []
 
 app.get('/users', (req, res) => {
   connection.query('SELECT * from users', (err, rows, fields) => {
+    if (err) throw err
+  
+    res.send(rows)
+  })
+})
+
+app.get('/user', (req, res) => {
+  let id = req.query.id;
+  // let id = 1931461642
+  connection.query('SELECT * from users WHERE nsuid=\''+id+'\'', (err, rows, fields) => {
     if (err) throw err
   
     res.send(rows)

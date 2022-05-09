@@ -59,6 +59,7 @@ export default function SignUpOcr() {
   const [nsuidErrorMessage, setNsuidErrorMessage] = React.useState("");
   const [emailMessage, setEmailMessage] = React.useState(false)
   const [email, setEmail] = React.useState()
+  const [user, setUser] = React.useState({})
 
   //OCR hooks
   const [ocr, setOcr] = React.useState("");
@@ -118,6 +119,7 @@ export default function SignUpOcr() {
     }
     setOcr(finalString);
     setOcr2(text)
+    fetchUserInfo(finalString)
   };
   
   React.useEffect(() => {
@@ -136,6 +138,27 @@ export default function SignUpOcr() {
     reader.readAsDataURL(file);
   }
 
+  async function fetchUserInfo ( nsuid ){
+    await axios.get('http://localhost:6060/user', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: nsuid
+      }
+    })
+    .then(function (response) {
+      console.log(response.data[0]);
+      setUser(response.data[0])
+      // setFiledComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  }
 
     const validationSchema = yup.object({
     role: yup
@@ -320,7 +343,7 @@ export default function SignUpOcr() {
 
 
   return (
-
+    <div className="ocrbody">
     <ThemeProvider theme={theme}>
     <Grid container spacing={2}>
 
@@ -387,7 +410,9 @@ export default function SignUpOcr() {
                         helperText="shit"
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={role}
+                        disabled={true}
+                        defaultValue={'1'}
+                        value={user.role}
                         label="role"
                         onChange={handleChange}
                     >
@@ -412,7 +437,10 @@ export default function SignUpOcr() {
                     name="name"
                     autoComplete="name"
                     autoFocus
-
+                    sx={{ color : '#000'}}
+                    disabled={true}
+                    defaultValue={"Name"}
+                    value={user.name}
                     onChange={formik.handleChange}
                     error={ formik.touched.name && Boolean(formik.errors.name)}
                     helperText={formik.touched.name && formik.errors.name}
@@ -427,6 +455,9 @@ export default function SignUpOcr() {
                     name="nsuid"
                     autoComplete="NSUID"
                     autoFocus
+                    disabled={true}
+                    defaultValue={"NSU ID"}
+                    value={user.nsuid}
                     inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                     onChange={formik.handleChange}
                     error={ formik.touched.nsuid && Boolean(formik.errors.nsuid)}
@@ -435,7 +466,7 @@ export default function SignUpOcr() {
 
                     
 
-                    {(role == "4") ?
+                    
 
                     <TextField
                     margin="normal"
@@ -445,37 +476,17 @@ export default function SignUpOcr() {
                     label="Email Address"
                     type="email"
                     id="email"
+                    disabled={true}
+                    defaultValue={"Email Address"}
+                    value={user.email}
                     
-                    autoComplete="email"
-                    value={formik.values.email}
+                    
                     onChange={formik.handleChange}
                     error={ formik.touched.email && Boolean(formik.errors.email)}
                     helperText={formik.touched.email && formik.errors.email}
                     />
 
-                    : 
-                    
-                    <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="email"
-                    label="Email Address"
-                    
-                    id="email"
-                    InputProps={{
-                        endAdornment: <InputAdornment position="end">@northsouth.edu</InputAdornment>,
-                    }}
-                    type="text" pattern="[a-zA-Z0-9-]"
-                    autoComplete="email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    error={ formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
-                    />
-                    
-                    
-                    }
+                   
                     <TextField
                         margin="normal"
                         required
@@ -524,5 +535,6 @@ export default function SignUpOcr() {
 
       </Grid>
     </ThemeProvider>
+    </div>
   );
 }
