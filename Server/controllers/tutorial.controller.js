@@ -119,8 +119,16 @@ exports.create = async (req, res) => {
         complaintComplaintid: parseInt(id)
     
       };
+      
+
       ComplaintHistory.create(update)
+  
+        res.send({
+          message:
+            "Something."
+        });
     })
+   
     .catch(err => {
       res.status(513).send({
         message:
