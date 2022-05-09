@@ -132,7 +132,7 @@ function EnhancedTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
-
+console.log(props)
   return (
     <TableHead>
       <TableRow>
@@ -226,7 +226,7 @@ const EnhancedTableToolbar = (props) => {
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
-            <Button variant="outlined">Disable Account</Button>
+            
           </IconButton>
         </Tooltip>
       ) : (
@@ -278,7 +278,32 @@ async function fetchUserList (){
       // always executed
     });
   }
+ 
+  const handleClick2 =() => {
+    axios.put('/disableaccount', {
+      nsuid: selected
+      
+    }, {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      setRows(response.data)
+      console.log(rows)
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
 
+  }
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -287,19 +312,20 @@ async function fetchUserList (){
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = rows.map((n) => n.nsuid);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
+  
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, nsuid) => {
+    const selectedIndex = selected.indexOf(nsuid);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, nsuid);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -327,11 +353,13 @@ async function fetchUserList (){
     setDense(event.target.checked);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (nsuid) => selected.indexOf(nsuid) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+console.log(selected);
+console.log(rows);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -367,17 +395,17 @@ async function fetchUserList (){
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.nsuid);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.nsuid)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.nsuid}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -424,6 +452,7 @@ async function fetchUserList (){
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
+        <Button variant="outlined" onClick={handleClick2}>Disable Account</Button>
       </Paper>
     
     </Box>
