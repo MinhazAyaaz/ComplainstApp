@@ -315,7 +315,7 @@ let complaintby = await User.findOne({
     complaintComplaintid: req.body.complaintid
   })
   .then(data => {
-
+//actiavtes nodemailer to send emails on comment
     transporter.sendMail({
       from: "nsucomplaints.noreply@gmail.com",
       to: complaintby.email,
@@ -330,7 +330,7 @@ let complaintby = await User.findOne({
     
   })
   .then(data => {
-
+//actiavtes nodemailer to send emails on comment
     transporter.sendMail({
     from: "nsucomplaints.noreply@gmail.com",
     to: complaintAgainst.email,
@@ -347,7 +347,7 @@ let complaintby = await User.findOne({
   });
   
   };
-
+// retrieves comments from the database
  exports.fetchComments = (req, res) => {
     
     let complaintid= req.query.complaintid;
@@ -365,6 +365,7 @@ let complaintby = await User.findOne({
     });
 };
 
+//retrieves the number of comments made on that complaint
 exports.fetchCommentCount = (req, res) => {
     
     
@@ -384,7 +385,7 @@ exports.fetchCommentCount = (req, res) => {
 };
 
 
-
+//NOT USED
   exports.findUserToComplainAgainst = (req, res) => {
     
   
@@ -405,6 +406,7 @@ exports.fetchCommentCount = (req, res) => {
         });
       });
   };
+  //NOT USED
   exports.findUserWithStatus = (req, res) => {
     
   
@@ -425,7 +427,7 @@ exports.fetchCommentCount = (req, res) => {
         });
       });
   };
- 
+ //NOT USED HERE
   exports.findID = async (req, res) => {
     
   
@@ -439,7 +441,7 @@ exports.fetchCommentCount = (req, res) => {
     else
       res.send({findID : true})
   };
-
+//NOT USED HERE
 exports.update = (req, res) => {
   try {
     jwt.verify(req.params.token, EMAIL_SECRET, (err, user)=>{
@@ -457,7 +459,7 @@ exports.update = (req, res) => {
 
   return res.redirect('http://localhost:3000/login');
   };
-
+//NOT USED HERE
 exports.uploadId = (req, res) => {
   if(req.files === null){
     return res.status(423)
