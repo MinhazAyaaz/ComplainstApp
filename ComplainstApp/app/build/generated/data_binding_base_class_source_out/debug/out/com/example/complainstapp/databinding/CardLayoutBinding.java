@@ -22,6 +22,9 @@ public final class CardLayoutBinding implements ViewBinding {
   private final CardView rootView;
 
   @NonNull
+  public final TextView againstHeading;
+
+  @NonNull
   public final MaterialCardView card;
 
   @NonNull
@@ -31,25 +34,26 @@ public final class CardLayoutBinding implements ViewBinding {
   public final TextView cardDescription;
 
   @NonNull
-  public final TextView cardSubTitleHeading;
-
-  @NonNull
   public final TextView cardTitle;
 
   @NonNull
   public final MaterialButton moreButton;
 
-  private CardLayoutBinding(@NonNull CardView rootView, @NonNull MaterialCardView card,
-      @NonNull TextView cardAgainst, @NonNull TextView cardDescription,
-      @NonNull TextView cardSubTitleHeading, @NonNull TextView cardTitle,
-      @NonNull MaterialButton moreButton) {
+  @NonNull
+  public final TextView reviewerHeading;
+
+  private CardLayoutBinding(@NonNull CardView rootView, @NonNull TextView againstHeading,
+      @NonNull MaterialCardView card, @NonNull TextView cardAgainst,
+      @NonNull TextView cardDescription, @NonNull TextView cardTitle,
+      @NonNull MaterialButton moreButton, @NonNull TextView reviewerHeading) {
     this.rootView = rootView;
+    this.againstHeading = againstHeading;
     this.card = card;
     this.cardAgainst = cardAgainst;
     this.cardDescription = cardDescription;
-    this.cardSubTitleHeading = cardSubTitleHeading;
     this.cardTitle = cardTitle;
     this.moreButton = moreButton;
+    this.reviewerHeading = reviewerHeading;
   }
 
   @Override
@@ -79,6 +83,12 @@ public final class CardLayoutBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.againstHeading;
+      TextView againstHeading = ViewBindings.findChildViewById(rootView, id);
+      if (againstHeading == null) {
+        break missingId;
+      }
+
       id = R.id.card;
       MaterialCardView card = ViewBindings.findChildViewById(rootView, id);
       if (card == null) {
@@ -97,12 +107,6 @@ public final class CardLayoutBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.cardSubTitleHeading;
-      TextView cardSubTitleHeading = ViewBindings.findChildViewById(rootView, id);
-      if (cardSubTitleHeading == null) {
-        break missingId;
-      }
-
       id = R.id.cardTitle;
       TextView cardTitle = ViewBindings.findChildViewById(rootView, id);
       if (cardTitle == null) {
@@ -115,8 +119,14 @@ public final class CardLayoutBinding implements ViewBinding {
         break missingId;
       }
 
-      return new CardLayoutBinding((CardView) rootView, card, cardAgainst, cardDescription,
-          cardSubTitleHeading, cardTitle, moreButton);
+      id = R.id.reviewerHeading;
+      TextView reviewerHeading = ViewBindings.findChildViewById(rootView, id);
+      if (reviewerHeading == null) {
+        break missingId;
+      }
+
+      return new CardLayoutBinding((CardView) rootView, againstHeading, card, cardAgainst,
+          cardDescription, cardTitle, moreButton, reviewerHeading);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

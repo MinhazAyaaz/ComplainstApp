@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Declaring required variables
     private String selectedRole;
-    String[] roles = {"Student","Helper Staff","Admin"};
+    String[] roles = {"Student","Faculty","Helper Staff","Admin Employee"};
     AutoCompleteTextView roleDropdown;
     ArrayAdapter<String> adapterItems;
     Button proceed;

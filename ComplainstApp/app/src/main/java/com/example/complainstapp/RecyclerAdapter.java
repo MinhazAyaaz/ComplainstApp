@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,6 +56,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
                 TextView reviewer;
                 Button evidence;
                 Button editButton;
+                ImageButton backButton;
 
                 id = dialogView.findViewById(R.id.complaintID);
                 category = dialogView.findViewById(R.id.categoryBody);
@@ -64,6 +66,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
                 reviewer = dialogView.findViewById(R.id.reviewerBody);
                 evidence = dialogView.findViewById(R.id.evidenceButton);
                 editButton = dialogView.findViewById(R.id.editButton2);
+                backButton = dialogView.findViewById(R.id.backButton);
 
                 id.setText(complaint.getId());
                 category.setText(complaint.getCategory());
@@ -97,7 +100,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
 
                 builder.setView(dialogView);
                 builder.setCancelable(true);
-                builder.show();
+                final AlertDialog show = builder.show();
+
+                backButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        show.dismiss();
+                    }
+                });
             }
         });
     }
