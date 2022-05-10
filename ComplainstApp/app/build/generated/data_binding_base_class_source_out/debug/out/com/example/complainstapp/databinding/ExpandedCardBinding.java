@@ -44,9 +44,6 @@ public final class ExpandedCardBinding implements ViewBinding {
   public final TextView complaintID;
 
   @NonNull
-  public final MaterialButton deleteButton2;
-
-  @NonNull
   public final TextView detail;
 
   @NonNull
@@ -59,7 +56,7 @@ public final class ExpandedCardBinding implements ViewBinding {
   public final TextView evidence;
 
   @NonNull
-  public final TextView evidenceBody;
+  public final MaterialButton evidenceButton;
 
   @NonNull
   public final LinearLayout horizontal;
@@ -82,9 +79,9 @@ public final class ExpandedCardBinding implements ViewBinding {
   private ExpandedCardBinding(@NonNull ConstraintLayout rootView, @NonNull TextView ID,
       @NonNull TextView against, @NonNull TextView againstBody, @NonNull TextView category,
       @NonNull TextView categoryBody, @NonNull ImageButton closeButton,
-      @NonNull TextView complaintID, @NonNull MaterialButton deleteButton2,
-      @NonNull TextView detail, @NonNull TextView detailBody, @NonNull MaterialButton editButton2,
-      @NonNull TextView evidence, @NonNull TextView evidenceBody, @NonNull LinearLayout horizontal,
+      @NonNull TextView complaintID, @NonNull TextView detail, @NonNull TextView detailBody,
+      @NonNull MaterialButton editButton2, @NonNull TextView evidence,
+      @NonNull MaterialButton evidenceButton, @NonNull LinearLayout horizontal,
       @NonNull TextView reviewer, @NonNull TextView reviewerBody, @NonNull TextView title,
       @NonNull TextView titleBody, @NonNull LinearLayout vertical) {
     this.rootView = rootView;
@@ -95,12 +92,11 @@ public final class ExpandedCardBinding implements ViewBinding {
     this.categoryBody = categoryBody;
     this.closeButton = closeButton;
     this.complaintID = complaintID;
-    this.deleteButton2 = deleteButton2;
     this.detail = detail;
     this.detailBody = detailBody;
     this.editButton2 = editButton2;
     this.evidence = evidence;
-    this.evidenceBody = evidenceBody;
+    this.evidenceButton = evidenceButton;
     this.horizontal = horizontal;
     this.reviewer = reviewer;
     this.reviewerBody = reviewerBody;
@@ -178,12 +174,6 @@ public final class ExpandedCardBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.deleteButton2;
-      MaterialButton deleteButton2 = ViewBindings.findChildViewById(rootView, id);
-      if (deleteButton2 == null) {
-        break missingId;
-      }
-
       id = R.id.detail;
       TextView detail = ViewBindings.findChildViewById(rootView, id);
       if (detail == null) {
@@ -208,9 +198,9 @@ public final class ExpandedCardBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.evidenceBody;
-      TextView evidenceBody = ViewBindings.findChildViewById(rootView, id);
-      if (evidenceBody == null) {
+      id = R.id.evidenceButton;
+      MaterialButton evidenceButton = ViewBindings.findChildViewById(rootView, id);
+      if (evidenceButton == null) {
         break missingId;
       }
 
@@ -251,9 +241,8 @@ public final class ExpandedCardBinding implements ViewBinding {
       }
 
       return new ExpandedCardBinding((ConstraintLayout) rootView, ID, against, againstBody,
-          category, categoryBody, closeButton, complaintID, deleteButton2, detail, detailBody,
-          editButton2, evidence, evidenceBody, horizontal, reviewer, reviewerBody, title, titleBody,
-          vertical);
+          category, categoryBody, closeButton, complaintID, detail, detailBody, editButton2,
+          evidence, evidenceButton, horizontal, reviewer, reviewerBody, title, titleBody, vertical);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

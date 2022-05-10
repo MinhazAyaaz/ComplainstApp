@@ -110,7 +110,7 @@ public class HomepageActivity extends AppCompatActivity{
                                         response.getJSONObject(i).getString("status"), response.getJSONObject(i).getString("title"),
                                         response.getJSONObject(i).getString("against"),
                                         response.getJSONObject(i).getString("body"),response.getJSONObject(i).getString("reviewer")
-                                        ,response.getJSONObject(i).getString("category"));
+                                        ,response.getJSONObject(i).getString("category"),response.getJSONObject(i).getString("evidence"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -158,7 +158,7 @@ public class HomepageActivity extends AppCompatActivity{
                                                     response.getJSONObject(i).getString("status"), response.getJSONObject(i).getString("title"),
                                                     response.getJSONObject(i).getString("against"),
                                                     response.getJSONObject(i).getString("body"),response.getJSONObject(i).getString("reviewer")
-                                                    ,response.getJSONObject(i).getString("category"));
+                                                    ,response.getJSONObject(i).getString("category"),response.getJSONObject(i).getString("evidence"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -198,7 +198,7 @@ public class HomepageActivity extends AppCompatActivity{
                                                     response.getJSONObject(i).getString("status"), response.getJSONObject(i).getString("title"),
                                                     response.getJSONObject(i).getString("against"),
                                                     response.getJSONObject(i).getString("body"),response.getJSONObject(i).getString("reviewer")
-                                                    ,response.getJSONObject(i).getString("category"));
+                                                    ,response.getJSONObject(i).getString("category"),response.getJSONObject(i).getString("evidence"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }

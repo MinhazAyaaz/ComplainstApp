@@ -10,8 +10,9 @@ public class Complaint {
     String description;
     String reviewer;
     String category;
+    String evidence;
 
-    public Complaint(String id, String date, String status, String title, String against, String description, String reviewer, String category) {
+    public Complaint(String id, String date, String status, String title, String against, String description, String reviewer, String category, String evidence) {
         this.id = id;
         this.date = date;
         this.status = status;
@@ -20,6 +21,7 @@ public class Complaint {
         this.description = description;
         this.reviewer = reviewer;
         this.category = category;
+        this.evidence = evidence;
     }
 
     public String getId() {
@@ -80,6 +82,10 @@ public class Complaint {
 
     public String getCategory() {
         return category;
+    }
+
+    public String getEvidence() {
+        return evidence;
     }
 
     public void setCategory(String category) {

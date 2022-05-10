@@ -2,6 +2,7 @@ package com.example.complainstapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
                 TextView details;
                 TextView title;
                 TextView reviewer;
+                Button evidence;
                 Button editButton;
 
                 id = dialogView.findViewById(R.id.complaintID);
@@ -60,6 +62,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
                 details = dialogView.findViewById(R.id.detailBody);
                 title = dialogView.findViewById(R.id.titleBody);
                 reviewer = dialogView.findViewById(R.id.reviewerBody);
+                evidence = dialogView.findViewById(R.id.evidenceButton);
                 editButton = dialogView.findViewById(R.id.editButton2);
 
                 id.setText(complaint.getId());
@@ -68,6 +71,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
                 details.setText(complaint.getDescription());
                 title.setText(complaint.getTitle());
                 reviewer.setText(complaint.getReviewer());
+                evidence.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(complaint.getEvidence()); // missing 'http://' will cause crash
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        context.startActivity(intent);
+                    }
+                });
 
                 editButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -79,6 +90,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
                         intent.putExtra("details",complaint.getDescription());
                         intent.putExtra("against",complaint.getAgainst());
                         intent.putExtra("reviewer",complaint.getReviewer());
+                        intent.putExtra("evidence",complaint.getEvidence());
                         context.startActivity(intent);
                     }
                 });
@@ -99,21 +111,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
 
         private TextView title;
         private TextView against;
-        private TextView description;
+        private TextView reviewer;
         private Button moreButton;
 
         public complaintViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.cardTitle);
             against = itemView.findViewById(R.id.cardAgainst);
-            description = itemView.findViewById(R.id.cardDescription);
+            reviewer = itemView.findViewById(R.id.cardDescription);
             moreButton = itemView.findViewById(R.id.moreButton);
         }
 
         public void bind(Complaint complaints){
             title.setText(complaints.title);
             against.setText(complaints.against);
-            description.setText(complaints.description);
+            reviewer.setText(complaints.reviewer);
         }
 
     }

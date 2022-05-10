@@ -6,13 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/rounded_corner"
-    android:foregroundTint="#00FFFFFF"
     android:soundEffectsEnabled="true">
 
     <LinearLayout
         android:id="@+id/vertical"
-        android:layout_width="350dp"
-        android:layout_height="692dp"
+        android:layout_width="334dp"
+        android:layout_height="727dp"
         android:orientation="vertical"
         android:paddingStart="15dp"
         android:paddingTop="15dp"
@@ -121,7 +120,7 @@
         <TextView
             android:id="@+id/detailBody"
             android:layout_width="320dp"
-            android:layout_height="176dp"
+            android:layout_height="wrap_content"
             android:background="#FFFFFF"
             android:padding="5dp"
             android:text="This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text.This is example body text."
@@ -150,24 +149,28 @@
             android:id="@+id/evidence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:paddingStart="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="Evidence:"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/evidenceBody"
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/evidenceButton"
+            android:layout_width="148dp"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="EvidenceList" />
+            android:backgroundTint="#505050"
+            android:text="Click to view!"
+            android:textColor="#FFFFFF" />
 
         <LinearLayout
             android:id="@+id/horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="40dp">
+            android:paddingStart="100dp"
+            android:paddingTop="20dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/editButton2"
@@ -177,13 +180,6 @@
                 android:text="Edit Complaint"
                 android:textColor="#1C87DC" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/deleteButton2"
-                style="?attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete Complaint"
-                android:textColor="#1C87DC" />
         </LinearLayout>
     </LinearLayout>
 
