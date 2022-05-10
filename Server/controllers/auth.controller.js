@@ -114,7 +114,8 @@ exports.GoogleSignup = async (req, res) => {
   //Check if Google account user already exists in database
   let checkUser = await User.findOne({
     where: {
-      nsuid: family_name
+      nsuid: family_name,
+      status:"activated"
     }
   });
   if(checkUser){
@@ -128,7 +129,8 @@ exports.GoogleSignup = async (req, res) => {
           email: checkUser.email,
           verified: checkUser.verified,
           accessToken: authToken,
-          role: checkUser.role
+          role: checkUser.role,
+          status:"disabled"
         });
       ;
 
@@ -193,7 +195,7 @@ exports.GoogleSignup = async (req, res) => {
       res.status(504).send({ message: err.message });
     });
 };
-
+// Google login through the mobile
 exports.GoogleSignupMobile = async (req, res) => {
   
   const { token } = req.body;
@@ -255,7 +257,8 @@ exports.login = (req, res) => {
   //Look for an account with the ID
   User.findOne({
     where: {
-      nsuid: req.body.nsuid
+      nsuid: req.body.nsuid,status:"activated"
+   
     }
   })
     .then(user => {
@@ -302,7 +305,7 @@ exports.login = (req, res) => {
       res.status(503).send({ message: "Error" });
     });
 };
-
+//finding the user logged in 
 exports.findUser = (req, res) => {
     
   
@@ -321,7 +324,7 @@ exports.findUser = (req, res) => {
       });
     });
 };
-
+//finding list of all users except the user logged in 
 exports.findOtherUser = (req, res) => {
     
   
@@ -340,7 +343,7 @@ exports.findOtherUser = (req, res) => {
       });
     });
 };
-
+//find all users 
 exports.findAll = (req, res) => {
     
   
@@ -355,7 +358,7 @@ exports.findAll = (req, res) => {
         });
       });
   };
-  
+  ////finding list of users to complaint against 
 exports.findUserToComplainAgainst = (req, res) => {
   
 
@@ -376,6 +379,7 @@ exports.findUserToComplainAgainst = (req, res) => {
       });
     });
 };
+//finding the reviewer that is eligible to review a comp
 exports.findReviewerToReview = (req, res) => {
   
 
@@ -396,7 +400,7 @@ exports.findReviewerToReview = (req, res) => {
         });
       });
 };
-
+//find all reviewers 
 exports.findReviewers = (req, res) => {
   
 
@@ -415,7 +419,7 @@ exports.findReviewers = (req, res) => {
       });
     });
 };
-
+//find a reviewer to to review
 exports.findReviewerOne = (req, res) => {
   
 
@@ -435,7 +439,7 @@ exports.findReviewerOne = (req, res) => {
       });
     });
 };
-
+//finding a list of all users with their statuses 
   exports.findUserWithStatus = (req, res) => {
     
   
@@ -456,11 +460,25 @@ exports.findReviewerOne = (req, res) => {
         });
       });
   };
-  exports.updatedeactiavtionstatus = (req, res) => {
+  //disables account
+  exports.updatedeactiavtionstatus = async (req, res) => {
+    
+    let checkUser2 = await User.findOne({
+      where: {
+        nsuid: req.userId,
+        role: '5'// checks if the user is the admin
+      }
+    });
+    if(checkUser2 == null){
+      return res.status(4980)
+    }
+  
     User.update({
       status: "disabled"
      }, {
-      where: { nsuid: req.body.nsuid }
+      where: { 
+        nsuid: req.body.nsuid
+       }
      })
      .then(data => {
       
@@ -521,7 +539,7 @@ exports.findReviewerOne = (req, res) => {
   };
   
  
- 
+ //checks if the id is uploaded
   exports.findID = async (req, res) => {
     
   
@@ -535,7 +553,7 @@ exports.findReviewerOne = (req, res) => {
     else
       res.send({findID : true})
   };
-
+//finds the role of the user logged in 
   exports.findRole = async (req, res) => {
     
   
@@ -549,7 +567,7 @@ exports.findReviewerOne = (req, res) => {
     else
       res.send({findRole : true})
   };
-
+//not used 
 exports.update = (req, res) => {
   try {
     jwt.verify(req.params.token, EMAIL_SECRET, (err, user)=>{
@@ -567,7 +585,7 @@ exports.update = (req, res) => {
 
   return res.redirect('http://localhost:3000/login');
   };
-
+//NOT USED
 exports.uploadId = (req, res) => {
   if(req.files === null){
     return res.status(423)
@@ -585,7 +603,7 @@ exports.uploadId = (req, res) => {
 
   res.send(600)
   };
-
+//updates the photo and idscan 
   exports.updatetest = (req, res) => {
     User.update({
       idscan: req.body.idscan,
@@ -607,7 +625,7 @@ exports.uploadId = (req, res) => {
     })
    
     };
-
+//updates status NOT USED
     exports.updateStatus = (req, res) => {
       User.update({
         role: req.body.role
@@ -628,7 +646,7 @@ exports.uploadId = (req, res) => {
       })
      
       };
-
+//updates the profile picture
     exports.setprofilepic = (req, res) => {
       User.update({
         photo: req.body.photo

@@ -1,3 +1,4 @@
+//creating the users table in db
 module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define("users", {
         nsuid: {

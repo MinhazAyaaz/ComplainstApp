@@ -22,7 +22,7 @@ app.use(express.json());  /* bodyParser.json() is deprecated */
 app.use(express.urlencoded({ extended: true }));   /* bodyParser.urlencoded() is deprecated */
 
 const db = require("./models");
-
+//all the routes imported in the server
 require('./routes/auth.routes.js')(app);
 require('./routes/user.routes')(app);
 require("./routes/comment.routes")(app);
@@ -34,12 +34,12 @@ require("./routes/tutorial.routes")(app);
 // });
 const Role = db.role;
 db.sequelize.sync()
-// db.sequelize.sync({force: true}).then(() => {
+// db.sequelize.sync({alter: true}).then(() => {
 //   console.log('Drop and Resync Db');
 //   initial();
 // }); 
 
-// simple route
+// simple route to test server works
 app.get("/api", (req, res) => {
   res.json({"users": ["userOne", "userTwo", "userThree"]});
 });

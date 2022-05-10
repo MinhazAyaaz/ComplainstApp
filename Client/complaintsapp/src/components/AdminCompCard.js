@@ -104,9 +104,10 @@ export default function AdminCompCard( fetchedData ) {
        body: fetchedData.fetchedData.body,
        reviewer: fetchedData.fetchedData.reviewer,
        createdby: fetchedData.fetchedData.createdby,
-       status:fetchedData.fetchedData.status
+       status:fetchedData.fetchedData.status,
+       evidence: fetchedData.fetchedData.evidence
      })
-     
+    //  console.log(fetchedData.fetchedData.)
      fetchComments()
      fetchUserInfo()
      setChecked(!fetchedData.fetchedData.status)

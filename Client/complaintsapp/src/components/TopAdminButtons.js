@@ -88,7 +88,7 @@ export default function TopAdminButtons() {
       <Grid container spacing={2}>
         
         <Grid item xs={5}>
-        <Card  onClick={() => setOpen("first")}sx={{ maxWidth: 300,marginLeft:42,marginTop:10,backgroundColor:'#1976d2'}}>
+        <Card  onClick={() => setOpen("first")}sx={{ maxWidth: 300, backgroundColor:'#1976d2'}}>
       
       <CardActionArea>
        
@@ -102,7 +102,7 @@ export default function TopAdminButtons() {
     </Card>
         </Grid>
         <Grid item xs={6} >
-        <Card sx={{ maxWidth: 300 ,marginRight:10,marginTop:10,backgroundColor:'#1976d2'}}>
+        <Card sx={{ maxWidth: 300 , backgroundColor:'#1976d2'}}>
       <CardActionArea>
        
         <CardContent>

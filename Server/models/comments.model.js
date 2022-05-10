@@ -1,3 +1,4 @@
+//creating the comments table
 module.exports = (sequelize, Sequelize) => {
     const Comments = sequelize.define("comments", {
       commentId: {

@@ -11,20 +11,20 @@ module.exports = function(app) {
     next();
   });
   
-
+//create a new comment
   app.post(
     "/createComment",
     [authJwt.verifyToken] ,
     controller.createComment
   );
   
-
+//fetch comments of a particular comp
   app.get(
     "/fetchComment",
     [authJwt.verifyToken] ,
     controller.fetchComments
   );
-
+//fetch the number of comments made
   app.get(
     "/fetchCommentCount",
     [authJwt.verifyToken] ,

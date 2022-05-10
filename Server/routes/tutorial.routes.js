@@ -7,7 +7,7 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Tutorial
+    // Create a new complaint
     router.post("/createcomplaint",
     [authJwt.verifyToken], [verifyComplaints.checktitle,verifyComplaints.checkbody],
     tutorials.create);
@@ -19,25 +19,23 @@ module.exports = app => {
     router.post("/editcomplaint",[authJwt.verifyToken], tutorials.update);
     router.get("/getcomplaintVersions", [authJwt.verifyToken],tutorials.findVersions)
   
-    // Retrieve all Tutorials
+    // Retrieve all complaints 
     router.get("/getcomplaint/received", [authJwt.verifyToken],tutorials.findAll);
+    router.get("/getcomplaint/all", [authJwt.verifyToken],tutorials.findAll4);
   
-    // Retrieve all published Tutorials
     router.get("/getcomplaint/filed", [authJwt.verifyToken],tutorials.findAll2);
   
-    // Retrieve all published Tutorials
+    // Retrieve all complaints to review
     router.get("/getcomplaint/review", [authJwt.verifyToken],tutorials.findAll3);
   
-    // Retrieve a single Tutorial with id
-    // router.get("/:id", tutorials.findOne);
+
   
-    // Update a Tutorial with id
+    // Update a complaint status 
     router.put("/updatecompstat", tutorials.updatecompstatus);
   
-    // Delete a Tutorial with id
-    // router.delete("/:id", tutorials.delete);
   
-    // Delete all Tutorials
+  
+    // Delete all complaints hasnt been used 
     router.delete("/deletecomplaint", tutorials.deleteAll);
   
     app.use('/', router);

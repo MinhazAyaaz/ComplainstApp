@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const db = require("../models");
-const User = db.user;
+const User = db.user;//connects to tables 
+//verifies that a jwt token is there 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
@@ -9,6 +10,7 @@ verifyToken = (req, res, next) => {
       message: "No token provided!"
     });
   }
+  //verifies if the jwt token is a valid token 
   jwt.verify(token, config.secret, (err, decoded) => {
       
     if (err) {
@@ -25,6 +27,7 @@ verifyToken = (req, res, next) => {
     next();
   });
 };
+//checks for the admin role (not used)
 isAdmin = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
@@ -41,6 +44,7 @@ isAdmin = (req, res, next) => {
     });
   });
 };
+//checks for the moderator role not used 
 isModerator = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
@@ -56,6 +60,7 @@ isModerator = (req, res, next) => {
     });
   });
 };
+//checks for the admin or moderator role not used 
 isModeratorOrAdmin = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
@@ -75,6 +80,7 @@ isModeratorOrAdmin = (req, res, next) => {
     });
   });
 };
+//imports all the functions
 const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,

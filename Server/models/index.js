@@ -1,5 +1,5 @@
 const dbConfig = require("../config/db.config.js");
-
+//setting up connecetion with db
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
@@ -18,7 +18,7 @@ const db = {};
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-
+//connecting to tables 
 db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
 db.complaintHistory = require("./complaintHistory.model.js")(sequelize, Sequelize);
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
