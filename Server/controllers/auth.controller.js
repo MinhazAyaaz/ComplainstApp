@@ -114,7 +114,8 @@ exports.GoogleSignup = async (req, res) => {
   //Check if Google account user already exists in database
   let checkUser = await User.findOne({
     where: {
-      nsuid: family_name
+      nsuid: family_name,
+      status:"activated"
     }
   });
   if(checkUser){
@@ -128,7 +129,8 @@ exports.GoogleSignup = async (req, res) => {
           email: checkUser.email,
           verified: checkUser.verified,
           accessToken: authToken,
-          role: checkUser.role
+          role: checkUser.role,
+          status:"disabled"
         });
       ;
 
