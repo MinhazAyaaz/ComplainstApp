@@ -24,7 +24,7 @@ app.use(express.json());  /* bodyParser.json() is deprecated */
 app.use(express.urlencoded({ extended: true }));   /* bodyParser.urlencoded() is deprecated */
 
 const db = require("./models");
-
+//all the routes imported in the server
 require('./routes/auth.routes.js')(app);
 require('./routes/user.routes')(app);
 require("./routes/comment.routes")(app);
@@ -41,7 +41,7 @@ db.sequelize.sync({alter: true}).then(() => {
   initial();
 }); 
 
-// simple route
+// simple route to test server works
 app.get("/api", (req, res) => {
   res.json({"users": ["userOne", "userTwo", "userThree"]});
 });

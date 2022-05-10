@@ -66,7 +66,7 @@ export default function AdminAddAccount() {
       : null
   );
 
-
+//validating signup
     const validationSchema = yup.object({
     role: yup
     .string('Enter your role at North South University')
@@ -107,10 +107,11 @@ export default function AdminAddAccount() {
     alert(result);
     
   };
+  
 
   const handleGLogin = async (googleData) => {
     console.log(googleData);
- 
+ //allowing google signup and login
     axios.post('/Gsignup', {
       token: googleData.tokenId,
       // nsuid: googleData.profileObj.familyName,
@@ -133,11 +134,11 @@ export default function AdminAddAccount() {
     localStorage.removeItem('loginData');
     setLoginData(null);
   };
-
+//setting the role
   const handleChange = (event) => {
     setRole(event.target.value);
   };
-
+//submiting form for new added accounts
   const handleSubmit = (event) => {
     formik.handleSubmit();
     event.preventDefault();
@@ -156,7 +157,7 @@ export default function AdminAddAccount() {
       password: data.get('password'),
     });
     
-
+//posting the new user to db
     axios.post('/signup', {
       // roles: role,
       name: data.get('name'),
@@ -221,7 +222,7 @@ export default function AdminAddAccount() {
       
         
     });
-
+//updating the id of the user
     axios.post('/signup/idupload',{
       headers: {
         "Content-Type": "multipart/form-data",
@@ -250,7 +251,7 @@ export default function AdminAddAccount() {
 
 
   return (
-
+//form and css for the signup dialog
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -283,6 +284,7 @@ export default function AdminAddAccount() {
                 label="role"
                 onChange={handleChange}
               >
+              
                 <MenuItem value={'1'}>Student</MenuItem>
                 <MenuItem value={'2'}>Faculty</MenuItem>
                 <MenuItem value={'moderator'}>Admin Employee</MenuItem>

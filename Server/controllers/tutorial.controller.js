@@ -11,6 +11,7 @@ const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client('689285763404-9ih3lrpb9154mhob4rs8oqbpruvng95s.apps.googleusercontent.com');
 
 const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
+//configuring node mailer for email verification
 const transporter = nodemailer.createTransport( {
   service: 'Gmail',
   auth: {
@@ -27,13 +28,13 @@ const transporter = nodemailer.createTransport( {
 });
 
 
-// Create and Save a new Tutorial
+// Create and Save a new complaint
 exports.create = async (req, res) => {
   // Validate request
   
   if (!req.body.title) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!"//checks for empty title
     });
     return;
     
@@ -41,25 +42,25 @@ exports.create = async (req, res) => {
 
   else if (!req.body.body) {
     res.status(456).send({
-      message: "Body can not be empty!"
+      message: "Body can not be empty!"//checks for empty body
     });
     return;
   }
   else if (!req.body.reviewer) {
     res.status(405).send({
-      message: "Reviewer can not be empty!"
+      message: "Reviewer can not be empty!"//checks for empty reviewer field
     });
     return;
   }
   else if (req.body.against==null) {
     res.status(406).send({
-      message: "Against can not be empty!"
+      message: "Against can not be empty!"//checks for empty against field 
     });
     return;
   }
   else if (!req.body.category) {
     res.status(407).send({
-      message: "Category can not be empty!"
+      message: "Category can not be empty!"//checks for empty catgory field
     });
     return;
   }
@@ -67,7 +68,7 @@ exports.create = async (req, res) => {
 
 
 
-  // Create a Tutorial
+  // Create a complaint
   const tutorial = {
     title: req.body.title,
     against: req.body.against,
@@ -78,12 +79,13 @@ exports.create = async (req, res) => {
     status: req.body.status ? req.body.status : false,
     evidence:req.body.evidence,
   };
-
+//finds the user who is the creator of the compliant
   let creator = await User.findOne({
     where: {
       nsuid: req.userId
     }
   });
+  //find the user who the comp is against
   let agaisnt = await User.findOne({
     where: {
       nsuid: req.body.against
@@ -97,14 +99,14 @@ exports.create = async (req, res) => {
 
   var id;
  
-  // Save Tutorial in the database
+  // Save comp in the database
   Tutorial.create(tutorial)
   
     .then(data => {
       // res.send(data);
       id = data.complaintid;
       console.log(parseFloat(id).toFixed(2));
-      
+      //complaintversions table gets updated
       const update = {
         complaintVersion: parseFloat(id).toFixed(2),
         title: req.body.title,
@@ -120,7 +122,7 @@ exports.create = async (req, res) => {
     
       };
       
-
+//creating the update in complaints history table
       ComplaintHistory.create(update)
   
         res.send({
@@ -135,7 +137,7 @@ exports.create = async (req, res) => {
           "Some error occurred while creating the complaint."
       });
     });
-
+// emailing for any edits 
   transporter.sendMail({
     from: "nsucomplaints.noreply@gmail.com",
     to: creator.email,
@@ -172,7 +174,7 @@ exports.create2 = async (req, res) => {
   
   if (!req.body.title) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!"//checks for empty title
     });
     return;
     
@@ -180,25 +182,25 @@ exports.create2 = async (req, res) => {
 
   else if (!req.body.body) {
     res.status(456).send({
-      message: "Body can not be empty!"
+      message: "Body can not be empty!"//checks for empty body
     });
     return;
   }
   else if (!req.body.reviewer) {
     res.status(405).send({
-      message: "Reviewer can not be empty!"
+      message: "Reviewer can not be empty!"//checks for empty reviewer
     });
     return;
   }
   else if (req.body.against==null) {
     res.status(406).send({
-      message: "Against can not be empty!"
+      message: "Against can not be empty!"//checks for empty against
     });
     return;
   }
   else if (!req.body.category) {
     res.status(407).send({
-      message: "Category can not be empty!"
+      message: "Category can not be empty!"////checks for empty category
     });
     return;
   }
@@ -206,7 +208,7 @@ exports.create2 = async (req, res) => {
 
 
 
-  // Create a Tutorial
+  // Create a complaint
   const tutorial = {
     title: req.body.title,
     against: req.body.against,
@@ -218,12 +220,13 @@ exports.create2 = async (req, res) => {
     status: req.body.status ? req.body.status : false
 
   };
-
+ //find the user who the comp is created by
   let creator = await User.findOne({
     where: {
       nsuid: req.userId
     }
   });
+   //find the user who the comp is against
   let agaisnt = await User.findOne({
     where: {
       nsuid: req.body.against
@@ -235,7 +238,7 @@ exports.create2 = async (req, res) => {
     }
   });
 
-  // Save Tutorial in the database
+  // Save complaint in the database
   Tutorial.create(tutorial)
     .then(data => {
       res.send(data);
@@ -246,7 +249,7 @@ exports.create2 = async (req, res) => {
           "Some error occurred while creating the complaint."
       });
     });
-
+//activate emailing for the creation of complaints 
   transporter.sendMail({
     from: "nsucomplaints.noreply@gmail.com",
     to: creator.email,
@@ -283,7 +286,7 @@ exports.create2 = async (req, res) => {
 
 
 
-// Retrieve all Tutorials from the database.
+// Retrieve all complaints received from the database.
 exports.findAll = (req, res) => {
   //res.json(req);
  //RECEIVED!!!!
@@ -302,7 +305,7 @@ exports.findAll = (req, res) => {
     });
 };
 
-// find all published Tutorial
+// find all complaints filed by the user
 exports.findAll2 = (req, res) => {
   //res.json(req);
  //const against=req.userId.userId;
@@ -320,11 +323,12 @@ exports.findAll2 = (req, res) => {
       });
     });
 };
+//find all complaints in the db 
 exports.findAll4 = async (req, res) => {
    let checkUser2 = await User.findOne({
     where: {
       nsuid: req.userId,
-      role: '5'
+      role: '5'// checks the user has admin role
     }
   }) 
 
@@ -336,7 +340,7 @@ exports.findAll4 = async (req, res) => {
  //const against=req.userId.userId;
  const complaintid= req.userId;
 
-  Tutorial.findAll()
+  Tutorial.findAll()// then finds all the comps
   
   .then(data => {
     res.send(data);
@@ -354,7 +358,7 @@ exports.findAll4 = async (req, res) => {
  
 };
 
-// find all published Tutorial
+// find all comps to review 
 exports.findAll3 = (req, res) => {
   //res.json(req);
  //const against=req.userId.userId;
@@ -373,7 +377,7 @@ exports.findAll3 = (req, res) => {
     });
 };
 
-// Find a single Tutorial with an id
+// not used
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
@@ -394,7 +398,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a Tutorial by the id in the request
+// Update a  comp status
 exports.updatecompstatus = (req, res) => {
   if(req.body.status)
   {
@@ -449,7 +453,7 @@ exports.updatecompstatus = (req, res) => {
   
 };
 
-// Delete a Tutorial with the specified id in the request
+// Delete a comp NOT USED
 exports.delete = (req, res) => {
   const id = req.params.id;
 
@@ -474,7 +478,7 @@ exports.delete = (req, res) => {
     });
 };
 
-// Delete all Tutorials from the database.
+// Delete all comp from the database NOT USED.
 exports.deleteAll = (req, res) => {
   Tutorial.destroy({
     where: {},
@@ -509,7 +513,7 @@ exports.update = async (req, res) => {
       nsuid: req.body.reviewer
     }
   });
-  let compToEdit = await Tutorial.update(
+  let compToEdit = await Tutorial.update(// updating the edited comp
     {
       title: req.body.title,
     against: req.body.against,
@@ -539,7 +543,7 @@ exports.update = async (req, res) => {
 
 
 // Results will be an empty array and metadata will contain the number of affected rows.
-  let compHistory = await ComplaintHistory.findOne(
+  let compHistory = await ComplaintHistory.findOne(// finds the complaint history for edit
 {
    
     where: {
@@ -569,7 +573,7 @@ exports.update = async (req, res) => {
     complaintComplaintid:req.body.complaintid,
   };
 
-  // Save Tutorial in the database
+  // Save comp in the database of table complainthistory 
   ComplaintHistory.create(update)
     .then(data => {
       res.send(data);
@@ -580,7 +584,7 @@ exports.update = async (req, res) => {
           "Some error occurred while creating the complaint."
       });
     });
-
+//activate nodemailer for any edits made
   transporter.sendMail({
     from: "nsucomplaints.noreply@gmail.com",
     to: creator.email,

@@ -1,3 +1,4 @@
+//creating the reviewers table 
 module.exports = (sequelize, Sequelize) => {
     const Reviewer = sequelize.define("reviewer", {
         nsuid: {

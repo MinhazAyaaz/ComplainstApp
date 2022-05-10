@@ -1,3 +1,4 @@
+//creating the complaints table in db 
 module.exports = (sequelize, Sequelize) => {
     const Tutorial = sequelize.define("complaints", {
       complaintid: {
