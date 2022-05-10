@@ -80,7 +80,11 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                     //if selected role is Admin
-                    else if(selectedRole.equals(("Admin"))){
+                    else if(selectedRole.equals(("Admin Employee"))){
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                    else if(selectedRole.equals(("Faculty"))){
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                     }
