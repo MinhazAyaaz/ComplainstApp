@@ -37,9 +37,11 @@ ReactDOM.render(
           <Dashboard />
         </PrivateRoute>
       }/>
-      <Route path="profile" element={<Profile />}/>
-      <Route path="admin" element={<Admin />}/>
-      <Route path="ocr" element={<OCR />}/>
+      <Route path="profile" element={
+        <PrivateRoute>
+          <Profile />
+        </PrivateRoute>
+      }/>
       <Route path="signup-with-ocr" element={<SignUpOcr />}/>
       <Route path="createcomplaint" element={<CreateComplaint />}/>
     </Routes>

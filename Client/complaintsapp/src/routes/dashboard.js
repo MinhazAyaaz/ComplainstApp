@@ -26,6 +26,8 @@ import FileUpload from '../components/FileUpload';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../firebase';
 
+import TopAdminButtons from '../components/TopAdminButtons';
+
 import axios from 'axios';
 
 import CircularProgress from '@mui/material/CircularProgress';
@@ -47,11 +49,13 @@ export default function Dashboard() {
   const [filedComplaint, setFiledComplaint] = useState([])
   const [receivedComplaint, setReceivedComplaint] = useState([])
   const [reviewComplaint, setReviewComplaint] = useState([])
+  const [allComplaint, setAllComplaint] = useState([])
   const [empty, dempty] = useState([])
   const [expanded, setExpanded] = React.useState(false);
   const [formdata, setFormdata] = React.useState('');
   const [studentList, setStudentList] = useState([]);
   const [reviewerList, setReviewerList] = useState([]);
+  const [admin, setAdmin] = useState(false)
 
   const [value, setValue] = useState({name: "", nsuid: ""})
   const [value2, setValue2] = useState({name: "", nsuid: ""})
@@ -59,6 +63,7 @@ export default function Dashboard() {
   const [showFiledComaplint, setShowFiledComaplint] = useState(true)
   const [showRecievedComplaint, setShowRecievedComplaint] = useState(false)
   const [showReviewComaplaint, setShowReviewComaplaint] = useState(false)
+  const [showAllComaplaint, setShowAllComaplaint] = useState(false)
 
   const [progress, setProgress] = useState(0);
   const [urldata, seturldata] = React.useState('');
@@ -74,8 +79,11 @@ var a;
       fetchComplaint();
       fetchUserList();
       fetchReviewerList();
-      if( sessionStorage.getItem("role") == "2" || sessionStorage.getItem("role") == "3"){
+      if( sessionStorage.getItem("role") == "2" || sessionStorage.getItem("role") == "3" || sessionStorage.getItem("role") == "5" ){
         setReviewer(true)
+      }
+      if( sessionStorage.getItem("role") == "5" ){
+        setAdmin(true)
       }
       
   }, [])
@@ -140,24 +148,25 @@ var a;
       // always executed
     });
 
-    // await axios.get('/getcomplaint/received', {
-    //   headers: {
-    //     authorization: 'Bearer ' + sessionStorage.getItem("jwtkey")
-    //   },
-    //   params: {
-    //     id: 12345
-    //   }
-    // })
-    // .then(function (response) {
-    //   console.log(response.data);
-    //   setBackEndData(response.data)
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // })
-    // .then(function () {
-    //   // always executed
-    // });
+    await axios.get('/getcomplaint/all', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345
+      }
+    })
+    .then(function (response) {
+      console.log(response.data);
+      setAllComplaint(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+
   }
 
   async function fetchUserList (){
@@ -339,6 +348,7 @@ const handleClick = () => {
     if(showFiledComaplint == false){
       setShowFiledComaplint(true)
       setShowRecievedComplaint(false)
+      setShowAllComaplaint(false)
       setShowReviewComaplaint(false)
     }
   }
@@ -347,6 +357,7 @@ const handleClick = () => {
       setShowFiledComaplint(false)
       setShowRecievedComplaint(true)
       setShowReviewComaplaint(false)
+      setShowAllComaplaint(false)
     }
   }
   const toggleReviewComplaint = () =>{
@@ -354,6 +365,15 @@ const handleClick = () => {
       setShowFiledComaplint(false)
       setShowRecievedComplaint(false)
       setShowReviewComaplaint(true)
+      setShowAllComaplaint(false)
+    }
+  }
+  const toggleAllComplaint = () =>{
+    if(showAllComaplaint ==  false){
+      setShowFiledComaplint(false)
+      setShowRecievedComplaint(false)
+      setShowReviewComaplaint(false)
+      setShowAllComaplaint(true)
     }
   }
 
@@ -525,6 +545,8 @@ const handleClick = () => {
       marginTop: 5,
       maxWidth: 1000,
       flexGrow: 1,}}>
+
+      <TopAdminButtons/>
     
 
       <Box id="myForm" component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -683,6 +705,9 @@ const handleClick = () => {
   
   { reviewer ? (
   <>
+    { admin ? 
+        <Button sx={{fontSize: 20, paddingLeft: 10}} onClick={()=>{toggleAllComplaint()}}>All COmplaints ({allComplaint.length})</Button>
+    : null}
     <Button sx={{fontSize: 20, paddingLeft: 10}} onClick={()=>{toggleFiledComplaint()}}>Complaints Filed ({filedComplaint.length})</Button>
     <Button sx={{fontSize: 20, paddingLeft: 10}} onClick={()=>{toggleRecievedComplaint()}}>Complaints Received ({receivedComplaint.length})</Button>
     <Button sx={{fontSize: 20, paddingLeft: 10}} onClick={()=>{toggleReviewComplaint()}}>Review Pending ({reviewComplaint.length})</Button>
@@ -697,7 +722,38 @@ const handleClick = () => {
   
   }
 
+  
+
   </Box> 
+
+
+    { showAllComaplaint ? <>
+      
+      {( allComplaint.length === 0) ? (
+        <p> </p>
+      ) : (
+        <>
+        <Typography sx={{ maxWidth: 900,  p: 3,
+          color: '#888',
+          margin: 'auto',
+          fontSize: 25,
+          borderBottom: 'solid',
+          borderColor: '#888',
+          padding: 1,
+          paddingTop: 3,
+          maxWidth: 1000,
+          flexGrow: 1,
+       }}
+       align="center" > All Complaints // {allComplaint.length} found</Typography>
+
+        {allComplaint.map((data, i) => (
+          <AdminCompCard fetchedData={data}/>
+        ))}
+        </>
+      )} 
+      
+      </>
+      : null}
 
     { showFiledComaplint ? <>
       
