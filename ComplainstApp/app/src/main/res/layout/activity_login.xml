@@ -38,7 +38,7 @@
             android:layout_width="303dp"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:translationY="-190dp"
+            android:translationY="-240dp"
             app:boxStrokeColor="#2196F3"
             app:counterEnabled="true"
             app:counterMaxLength="30"
@@ -66,10 +66,10 @@
             android:layout_width="303dp"
             android:layout_height="wrap_content"
             android:hint="NSU ID"
-            android:translationY="-120dp"
+            android:translationY="-150dp"
             app:boxStrokeColor="#2196F3"
             app:counterEnabled="true"
-            app:counterMaxLength="30"
+            app:counterMaxLength="10"
             app:errorEnabled="true"
             app:hintTextColor="#2196F3"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -194,6 +194,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.6" />
+
+        <CheckBox
+            android:id="@+id/rememberUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remember me"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.519" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

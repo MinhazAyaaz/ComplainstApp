@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,6 +56,9 @@ public final class ActivityLoginBinding implements ViewBinding {
   public final TextInputEditText passField;
 
   @NonNull
+  public final CheckBox rememberUser;
+
+  @NonNull
   public final ImageButton signInButton;
 
   @NonNull
@@ -74,9 +78,9 @@ public final class ActivityLoginBinding implements ViewBinding {
       @NonNull TextView errorPass, @NonNull TextInputEditText idField,
       @NonNull ImageButton imageButton, @NonNull ImageView imageView3,
       @NonNull TextInputLayout outlinedIdField, @NonNull TextInputLayout outlinedPassField,
-      @NonNull TextInputEditText passField, @NonNull ImageButton signInButton,
-      @NonNull TextView textView, @NonNull TextView textView2, @NonNull TextView textView3,
-      @NonNull TextView textView4) {
+      @NonNull TextInputEditText passField, @NonNull CheckBox rememberUser,
+      @NonNull ImageButton signInButton, @NonNull TextView textView, @NonNull TextView textView2,
+      @NonNull TextView textView3, @NonNull TextView textView4) {
     this.rootView = rootView;
     this.button = button;
     this.constraintLayout = constraintLayout;
@@ -88,6 +92,7 @@ public final class ActivityLoginBinding implements ViewBinding {
     this.outlinedIdField = outlinedIdField;
     this.outlinedPassField = outlinedPassField;
     this.passField = passField;
+    this.rememberUser = rememberUser;
     this.signInButton = signInButton;
     this.textView = textView;
     this.textView2 = textView2;
@@ -182,6 +187,12 @@ public final class ActivityLoginBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.rememberUser;
+      CheckBox rememberUser = ViewBindings.findChildViewById(rootView, id);
+      if (rememberUser == null) {
+        break missingId;
+      }
+
       id = R.id.signInButton;
       ImageButton signInButton = ViewBindings.findChildViewById(rootView, id);
       if (signInButton == null) {
@@ -214,7 +225,8 @@ public final class ActivityLoginBinding implements ViewBinding {
 
       return new ActivityLoginBinding((ConstraintLayout) rootView, button, constraintLayout,
           errorEmail, errorPass, idField, imageButton, imageView3, outlinedIdField,
-          outlinedPassField, passField, signInButton, textView, textView2, textView3, textView4);
+          outlinedPassField, passField, rememberUser, signInButton, textView, textView2, textView3,
+          textView4);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

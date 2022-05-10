@@ -2,6 +2,7 @@ package com.example.complainstapp;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -60,7 +61,7 @@ public class HomepageActivity extends AppCompatActivity{
     //We make the variables private so they cannot be accessed.
     private Button createButton;
     private Button logoutButton;
-    private ImageButton backButton;
+    private String nsuid;
     private RadioGroup filterGroup;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -86,8 +87,9 @@ public class HomepageActivity extends AppCompatActivity{
 
         //Retrieving the access token received from the post request in the previous activity
         accessToken = getIntent().getExtras().getString("token");
+        nsuid = getIntent().getExtras().getString("nsuid");
 
-        Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/nsu-complaints-app.appspot.com/o/evidences%2F2.jpg?alt=media&token=83752035-4264-48be-902b-c912e6eb228d").into(profilePicture);
+        Glide.with(this).load("https://www.seekpng.com/png/detail/72-729756_how-to-add-a-new-user-to-your.png").into(profilePicture);
 
         //progress bar used to show loading
         progressBar.setVisibility(View.VISIBLE);
@@ -231,6 +233,7 @@ public class HomepageActivity extends AppCompatActivity{
                 Intent intent = new Intent(HomepageActivity.this, CreateComplaint.class);
                 //We send access token to this activity as well as we need it for the post/get request
                 intent.putExtra("token",accessToken);
+                intent.putExtra("nsuid",nsuid);
                 startActivity(intent);
             }
         });
@@ -264,6 +267,11 @@ public class HomepageActivity extends AppCompatActivity{
                         finish();
                     }
                 });
+
+        SharedPreferences preferences =getSharedPreferences("checkbox",MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
     }
 
     //The back method is disabled so user cannot go back to login without pressing logout

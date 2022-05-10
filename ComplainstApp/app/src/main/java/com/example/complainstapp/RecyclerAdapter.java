@@ -66,7 +66,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.compla
                 reviewer = dialogView.findViewById(R.id.reviewerBody);
                 evidence = dialogView.findViewById(R.id.evidenceButton);
                 editButton = dialogView.findViewById(R.id.editButton2);
-                backButton = dialogView.findViewById(R.id.backButton);
+                backButton = dialogView.findViewById(R.id.closeButton);
 
                 id.setText(complaint.getId());
                 category.setText(complaint.getCategory());

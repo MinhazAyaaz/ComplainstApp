@@ -293,6 +293,7 @@ exports.login = (req, res) => {
         }
         res.status(200).send({
           id: user.id,
+          name: user.name,
           nsuid: user.nsuid,
           email: user.email,
           role: user.role,

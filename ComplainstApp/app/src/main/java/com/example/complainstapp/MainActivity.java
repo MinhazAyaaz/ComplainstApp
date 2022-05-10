@@ -1,6 +1,7 @@
 package com.example.complainstapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -37,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences preferences = getSharedPreferences("checkbox",MODE_PRIVATE);
+        String checkbox = preferences.getString("remember","");
+
+        if(checkbox.equals("true")){
+            Intent intent = new Intent(MainActivity.this, HomepageActivity.class);
+            intent.putExtra("token",preferences.getString("accessToken",null));
+            startActivity(intent);
+        }
 
         //Initializing the variables
         selectedRole = null;

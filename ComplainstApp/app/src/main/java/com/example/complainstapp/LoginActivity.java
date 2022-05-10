@@ -2,6 +2,7 @@ package com.example.complainstapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -29,6 +30,8 @@ import android.view.View;
 import com.google.android.material.textfield.TextInputLayout;
 
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,11 +46,16 @@ public class LoginActivity extends AppCompatActivity {
     //Declaring variables for the text fields,buttons and google sign up
     //We make the variables private so they cannot be accessed.
     private String accessToken;
+    private String nsuid;
+    private boolean isChecked;
     private TextInputLayout idLayout;
     private TextInputLayout passwordLayout;
     private Button loginButton;
     private TextView signUpButton;
     private ImageButton backButton;
+    private CheckBox rememberUser;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
     GoogleSignInClient mGoogleSignInClient;
     ImageButton GSignInButton;
 
@@ -56,6 +64,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        preferences = getSharedPreferences("checkbox",MODE_PRIVATE);
+        editor = preferences.edit();
 
         //We initialize the AndroidNetworking library for this activity
         AndroidNetworking.initialize(getApplicationContext());
@@ -67,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.textView4);
         backButton = findViewById(R.id.imageButton);
         GSignInButton = findViewById(R.id.signInButton);
+        rememberUser = findViewById(R.id.rememberUser);
 
         //Here we build the GoogleSignIn requirements to get id token and email
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -114,12 +126,25 @@ public class LoginActivity extends AppCompatActivity {
                                 //We request the access token in a try-catch block as we might not get a response
                                 try {
                                     accessToken = response.getString("accessToken");
+                                    nsuid = response.getString("name");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                }
+                                //If the Remember me box is checked, we store accessToken and don't sign out the user
+                                if(isChecked){
+                                    editor.putString("remember","true");
+                                    editor.putString("accessToken",accessToken);
+                                    editor.apply();
+                                }
+                                else{
+                                    editor.putString("remember","false");
+                                    editor.putString("accessToken",accessToken);
+                                    editor.apply();
                                 }
                                 //After retrieving the access token we start the homepage and send the access token
                                 Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
                                 intent.putExtra("token",accessToken);
+                                intent.putExtra("nsuid",nsuid);
                                 startActivity(intent);
                             }
                             @Override
@@ -139,6 +164,24 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                         });
+
+            }
+        });
+
+        rememberUser.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if(compoundButton.isChecked()){
+
+                    isChecked = true;
+
+                }
+                else if(!compoundButton.isChecked()){
+
+                    isChecked = false;
+
+                }
 
             }
         });
@@ -207,6 +250,17 @@ public class LoginActivity extends AppCompatActivity {
                                     accessToken = response.getString("accessToken");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                }
+                                //If the Remember me box is checked, we store accessToken and don't sign out the user
+                                if(isChecked){
+                                    editor.putString("remember","true");
+                                    editor.putString("accessToken",accessToken);
+                                    editor.apply();
+                                }
+                                else{
+                                    editor.putString("remember","false");
+                                    editor.putString("accessToken",accessToken);
+                                    editor.apply();
                                 }
                                 //After retrieving the access token we start the homepage and send the access token
                                 Intent myIntent = new Intent(LoginActivity.this, HomepageActivity.class);

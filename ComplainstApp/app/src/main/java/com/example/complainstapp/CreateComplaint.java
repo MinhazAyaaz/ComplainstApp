@@ -48,6 +48,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.ANRequest;
+import com.androidnetworking.common.ANResponse;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
@@ -68,6 +70,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class CreateComplaint extends AppCompatActivity {
@@ -80,9 +83,12 @@ public class CreateComplaint extends AppCompatActivity {
     //Declaring strings,booleans and other variables which are used to keep track
     //Of several instances
     private String accessToken;
+    private String nsuid;
     private ArrayList<String> againstArrayNames;
     private ArrayList<String> againstArrayId;
     private ArrayList<String> reviewerArrayNames;
+    private ArrayList<String> userNameArray;
+    private ArrayList<String> userIDArray;
     private String checkButton;
     private Context context;
     private MediaRecorder mediaRecorder;
@@ -132,8 +138,11 @@ public class CreateComplaint extends AppCompatActivity {
         againstArrayNames = new ArrayList<String>();
         againstArrayId = new ArrayList<String>();
         reviewerArrayNames = new ArrayList<String>();
+        userNameArray = new ArrayList<String>();
+        userIDArray = new ArrayList<String>();
         fileExists = false;
         accessToken = getIntent().getExtras().getString("token");
+        nsuid = getIntent().getExtras().getString("nsuid");
         mStorage = FirebaseStorage.getInstance().getReference();
         mProgress = new ProgressDialog(this);
 
@@ -227,6 +236,7 @@ public class CreateComplaint extends AppCompatActivity {
                 //Here we send the against id and do a get request from the reviewerToReview endpoint
                 //We then keep the names of the reviewers in the reviewerArrayNames arrayList
                 //The if statement checks if the id is a valid one otherwise it doesn't send the get request
+                reviewerArrayNames.clear();
                 if(againstArrayNames.indexOf(editable.toString())!=-1){
                     AndroidNetworking.get("http://192.168.0.109:5000/reviewertoreview")
                             .setTag("test1")
@@ -253,6 +263,7 @@ public class CreateComplaint extends AppCompatActivity {
                 }
 
                 //Here we are creating an adapter to set the items in the dropdown suggestions list for reviewer field
+                reviewerArrayNames.remove(nsuid);
                 ArrayAdapter<String> reviewerAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,reviewerArrayNames);
                 reviewer.setAdapter(reviewerAdapter);
             }
@@ -586,16 +597,15 @@ public class CreateComplaint extends AppCompatActivity {
                 //Check if button clicked is against
                 else if(result.getResultCode() == RESULT_OK && result.getData()!=null && checkButton=="against"){
                     Intent data = result.getData();
-                    against.setText(returnSimilarUser(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0)));
+                    against.setText(returnSimilarAgainst(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0)));
                 }
                 //Check if button clicked is reviewer
                 else if(result.getResultCode() == RESULT_OK && result.getData()!=null && checkButton=="reviewer"){
                     Intent data = result.getData();
-                    reviewer.setText(returnSimilarUser(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0)));
+                    reviewer.setText(returnSimilarReviewer(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0)));
                 }
             }
         });
-
     }
 
     //This function create a new camera intent and launches the camera launcher activity
@@ -821,7 +831,7 @@ public class CreateComplaint extends AppCompatActivity {
 
     //This function is used to compare similarity between two strings
     //We are mainly using this to convert Speech to text names to names which exist in the database
-    private String returnSimilarUser(String user){
+    private String returnSimilarAgainst(String user){
 
         int index = 1;
         int distance = 100;
@@ -836,6 +846,23 @@ public class CreateComplaint extends AppCompatActivity {
             }
         }
         return againstArrayNames.get(index);
+    }
+
+    private String returnSimilarReviewer(String user){
+
+        int index = 1;
+        int distance = 100;
+
+        //The Levenshetein Distance method returns an integer based on how many operations are needed to
+        //make the two strings equal
+        for(int i=0;i<reviewerArrayNames.size();i++){
+            int calculatedDistance = new LevenshteinDistance().apply(user,reviewerArrayNames.get(i));
+            if(distance > calculatedDistance){
+                distance = new LevenshteinDistance().apply(user,reviewerArrayNames.get(i));
+                index = i;
+            }
+        }
+        return reviewerArrayNames.get(index);
     }
 
 }
