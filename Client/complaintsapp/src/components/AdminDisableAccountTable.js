@@ -366,15 +366,7 @@ console.log(rows);
       <Paper sx={{ width: "100%", mb: 2 }}>
       
         <EnhancedTableToolbar numSelected={selected.length} />
-        <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+        
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

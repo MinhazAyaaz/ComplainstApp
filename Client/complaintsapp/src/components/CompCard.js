@@ -246,30 +246,7 @@ export default function CompCard( fetchedData ) {
               >
                 <MoreVertIcon />
               </IconButton>
-              <Menu
-                id="long-menu"
-                MenuListProps={{
-                  'aria-labelledby': 'long-button',
-                }}
-                anchorEl={anchorEl}
-                open={openMenu}
-                onClose={handleClose}
-                PaperProps={{
-                  style: {
-                    maxHeight: 48 * 4.5,
-                    width: '20ch',
-                  },
-                }}
-              >
-                
-                  <MenuItem onClick={handleClose}>
-                    Edit Complaint
-                  </MenuItem>
-                  <MenuItem onClick={handleDelete}>
-                    Delete Complaint
-                  </MenuItem>
-                
-              </Menu>
+              
             </>
         }
       />

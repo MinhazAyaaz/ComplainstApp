@@ -137,9 +137,12 @@ export default function SignUp2() {
       })
       .then(function (response) {
         console.log(response);
+        if(response.status == '200'){
+          setEmailMessage(true)
+        }
         props.setSubmitting(false);
         props.resetForm();
-        handleServerResponse(true, "Thanks!");
+        // handleServerResponse(true, "Thanks!");
       })
       .catch(function (error) {
         console.log(error);

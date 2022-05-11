@@ -220,9 +220,7 @@ async function fetchUserInfo (){
                 }}
               >
                 
-                  <MenuItem onClick={handleClose}>
-                    Edit Complaint
-                  </MenuItem>
+                 
                   <MenuItem onClick={() => setOpen("history")}>
                     Show Edit History
                   </MenuItem>

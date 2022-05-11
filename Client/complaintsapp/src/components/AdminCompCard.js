@@ -47,7 +47,7 @@ export default function AdminCompCard( fetchedData ) {
 
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
-  const [age, setAge] = React.useState('');
+  const [edit, setEdit] = React.useState();
   const [backendData, setBackEndData] = React.useState([]);
   const [openDlg1Dialog, setDialog1Open] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -110,6 +110,7 @@ export default function AdminCompCard( fetchedData ) {
     //  console.log(fetchedData.fetchedData.)
      fetchComments()
      fetchUserInfo()
+     fetchComplaintVersions()
      setChecked(!fetchedData.fetchedData.status)
 
      if(fetchedData.fetchedData.status == '0'){
@@ -234,6 +235,33 @@ export default function AdminCompCard( fetchedData ) {
     });
   };
 
+  async function fetchComplaintVersions (){
+    await axios.get('/getcomplaintVersions', {
+      headers: {
+        "x-access-token": sessionStorage.getItem("jwtkey")
+      },
+      params: {
+        id: 12345,
+        complaintid:fetchedData.fetchedData.complaintid
+      }
+    })
+    .then(function (response) {
+      console.log("from edit  history");
+      // console.log(response.data);
+      setEdit(response.data.length)
+      // console.log(complaintVersions);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  
+   
+  
+  }
+
   const handleChange3 = (event) => {
     axios.put('/updatecompstat', {
       complaintid: backendData.complaintid,
@@ -292,49 +320,7 @@ export default function AdminCompCard( fetchedData ) {
         </Typography>
         }
         subheader={"Created by: " + user.name +" ("+fetchedData.fetchedData.createdby+")"}
-        action={
-          <>
         
-              
-            
-              <IconButton
-                aria-label="more"
-                id="long-button"
-                aria-controls={openMenu ? 'long-menu' : undefined}
-                aria-expanded={openMenu ? 'true' : undefined}
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                <MoreVertIcon />
-              </IconButton>
-              
-              <Menu
-                id="long-menu"
-                MenuListProps={{
-                  'aria-labelledby': 'long-button',
-                }}
-                anchorEl={anchorEl}
-                open={openMenu}
-                onClose={handleClose}
-                PaperProps={{
-                  style: {
-                    maxHeight: 48 * 4.5,
-                    width: '20ch',
-                  },
-                }}
-              >
-                
-                  <MenuItem onClick={handleClose}>
-                    Edit Complaint
-                  </MenuItem>
-                  <MenuItem onClick={handleDelete}>
-                    Delete Complaint
-                  </MenuItem>
-                
-              </Menu>
-              
-            </>
-        }
       />
       
       <CardContent>
@@ -354,7 +340,7 @@ export default function AdminCompCard( fetchedData ) {
         />
 
               </Badge>
-              <Badge badgeContent={17} color="error" >
+              <Badge badgeContent={edit} color="error" >
                 <EditIcon sx={{ color:'#1976d2',marginRight:1 }}
                  />
 
