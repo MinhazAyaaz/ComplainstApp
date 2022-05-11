@@ -131,8 +131,8 @@ export default function PrimarySearchAppBar() {
         
       />
         <MenuItem onClick={()=>{window.location.href = '/profile';}}> <ManageAccountsIcon sx={{paddingRight: 1}}/> View profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}> <InfoIcon  sx={{paddingRight: 1}}/> Contact Support</MenuItem>
-        <MenuItem onClick={handleMenuClose}><LogoutIcon sx={{paddingRight: 1}}/> Log out</MenuItem>
+
+        <MenuItem onClick={()=>{logout()}}><LogoutIcon sx={{paddingRight: 1}}/> Log out</MenuItem>
 
       </Menu>
     </Card>
@@ -165,10 +165,7 @@ export default function PrimarySearchAppBar() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 
-           <Button
-           onClick={()=>{logout()}}
-
-           color="inherit">Logout</Button>
+           
 
             
             <IconButton

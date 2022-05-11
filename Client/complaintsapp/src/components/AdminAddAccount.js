@@ -263,12 +263,10 @@ export default function AdminAddAccount() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 3, backgroundColor: '#1976d2' }}>
-            <AccountCircleIcon sx={{width: 40, height: 40}} /> 
-          </Avatar>
+          
 
           <Typography component="h1" variant="h5">
-            NSU COMPLAINTS // SIGN UP 
+            ADD A NEW USER 
           </Typography>
           <br/>
           {(emailMessage ? (<Typography align="center" color="black" sx={{marginBottom:2}}><br/>An email has been sent to {email} please click on the link to activate your account. </Typography>):(null))}
@@ -375,17 +373,11 @@ export default function AdminAddAccount() {
 
             <Grid container>
 
-              <Grid item xs={12}>
-                <Link href="/login" variant="body2">
-                  <Typography align="center">
-                    {"Have an account? Log In"}
-                  </Typography>
-                </Link>
-              </Grid>
+              
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 3, mb: 4 }} />
+        
       </Container>
     </ThemeProvider>
   );

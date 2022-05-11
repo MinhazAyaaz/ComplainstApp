@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport( {
     pass: "NSUcomplaints#123456789",
     clientId: '189085341403-6jkd13am7e6r6e75os36vmh2g4phunqi.apps.googleusercontent.com',
     clientSecret: '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',
-    refreshToken: '1//04lzli9cFEJCLCgYIARAAGAQSNwF-L9Irw0fuFkQuuVT570nUQp5m5oCZRGYMq7Jdm2c97vuiUYlbPUh7g4MNrk8pgijaI8kOvfc',
+    refreshToken: '1//04HZNPXCsLV-JCgYIARAAGAQSNwF-L9Irfcj81DWrEfNM96rRMb9_l00DAmZzVl8NSJYYRQlxyk0t8GMUiBz2VxpzDqsfCwR-sOk',
   },
   tls: {
     rejectUnauthorized: false
