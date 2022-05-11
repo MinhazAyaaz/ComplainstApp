@@ -170,7 +170,7 @@ public class CreateComplaint extends AppCompatActivity {
 
         //Using Android Networking library to do a get request
         //which retrieves the users against which the current user will lodge a complaint
-        AndroidNetworking.get("http://192.168.43.187:5000/againstusers")
+        AndroidNetworking.get("http://192.168.0.109:5000/againstusers")
                 .setTag("test1")
                 .addHeaders("x-access-token",accessToken)
                 .setPriority(Priority.HIGH)
@@ -238,7 +238,7 @@ public class CreateComplaint extends AppCompatActivity {
                 //The if statement checks if the id is a valid one otherwise it doesn't send the get request
                 reviewerArrayNames.clear();
                 if(againstArrayNames.indexOf(editable.toString())!=-1){
-                    AndroidNetworking.get("http://192.168.43.187:5000/reviewertoreview")
+                    AndroidNetworking.get("http://192.168.0.109:5000/reviewertoreview")
                             .setTag("test1")
                             .addHeaders("x-access-token",accessToken)
                             .addQueryParameter("id", againstArrayId.get(againstArrayNames.indexOf(editable.toString())))
@@ -282,7 +282,7 @@ public class CreateComplaint extends AppCompatActivity {
                 else {
                     //If all fields are filled we do a post request to create complaint.
                     //We send all the fields as body parameters
-                    AndroidNetworking.post("http://192.168.43.187:5000/createcomplaint")
+                    AndroidNetworking.post("http://192.168.0.109:5000/createcomplaint")
                             .addHeaders("x-access-token", accessToken)
                             .addBodyParameter("category", category.getText().toString())
                             .addBodyParameter("title", title.getText().toString())

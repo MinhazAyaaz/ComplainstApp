@@ -30,7 +30,10 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
   public final ImageButton againstSpeech;
 
   @NonNull
-  public final Button cancelButton;
+  public final Button button2;
+
+  @NonNull
+  public final Button cancelButton20;
 
   @NonNull
   public final AutoCompleteTextView categoryField;
@@ -72,7 +75,7 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
   public final AutoCompleteTextView reviewerField;
 
   @NonNull
-  public final Button saveButton;
+  public final Button saveButton20;
 
   @NonNull
   public final EditText titleField;
@@ -85,19 +88,21 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
 
   private ActivityEditComplaintBinding(@NonNull ConstraintLayout rootView,
       @NonNull AutoCompleteTextView againstField, @NonNull ImageButton againstSpeech,
-      @NonNull Button cancelButton, @NonNull AutoCompleteTextView categoryField,
-      @NonNull ImageButton categorySpeech, @NonNull TextView complaintAgainst,
-      @NonNull TextView complaintCategory, @NonNull TextView complaintDetail,
-      @NonNull TextView complaintEvidence, @NonNull TextView complaintReviewer,
-      @NonNull TextView complaintTitle, @NonNull EditText detailsField,
-      @NonNull ImageButton detailsSpeech, @NonNull TextView pageTitle,
-      @NonNull ImageButton reviewSpeech, @NonNull AutoCompleteTextView reviewerField,
-      @NonNull Button saveButton, @NonNull EditText titleField, @NonNull ImageButton titleSpeech,
+      @NonNull Button button2, @NonNull Button cancelButton20,
+      @NonNull AutoCompleteTextView categoryField, @NonNull ImageButton categorySpeech,
+      @NonNull TextView complaintAgainst, @NonNull TextView complaintCategory,
+      @NonNull TextView complaintDetail, @NonNull TextView complaintEvidence,
+      @NonNull TextView complaintReviewer, @NonNull TextView complaintTitle,
+      @NonNull EditText detailsField, @NonNull ImageButton detailsSpeech,
+      @NonNull TextView pageTitle, @NonNull ImageButton reviewSpeech,
+      @NonNull AutoCompleteTextView reviewerField, @NonNull Button saveButton20,
+      @NonNull EditText titleField, @NonNull ImageButton titleSpeech,
       @NonNull Button uploadFileButton) {
     this.rootView = rootView;
     this.againstField = againstField;
     this.againstSpeech = againstSpeech;
-    this.cancelButton = cancelButton;
+    this.button2 = button2;
+    this.cancelButton20 = cancelButton20;
     this.categoryField = categoryField;
     this.categorySpeech = categorySpeech;
     this.complaintAgainst = complaintAgainst;
@@ -111,7 +116,7 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
     this.pageTitle = pageTitle;
     this.reviewSpeech = reviewSpeech;
     this.reviewerField = reviewerField;
-    this.saveButton = saveButton;
+    this.saveButton20 = saveButton20;
     this.titleField = titleField;
     this.titleSpeech = titleSpeech;
     this.uploadFileButton = uploadFileButton;
@@ -156,9 +161,15 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.cancelButton;
-      Button cancelButton = ViewBindings.findChildViewById(rootView, id);
-      if (cancelButton == null) {
+      id = R.id.button2;
+      Button button2 = ViewBindings.findChildViewById(rootView, id);
+      if (button2 == null) {
+        break missingId;
+      }
+
+      id = R.id.cancelButton20;
+      Button cancelButton20 = ViewBindings.findChildViewById(rootView, id);
+      if (cancelButton20 == null) {
         break missingId;
       }
 
@@ -240,9 +251,9 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.saveButton;
-      Button saveButton = ViewBindings.findChildViewById(rootView, id);
-      if (saveButton == null) {
+      id = R.id.saveButton20;
+      Button saveButton20 = ViewBindings.findChildViewById(rootView, id);
+      if (saveButton20 == null) {
         break missingId;
       }
 
@@ -265,9 +276,9 @@ public final class ActivityEditComplaintBinding implements ViewBinding {
       }
 
       return new ActivityEditComplaintBinding((ConstraintLayout) rootView, againstField,
-          againstSpeech, cancelButton, categoryField, categorySpeech, complaintAgainst,
+          againstSpeech, button2, cancelButton20, categoryField, categorySpeech, complaintAgainst,
           complaintCategory, complaintDetail, complaintEvidence, complaintReviewer, complaintTitle,
-          detailsField, detailsSpeech, pageTitle, reviewSpeech, reviewerField, saveButton,
+          detailsField, detailsSpeech, pageTitle, reviewSpeech, reviewerField, saveButton20,
           titleField, titleSpeech, uploadFileButton);
     }
     String missingId = rootView.getResources().getResourceName(id);

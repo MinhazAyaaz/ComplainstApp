@@ -50,7 +50,7 @@
         app:layout_constraintVertical_bias="0.045" />
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/saveButton20"
         android:layout_width="130dp"
         android:layout_height="45dp"
         android:background="@drawable/round_bg"
@@ -65,7 +65,7 @@
         app:layout_constraintVertical_bias="0.948" />
 
     <Button
-        android:id="@+id/cancelButton"
+        android:id="@+id/cancelButton20"
         android:layout_width="130dp"
         android:layout_height="45dp"
         android:background="@drawable/round_bg"

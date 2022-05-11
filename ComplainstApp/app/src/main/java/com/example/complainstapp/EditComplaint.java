@@ -29,8 +29,8 @@ public class EditComplaint extends AppCompatActivity {
         details = findViewById(R.id.detailsField);
         against = findViewById(R.id.againstField);
         reviewer = findViewById(R.id.reviewerField);
-        saveButton = findViewById(R.id.saveButton);
-        cancelButton = findViewById(R.id.cancelButton);
+        saveButton = findViewById(R.id.saveButton20);
+        cancelButton = findViewById(R.id.cancelButton20);
 
         category.setText(getIntent().getExtras().getString("category"));
         title.setText(getIntent().getExtras().getString("title"));

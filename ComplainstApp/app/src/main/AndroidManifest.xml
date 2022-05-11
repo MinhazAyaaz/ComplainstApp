@@ -19,9 +19,6 @@
         android:theme="@style/Theme.Material3.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         >
-        <activity
-            android:name=".EditComplaint"
-            android:exported="false" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="YOUR_API_KEY" />
@@ -39,6 +36,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
+        <activity android:name=".EditComplaint"
+            android:theme="@style/Theme.AppCompat"/>
         <activity android:name=".HomepageActivity" />
         <activity android:name=".CreateComplaint"
             android:exported="true"
